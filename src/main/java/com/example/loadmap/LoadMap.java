@@ -25,20 +25,8 @@ public class LoadMap extends Application {
         //Portal
         Image portal = new Image(getClass().getResourceAsStream("Image/portal.png"));
 
-        Scanner scan = new Scanner(getClass().getResourceAsStream("Map/Level1.txt"));
-
-        int L = scan.nextInt();
-        int R = scan.nextInt();
-        int C = scan.nextInt();
-        String get = scan.nextLine();
-
-        for (int i = 0; i < R; i++) {
-            String row = scan.nextLine();
-            char[] col = row.toCharArray();
-            for (int j = 0; j < C; j++) {
-                getImage(col[j], (double) j * 30, (double) i * 30, root);
-            }
-        }
+        Map map = new Map("Map/Level1.txt");
+        getMap(map.getMap(), root);
 
         Scene scene = new Scene(root,  930 ,390);
 
@@ -46,6 +34,14 @@ public class LoadMap extends Application {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+    }
+
+    public void getMap(char[][] map, Group root) throws FileNotFoundException {
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                getImage(map[i][j], (double) j * 30, (double) i * 30, root);
+            }
+        }
     }
 
     public void getImage(char symbol, double x, double y, Group root) throws FileNotFoundException {
