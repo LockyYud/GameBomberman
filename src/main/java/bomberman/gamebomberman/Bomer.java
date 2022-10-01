@@ -84,9 +84,9 @@ public class Bomer extends Entiny implements LoadImage{
           images_right[0] = new ImageView(player_right);
           images_right[1] = new ImageView(player_right_1);
           images_right[2] = new ImageView(player_right_2);
-          images_dead[0] = new ImageView(player_dead);
-          images_dead[1] = new ImageView(player_dead_1);
-          images_dead[2] = new ImageView(player_dead_2);
+          images_dead[0] = new ImageView(player_dead1);
+          images_dead[1] = new ImageView(player_dead2);
+          images_dead[2] = new ImageView(player_dead3);
           for(int i = 0; i < 3; i++) {
                images_down[i].setFitHeight(size_of_box);
                images_down[i].setFitWidth(size_of_box);
