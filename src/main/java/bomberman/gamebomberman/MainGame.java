@@ -37,6 +37,7 @@ public class MainGame extends Application implements LoadImage{
         Bomer player = new Bomer();
         Scene scene = new Scene(player.move, 600 , 600);
         scene.addEventHandler(KeyEvent.KEY_PRESSED ,player.handler);
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }
