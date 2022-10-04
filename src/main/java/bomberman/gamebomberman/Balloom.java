@@ -1,12 +1,6 @@
 package bomberman.gamebomberman;
 
-import javafx.animation.*;
-import javafx.event.ActionEvent;
-import javafx.scene.Group;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
-import javafx.util.Duration;
-import org.controlsfx.control.action.Action;
 
 public class Balloom extends Enemy implements LoadImage{
     public Balloom(){}
@@ -22,10 +16,11 @@ public class Balloom extends Enemy implements LoadImage{
         right[1] = new ImageView(balloom_right2);
         right[2] = new ImageView(balloom_right3);
         for(int i = 0; i < 3; i++) {
-            left[i].setFitHeight(size_of_box);
-            left[i].setFitWidth(size_of_box);
-            right[i].setFitHeight(size_of_box);
-            right[i].setFitWidth(size_of_box);
+            left[i].setFitHeight(SIZE_OF_BOX);
+            left[i].setFitWidth(SIZE_OF_BOX);
+            right[i].setFitHeight(SIZE_OF_BOX);
+            right[i].setFitWidth(SIZE_OF_BOX);
         }
+        playtran();
     }
 }

@@ -6,19 +6,17 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
-import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
-public abstract class Enemy extends Entiny implements LoadImage{
+public abstract class Enemy extends Entity implements LoadImage{
     protected ImageView[] left = new ImageView[3];
     protected ImageView[] right = new ImageView[3];
     protected Timeline timeline_left = new Timeline();
     protected Timeline timeline_right = new Timeline();
     protected StackPane move_left = new StackPane();
     protected StackPane move_right = new StackPane();
-    public Group move = new Group();
     TranslateTransition tran = new TranslateTransition();
     AnimationTimer timer;
     public Enemy(){}
@@ -34,10 +32,10 @@ public abstract class Enemy extends Entiny implements LoadImage{
         right[1] = new ImageView(balloom_right2);
         right[2] = new ImageView(balloom_right3);
         for(int i = 0; i < 3; i++) {
-            left[i].setFitHeight(size_of_box);
-            left[i].setFitWidth(size_of_box);
-            right[i].setFitHeight(size_of_box);
-            right[i].setFitWidth(size_of_box);
+            left[i].setFitHeight(SIZE_OF_BOX);
+            left[i].setFitWidth(SIZE_OF_BOX);
+            right[i].setFitHeight(SIZE_OF_BOX);
+            right[i].setFitWidth(SIZE_OF_BOX);
         }
     }
     public void playtran() {

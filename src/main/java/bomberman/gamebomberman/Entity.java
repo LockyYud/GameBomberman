@@ -1,23 +1,29 @@
 package bomberman.gamebomberman;
-import javafx.scene.image.Image;
+import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 
-public abstract class Entiny implements LoadImage {
+public abstract class Entity implements LoadImage {
     public static final int window_height = 600;
     public static final int window_width = 600;
-    public static final int size_of_box = 40;
+    public static final int SIZE_OF_BOX = 40;
     protected int x;
     protected int y;
-
     public ImageView image;
-    Entiny() {}
+    public Group move = new Group();
+
+    Entity() {}
+
+    Entity(int x, int y) {
+        this.x = x * SIZE_OF_BOX;
+        this.y = y * SIZE_OF_BOX;
+    }
 
     public void setX(int x) {
-        this.x = x;
+        this.x = x * SIZE_OF_BOX;
     }
 
     public void setY(int y) {
-        this.y = y;
+        this.y = y * SIZE_OF_BOX;
     }
 
     public int getX() {
@@ -32,7 +38,7 @@ public abstract class Entiny implements LoadImage {
         return image;
     }
 
-    boolean Collide_with(Entiny obj) {
+    boolean Collide_with(Entity obj) {
         if (this.x == obj.getX() || this.y == obj.getY()) return true;
         else return false;
     }

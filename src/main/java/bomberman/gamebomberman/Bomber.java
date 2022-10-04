@@ -5,17 +5,13 @@ import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
-import java.security.Key;
-import java.util.GregorianCalendar;
-
-public class Bomer extends Entiny implements LoadImage{
+public class Bomber extends Entity implements LoadImage{
      private final int time_move = 125;
      private ImageView[] images_down = new ImageView[3];
      private ImageView[] images_up = new ImageView[3];
@@ -26,7 +22,6 @@ public class Bomer extends Entiny implements LoadImage{
      public StackPane move_right = new StackPane();
      public StackPane move_up = new StackPane();
      public StackPane move_down = new StackPane();
-     public Group move = new Group();
      private Timeline timeline_down = new Timeline();
      private Timeline timeline_up = new Timeline();
      private Timeline timeline_left = new Timeline();
@@ -42,7 +37,7 @@ public class Bomer extends Entiny implements LoadImage{
                     y++;
                     timeline_down.play();
                     move_down.toFront();
-                    tran_down.setByY(size_of_box);
+                    tran_down.setByY(SIZE_OF_BOX);
                     tran_down.setByX(0);
                     tran_down.play();
                }
@@ -50,7 +45,7 @@ public class Bomer extends Entiny implements LoadImage{
                     y--;
                     timeline_up.play();
                     move_up.toFront();
-                    tran_up.setByY(-size_of_box);
+                    tran_up.setByY(-SIZE_OF_BOX);
                     tran_up.setByX(0);
                     tran_up.play();
                }
@@ -59,7 +54,7 @@ public class Bomer extends Entiny implements LoadImage{
                     timeline_right.play();
                     move_right.toFront();
                     tran_right.setByY(0);
-                    tran_right.setByX(size_of_box);
+                    tran_right.setByX(SIZE_OF_BOX);
                     tran_right.play();
                }
                if(keyEvent.getCode() == KeyCode.LEFT) {
@@ -67,12 +62,12 @@ public class Bomer extends Entiny implements LoadImage{
                     timeline_left.play();
                     move_left.toFront();
                     tran_left.setByY(0);
-                    tran_left.setByX(-size_of_box);
+                    tran_left.setByX(-SIZE_OF_BOX);
                     tran_left.play();
                }
           }
      };
-     public Bomer(){
+     public Bomber(){
           images_down[0] = new ImageView(player_down);
           images_down[1] = new ImageView(player_down_1);
           images_down[2] = new ImageView(player_down_2);
@@ -89,21 +84,22 @@ public class Bomer extends Entiny implements LoadImage{
           images_dead[1] = new ImageView(player_dead2);
           images_dead[2] = new ImageView(player_dead3);
           for(int i = 0; i < 3; i++) {
-               images_down[i].setFitHeight(size_of_box);
-               images_down[i].setFitWidth(size_of_box);
-               images_up[i].setFitHeight(size_of_box);
-               images_up[i].setFitWidth(size_of_box);
-               images_left[i].setFitHeight(size_of_box);
-               images_left[i].setFitWidth(size_of_box);
-               images_right[i].setFitHeight(size_of_box);
-               images_right[i].setFitWidth(size_of_box);
-               images_dead[i].setFitHeight(size_of_box);
-               images_dead[i].setFitWidth(size_of_box);
+               images_down[i].setFitHeight(SIZE_OF_BOX);
+               images_down[i].setFitWidth(SIZE_OF_BOX);
+               images_up[i].setFitHeight(SIZE_OF_BOX);
+               images_up[i].setFitWidth(SIZE_OF_BOX);
+               images_left[i].setFitHeight(SIZE_OF_BOX);
+               images_left[i].setFitWidth(SIZE_OF_BOX);
+               images_right[i].setFitHeight(SIZE_OF_BOX);
+               images_right[i].setFitWidth(SIZE_OF_BOX);
+               images_dead[i].setFitHeight(SIZE_OF_BOX);
+               images_dead[i].setFitWidth(SIZE_OF_BOX);
           }
           x = 0;
           y = 0;
 
           //TimeLine for move left
+          move_left.getChildren().setAll(images_left[1]);
           timeline_left.setCycleCount(1);
           timeline_left.getKeyFrames().add(new KeyFrame(
                   Duration.millis(time_move / 3),
