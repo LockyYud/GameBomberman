@@ -16,6 +16,7 @@ import java.security.Key;
 import java.util.GregorianCalendar;
 
 public class Bomer extends Entiny implements LoadImage{
+     private final int time_move = 125;
      private ImageView[] images_down = new ImageView[3];
      private ImageView[] images_up = new ImageView[3];
      private ImageView[] images_left = new ImageView[3];
@@ -105,19 +106,19 @@ public class Bomer extends Entiny implements LoadImage{
           //TimeLine for move left
           timeline_left.setCycleCount(1);
           timeline_left.getKeyFrames().add(new KeyFrame(
-                  Duration.millis(100),
+                  Duration.millis(time_move / 3),
                   (ActionEvent event) -> {
                        move_left.getChildren().setAll(images_left[1]);
                   }
           ));
           timeline_left.getKeyFrames().add(new KeyFrame(
-                  Duration.millis(200),
+                  Duration.millis(time_move / 3 * 2),
                   (ActionEvent event) -> {
                        move_left.getChildren().setAll(images_left[2]);
                   }
           ));
           timeline_left.getKeyFrames().add(new KeyFrame(
-                  Duration.millis(300),
+                  Duration.millis(time_move),
                   (ActionEvent event) -> {
                        move_left.getChildren().setAll(images_left[0]);
                   }
@@ -125,19 +126,19 @@ public class Bomer extends Entiny implements LoadImage{
           //TimeLine for move right
           timeline_right.setCycleCount(1);
           timeline_right.getKeyFrames().add(new KeyFrame(
-                  Duration.millis(100),
+                  Duration.millis(time_move/3),
                   (ActionEvent event) -> {
                        move_right.getChildren().setAll(images_right[1]);
                   }
           ));
           timeline_right.getKeyFrames().add(new KeyFrame(
-                  Duration.millis(200),
+                  Duration.millis(time_move / 3 * 2),
                   (ActionEvent event) -> {
                        move_right.getChildren().setAll(images_right[2]);
                   }
           ));
           timeline_right.getKeyFrames().add(new KeyFrame(
-                  Duration.millis(300),
+                  Duration.millis(time_move),
                   (ActionEvent event) -> {
                        move_right.getChildren().setAll(images_right[0]);
                   }
@@ -146,19 +147,19 @@ public class Bomer extends Entiny implements LoadImage{
           //TimeLine for move up
           timeline_up.setCycleCount(1);
           timeline_up.getKeyFrames().add(new KeyFrame(
-                  Duration.millis(100),
+                  Duration.millis(time_move/3),
                   (ActionEvent event) -> {
                        move_up.getChildren().setAll(images_up[1]);
                   }
           ));
           timeline_up.getKeyFrames().add(new KeyFrame(
-                  Duration.millis(200),
+                  Duration.millis(time_move / 3 * 2),
                   (ActionEvent event) -> {
                        move_up.getChildren().setAll(images_up[2]);
                   }
           ));
           timeline_up.getKeyFrames().add(new KeyFrame(
-                  Duration.millis(300),
+                  Duration.millis(time_move),
                   (ActionEvent event) -> {
                        move_up.getChildren().setAll(images_up[0]);
                   }
@@ -167,19 +168,19 @@ public class Bomer extends Entiny implements LoadImage{
           //TimeLine for move down
           timeline_down.setCycleCount(1);
           timeline_down.getKeyFrames().add(new KeyFrame(
-                  Duration.millis(100),
+                  Duration.millis(time_move/3),
                   (ActionEvent event) -> {
                        move_down.getChildren().setAll(images_down[1]);
                   }
           ));
           timeline_down.getKeyFrames().add(new KeyFrame(
-                  Duration.millis(200),
+                  Duration.millis(time_move / 3 * 2),
                   (ActionEvent event) -> {
                        move_down.getChildren().setAll(images_down[2]);
                   }
           ));
           timeline_down.getKeyFrames().add(new KeyFrame(
-                  Duration.millis(300),
+                  Duration.millis(time_move),
                   (ActionEvent event) -> {
                        move_down.getChildren().setAll(images_down[0]);
                   }
@@ -192,22 +193,22 @@ public class Bomer extends Entiny implements LoadImage{
           move.getChildren().add(move_up);
           //tran_left
           tran_left.setNode(move);
-          tran_left.setDuration(Duration.millis(300));
+          tran_left.setDuration(Duration.millis(time_move + 25));
           tran_left.setCycleCount(1);
           tran_left.setAutoReverse(false);
           //tran_right
           tran_right.setNode(move);
-          tran_right.setDuration(Duration.millis(300));
+          tran_right.setDuration(Duration.millis(time_move + 25));
           tran_right.setCycleCount(1);
           tran_right.setAutoReverse(false);
           //tran_up
           tran_up.setNode(move);
-          tran_up.setDuration(Duration.millis(300));
+          tran_up.setDuration(Duration.millis(time_move + 25));
           tran_up.setCycleCount(1);
           tran_up.setAutoReverse(false);
           //tran_down
           tran_down.setNode(move);
-          tran_down.setDuration(Duration.millis(300));
+          tran_down.setDuration(Duration.millis(time_move + 25));
           tran_down.setCycleCount(1);
           tran_down.setAutoReverse(false);
      }
