@@ -5,7 +5,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.input.KeyEvent;
 
-public class MainGame extends Application implements LoadImage{
+public class MainGame extends Application {
     public static final int window_height = 600;
     public static final int window_width = 600;
     int i = 0;

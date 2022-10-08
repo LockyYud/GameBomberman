@@ -2,7 +2,7 @@ package bomberman.gamebomberman;
 
 import javafx.scene.image.ImageView;
 
-public class Balloom extends Enemy implements LoadImage{
+public class Balloom extends Enemy {
     public Balloom(){}
     public Balloom(int x, int y) {
         this.x = x;

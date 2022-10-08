@@ -10,7 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
-public abstract class Enemy extends Entity implements LoadImage{
+public abstract class Enemy extends Entity {
     protected ImageView[] left = new ImageView[3];
     protected ImageView[] right = new ImageView[3];
     protected Timeline timeline_left = new Timeline();

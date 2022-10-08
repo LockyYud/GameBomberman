@@ -2,9 +2,7 @@ package bomberman.gamebomberman;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 
-public abstract class Entity implements LoadImage {
-    public static final int window_height = 600;
-    public static final int window_width = 600;
+public abstract class Entity implements LoadImageWithoutBackground {
     public static final int SIZE_OF_BOX = 40;
     protected int x;
     protected int y;
