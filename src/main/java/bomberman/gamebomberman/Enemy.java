@@ -10,6 +10,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
 public abstract class Enemy extends Entity implements LoadImage{
     protected ImageView[] left = new ImageView[3];
     protected ImageView[] right = new ImageView[3];
@@ -17,36 +20,32 @@ public abstract class Enemy extends Entity implements LoadImage{
     protected Timeline timeline_right = new Timeline();
     protected StackPane move_left = new StackPane();
     protected StackPane move_right = new StackPane();
-    TranslateTransition tran = new TranslateTransition();
-    AnimationTimer timer;
-    public Enemy(){}
-    public Enemy(int x, int y) {
-        this.x = x;
-        this.y = y;
-        move.getChildren().add(move_left);
-        move.getChildren().add(move_right);
-        left[0] = new ImageView(balloom_left1);
-        left[1] = new ImageView(balloom_left2);
-        left[2] = new ImageView(balloom_left3);
-        right[0] = new ImageView(balloom_right1);
-        right[1] = new ImageView(balloom_right2);
-        right[2] = new ImageView(balloom_right3);
-        for(int i = 0; i < 3; i++) {
-            left[i].setFitHeight(SIZE_OF_BOX);
-            left[i].setFitWidth(SIZE_OF_BOX);
-            right[i].setFitHeight(SIZE_OF_BOX);
-            right[i].setFitWidth(SIZE_OF_BOX);
+    public TimerTask timer = new TimerTask() {
+        @Override
+        public void run() {
+            switch (randommove()) {
+                case 1:
+                    System.out.println(1);
+                    tran_down.play();
+                    break;
+                case 2:
+                    System.out.println(2);
+                    tran_up.play();
+                    break;
+                case 3:
+                    System.out.println(3);
+                    tran_right.play();
+                    break;
+                case 4:
+                    System.out.println(4);
+                    tran_left.play();
+                    break;
+            }
         }
-    }
-    public void playtran() {
-        this.SetTimeline();
-        tran.play();
-        timer.start();
-        timeline_right.play();
-        timeline_left.play();
-    }
-    private void SetTimeline() {
-        //TimeLine left
+    };
+    public Enemy(){}
+    protected void SetTimeline() {
+        //TimeLine left;
         timeline_left.setCycleCount(Timeline.INDEFINITE);
         timeline_left.getKeyFrames().add(new KeyFrame(
                 Duration.millis(100),
@@ -86,21 +85,12 @@ public abstract class Enemy extends Entity implements LoadImage{
                     move_right.getChildren().setAll(right[2]);
                 }
         ));
-        tran.setNode(move);
-        tran.setCycleCount(TranslateTransition.INDEFINITE);
-        tran.setAutoReverse(true);
-        tran.setDuration(Duration.millis(3000));
-        tran.setByX(500);
-        tran.setByY(0);
-        timer = new AnimationTimer() {
-            @Override
-            public void handle(long l) {
-                if(tran.getNode().getTranslateX() > 400) move_left.toFront();
-                if(tran.getNode().getTranslateX() < 50) move_right.toFront();
-            }
-        };
     }
-//    private int randommove() {
-//
-//    }
+
+
+    private int randommove() {
+        int a = (int) (4 * Math.random());
+//        System.out.println(a);
+        return a;
+    }
 }

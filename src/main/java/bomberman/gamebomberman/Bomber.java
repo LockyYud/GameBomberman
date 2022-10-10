@@ -11,8 +11,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Bomber extends Entity implements LoadImage{
-     private final int time_move = 125;
      private ImageView[] images_down = new ImageView[3];
      private ImageView[] images_up = new ImageView[3];
      private ImageView[] images_left = new ImageView[3];
@@ -26,13 +28,14 @@ public class Bomber extends Entity implements LoadImage{
      private Timeline timeline_up = new Timeline();
      private Timeline timeline_left = new Timeline();
      private Timeline timeline_right = new Timeline();
-     private TranslateTransition tran_left = new TranslateTransition();
-     private TranslateTransition tran_right = new TranslateTransition();
-     private TranslateTransition tran_up = new TranslateTransition();
-     private TranslateTransition tran_down = new TranslateTransition();
+
+     private List<Bomb> bombs = new ArrayList<>();
      public EventHandler<KeyEvent> handler = new EventHandler<KeyEvent>() {
           @Override
           public void handle(KeyEvent keyEvent) {
+               if(keyEvent.getCode() == KeyCode.SPACE) {
+
+               }
                if(keyEvent.getCode() == KeyCode.DOWN) {
                     y++;
                     timeline_down.play();
@@ -97,7 +100,6 @@ public class Bomber extends Entity implements LoadImage{
           }
           x = 0;
           y = 0;
-
           //TimeLine for move left
           move_left.getChildren().setAll(images_left[1]);
           timeline_left.setCycleCount(1);
@@ -187,25 +189,25 @@ public class Bomber extends Entity implements LoadImage{
           move.getChildren().add(move_left);
           move.getChildren().add(move_down);
           move.getChildren().add(move_up);
-          //tran_left
-          tran_left.setNode(move);
-          tran_left.setDuration(Duration.millis(time_move + 25));
-          tran_left.setCycleCount(1);
-          tran_left.setAutoReverse(false);
-          //tran_right
-          tran_right.setNode(move);
-          tran_right.setDuration(Duration.millis(time_move + 25));
-          tran_right.setCycleCount(1);
-          tran_right.setAutoReverse(false);
-          //tran_up
-          tran_up.setNode(move);
-          tran_up.setDuration(Duration.millis(time_move + 25));
-          tran_up.setCycleCount(1);
-          tran_up.setAutoReverse(false);
-          //tran_down
-          tran_down.setNode(move);
-          tran_down.setDuration(Duration.millis(time_move + 25));
-          tran_down.setCycleCount(1);
-          tran_down.setAutoReverse(false);
+//          //tran_left
+//          tran_left.setNode(move);
+//          tran_left.setDuration(Duration.millis(time_move + 25));
+//          tran_left.setCycleCount(1);
+//          tran_left.setAutoReverse(false);
+//          //tran_right
+//          tran_right.setNode(move);
+//          tran_right.setDuration(Duration.millis(time_move + 25));
+//          tran_right.setCycleCount(1);
+//          tran_right.setAutoReverse(false);
+//          //tran_up
+//          tran_up.setNode(move);
+//          tran_up.setDuration(Duration.millis(time_move + 25));
+//          tran_up.setCycleCount(1);
+//          tran_up.setAutoReverse(false);
+//          //tran_down
+//          tran_down.setNode(move);
+//          tran_down.setDuration(Duration.millis(time_move + 25));
+//          tran_down.setCycleCount(1);
+//          tran_down.setAutoReverse(false);
      }
 }
