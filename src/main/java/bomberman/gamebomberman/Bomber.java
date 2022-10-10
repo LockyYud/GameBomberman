@@ -10,11 +10,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Bomber extends Entity implements LoadImage{
+public class Bomber extends Entity {
+     private final int time_move = 125;
      private ImageView[] images_down = new ImageView[3];
      private ImageView[] images_up = new ImageView[3];
      private ImageView[] images_left = new ImageView[3];

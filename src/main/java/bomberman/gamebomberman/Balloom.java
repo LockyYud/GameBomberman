@@ -6,7 +6,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Pair;
 
-public class Balloom extends Enemy implements LoadImage{
+
+public class Balloom extends Enemy {
+    public Balloom(){}
     public Balloom(int x, int y) {
         this.x = x;
         this.y = y;

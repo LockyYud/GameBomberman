@@ -22,11 +22,10 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.input.KeyEvent;
-
-import java.io.FileInputStream;
 import java.util.Timer;
 
-public class MainGame extends Application implements LoadImage{
+
+public class MainGame extends Application {
     public static final int window_height = 600;
     public static final int window_width = 600;
     public static char[][] map = new char[8][8];

@@ -1,6 +1,6 @@
 package bomberman.gamebomberman;
 
-
+//import java.util.*;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -11,9 +11,8 @@ import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
-public abstract class Enemy extends Entity implements LoadImage{
+public abstract class Enemy extends Entity {
     protected ImageView[] left = new ImageView[3];
     protected ImageView[] right = new ImageView[3];
     protected Timeline timeline_left = new Timeline();
