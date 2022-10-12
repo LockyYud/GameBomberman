@@ -44,9 +44,9 @@ public class Brick extends Entity {
                     brick_stack.getChildren().setAll(brick_explode[3]);
                 }
         ));
-        move.getChildren().add(brick_stack);
-        move.setLayoutX(this.x);
-        move.setLayoutY(this.y);
+        action.getChildren().add(brick_stack);
+        action.setLayoutX(this.x);
+        action.setLayoutY(this.y);
     }
 
     public void setExploded(boolean exploded) {

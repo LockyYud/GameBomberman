@@ -22,6 +22,6 @@ public class Item extends Entity {
         item[i].setY(this.y);
         item[i].setFitWidth(SIZE_OF_BOX);
         item[i].setFitHeight(SIZE_OF_BOX);
-        move.getChildren().add(item[i]);
+        action.getChildren().add(item[i]);
     }
 }

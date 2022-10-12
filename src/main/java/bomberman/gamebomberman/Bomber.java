@@ -2,7 +2,6 @@ package bomberman.gamebomberman;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
@@ -184,10 +183,10 @@ public class Bomber extends Entity {
           ));
 
           //move all
-          move.getChildren().add(move_right);
-          move.getChildren().add(move_left);
-          move.getChildren().add(move_down);
-          move.getChildren().add(move_up);
+          action.getChildren().add(move_right);
+          action.getChildren().add(move_left);
+          action.getChildren().add(move_down);
+          action.getChildren().add(move_up);
 //          //tran_left
 //          tran_left.setNode(move);
 //          tran_left.setDuration(Duration.millis(time_move + 25));

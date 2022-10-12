@@ -1,26 +1,9 @@
 package bomberman.gamebomberman;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.image.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import javafx.application.Application;
 
-import javafx.scene.Group;
-import javafx.scene.Scene;
-
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
-
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import javafx.scene.input.KeyEvent;
 import java.util.Timer;
 
@@ -34,8 +17,10 @@ public class MainGame extends Application {
         Bomber bomber = new Bomber();
         //Creating a Group object
         Balloom balloom = new Balloom(5,5);
-        Group root = new Group(bomber.move);
-        root.getChildren().add(balloom.move);
+        Entity bomb = new Bomb(4, 4, 2);
+        Group root = new Group(bomber.action);
+        root.getChildren().add(balloom.action);
+        root.getChildren().add(bomb.action);
 
         //Creating a scene object
         Scene scene = new Scene(root, 600, 500);

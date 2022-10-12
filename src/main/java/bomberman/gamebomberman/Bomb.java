@@ -8,6 +8,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class Bomb extends Entity {
     private ImageView[] bombItem = new ImageView[30];
     private Timeline timeline_bomb = new Timeline();
@@ -46,9 +48,7 @@ public class Bomb extends Entity {
         bombItem[29] = new ImageView(explosion_vertical2);
     }
 
-    public Bomb(int x, int y, int length) {
-        super(x, y);
-        construct();
+    private void set(int length) {
         for (int i = 0; i < 30; i++) {
             bombItem[i].setFitWidth(SIZE_OF_BOX);
             bombItem[i].setFitHeight(SIZE_OF_BOX);
@@ -68,11 +68,11 @@ public class Bomb extends Entity {
             }
         }
         for (int i = 9; i < 12; i++) {
-            bombItem[i].setX(this.x - length * SIZE_OF_BOX);
+            bombItem[i].setX(this.x - (length) * SIZE_OF_BOX);
             bombItem[i].setY(this.y);
         }
         for (int i = 12; i < 15; i++) {
-            bombItem[i].setX(this.x + length * SIZE_OF_BOX);
+            bombItem[i].setX(this.x + (length) * SIZE_OF_BOX);
             bombItem[i].setY(this.y);
         }
         for (int i = 15; i < 18; i++) {
@@ -87,104 +87,114 @@ public class Bomb extends Entity {
         }
         for (int i = 18; i < 21; i++) {
             bombItem[i].setX(this.x);
-            bombItem[i].setY(this.y + length * SIZE_OF_BOX);
+            bombItem[i].setY(this.y + (length) * SIZE_OF_BOX);
         }
         for (int i = 21; i < 24; i++) {
             bombItem[i].setX(this.x);
-            bombItem[i].setY(this.y - length * SIZE_OF_BOX);
+            bombItem[i].setY(this.y - (length) * SIZE_OF_BOX);
         }
+    }
+
+    public Bomb(int x, int y, int length) {
+        super(x, y);
+        construct();
+        set(length);
+        AtomicBoolean transformed = new AtomicBoolean(false);
         bomb_stack.getChildren().setAll(bombItem[0]);
+        action.getChildren().setAll(bomb_stack);
+        action.setLayoutX(this.x);
+        action.setLayoutY(this.y);
         timeline_bomb.setCycleCount(1);
         timeline_bomb.getKeyFrames().add(new KeyFrame(
-                Duration.millis(1000),
+                Duration.millis(600),
                 (ActionEvent event) ->{
                     bomb_stack.getChildren().setAll(bombItem[1]);
+                    action.getChildren().setAll(bomb_stack);
+                    action.setLayoutX(this.x);
+                    action.setLayoutY(this.y);
                 }
         ));
         timeline_bomb.getKeyFrames().add(new KeyFrame(
-                Duration.millis(2000),
+                Duration.millis(1200),
                 (ActionEvent event) ->{
                     bomb_stack.getChildren().setAll(bombItem[2]);
+                    action.getChildren().setAll(bomb_stack);
+                    action.setLayoutX(this.x);
+                    action.setLayoutY(this.y);
                 }
         ));
         timeline_bomb.getKeyFrames().add(new KeyFrame(
-                Duration.millis(3000),
+                Duration.millis(1800),
                 (ActionEvent event) ->{
+                    Group g = new Group();
                     if (length > 1) {
                         for (int i = 3; i <= 27; i += 3) {
-                            double X = bombItem[i].getX();
-                            double Y = bombItem[i].getY();
                             Group temp = new Group(bombItem[i]);
-                            temp.setLayoutX(X);
-                            temp.setLayoutY(Y);
-                            bomb_stack.getChildren().add(temp);
+                            g.getChildren().add(temp);
                         }
                     } else {
                         int[] a = {3, 9, 12, 18, 21};
                         for (int i = 0; i < 5; i++) {
-                            double X = bombItem[a[i]].getX();
-                            double Y = bombItem[a[i]].getY();
-                            Group temp = new Group(bombItem[i]);
-                            temp.setLayoutX(X);
-                            temp.setLayoutY(Y);
-                            bomb_stack.getChildren().add(temp);
+                            Group temp = new Group(bombItem[a[i]]);
+                            g.getChildren().add(temp);
                         }
                     }
+                    bomb_stack.getChildren().setAll(g);
+                    action.getChildren().setAll(bomb_stack);
+                    action.setLayoutX(this.x - length * SIZE_OF_BOX);
+                    action.setLayoutY(this.y - length * SIZE_OF_BOX);
                 }
         ));
         timeline_bomb.getKeyFrames().add(new KeyFrame(
-                Duration.millis(4000),
+                Duration.millis(2200),
                 (ActionEvent event) ->{
+                    Group g = new Group();
                     if (length > 1) {
                         for (int i = 4; i <= 28; i += 3) {
-                            double X = bombItem[i].getX();
-                            double Y = bombItem[i].getY();
                             Group temp = new Group(bombItem[i]);
-                            temp.setLayoutX(X);
-                            temp.setLayoutY(Y);
-                            bomb_stack.getChildren().add(temp);
+                            g.getChildren().add(temp);
                         }
                     } else {
                         int[] a = {4, 10, 13, 19, 22};
                         for (int i = 0; i < 5; i++) {
-                            double X = bombItem[a[i]].getX();
-                            double Y = bombItem[a[i]].getY();
-                            Group temp = new Group(bombItem[i]);
-                            temp.setLayoutX(X);
-                            temp.setLayoutY(Y);
-                            bomb_stack.getChildren().add(temp);
+                            Group temp = new Group(bombItem[a[i]]);
+                            g.getChildren().add(temp);
                         }
                     }
+                    bomb_stack.getChildren().setAll(g);
+                    action.getChildren().setAll(bomb_stack);
+                    action.setLayoutX(this.x - length * SIZE_OF_BOX);
+                    action.setLayoutY(this.y - length * SIZE_OF_BOX);
                 }
         ));
         timeline_bomb.getKeyFrames().add(new KeyFrame(
-                Duration.millis(5000),
+                Duration.millis(2400),
                 (ActionEvent event) ->{
+                    Group g = new Group();
                     if (length > 1) {
                         for (int i = 5; i <= 29; i += 3) {
-                            double X = bombItem[i].getX();
-                            double Y = bombItem[i].getY();
                             Group temp = new Group(bombItem[i]);
-                            temp.setLayoutX(X);
-                            temp.setLayoutY(Y);
-                            bomb_stack.getChildren().add(temp);
+                            g.getChildren().add(temp);
                         }
                     } else {
                         int[] a = {5, 11, 14, 20, 23};
                         for (int i = 0; i < 5; i++) {
-                            double X = bombItem[a[i]].getX();
-                            double Y = bombItem[a[i]].getY();
-                            Group temp = new Group(bombItem[i]);
-                            temp.setLayoutX(X);
-                            temp.setLayoutY(Y);
-                            bomb_stack.getChildren().add(temp);
+                            Group temp = new Group(bombItem[a[i]]);
+                            g.getChildren().add(temp);
                         }
                     }
+                    bomb_stack.getChildren().setAll(g);
+                    action.getChildren().setAll(bomb_stack);
+                    action.setLayoutX(this.x - length * SIZE_OF_BOX);
+                    action.setLayoutY(this.y - length * SIZE_OF_BOX);
                 }
         ));
-        move.getChildren().setAll(bomb_stack);
-        move.setLayoutX(this.x);
-        move.setLayoutY(this.y);
+        timeline_bomb.getKeyFrames().add(new KeyFrame(
+                Duration.millis(2600),
+                (ActionEvent) ->{
+                    action.getChildren().setAll();
+                }
+        ));
 
         timeline_bomb.play();
     }

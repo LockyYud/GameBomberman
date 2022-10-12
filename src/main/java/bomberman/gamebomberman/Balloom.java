@@ -4,7 +4,6 @@ import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.util.Pair;
 
 
 public class Balloom extends Enemy {
@@ -12,8 +11,8 @@ public class Balloom extends Enemy {
     public Balloom(int x, int y) {
         this.x = x;
         this.y = y;
-        move.getChildren().add(move_left);
-        move.getChildren().add(move_right);
+        action.getChildren().add(move_left);
+        action.getChildren().add(move_right);
         left[0] = new ImageView(balloom_left1);
         left[1] = new ImageView(balloom_left2);
         left[2] = new ImageView(balloom_left3);
