@@ -9,7 +9,7 @@ public class Wall extends Entity {
         image.setX(this.x);
         image.setY(this.y);
         image.setFitWidth(SIZE_OF_BOX);
-        image.setFitWidth(SIZE_OF_BOX);
+        image.setFitHeight(SIZE_OF_BOX);
         action.getChildren().add(image);
     }
 }

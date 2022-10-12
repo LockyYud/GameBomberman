@@ -9,8 +9,7 @@ import javafx.scene.input.KeyEvent;
 public class Balloom extends Enemy {
     public Balloom(){}
     public Balloom(int x, int y) {
-        this.x = x;
-        this.y = y;
+        super(x, y);
         action.getChildren().add(move_left);
         action.getChildren().add(move_right);
         left[0] = new ImageView(balloom_left1);

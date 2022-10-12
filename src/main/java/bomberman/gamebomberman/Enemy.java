@@ -43,6 +43,10 @@ public abstract class Enemy extends Entity {
         }
     };
     public Enemy(){}
+
+    public Enemy(int x, int y) {
+        super(x, y);
+    }
     protected void SetTimeline() {
         //TimeLine left;
         timeline_left.setCycleCount(Timeline.INDEFINITE);

@@ -10,7 +10,12 @@ public abstract class Entity implements LoadImageWithoutBackground {
     protected int x;
     protected int y;
     public ImageView image;
-    public Group action = new Group();
+    protected Group action = new Group();
+
+    public Group getAction() {
+        return action;
+    }
+
     protected TranslateTransition tran_left = new TranslateTransition();
     protected TranslateTransition tran_right = new TranslateTransition();
     protected TranslateTransition tran_up = new TranslateTransition();
