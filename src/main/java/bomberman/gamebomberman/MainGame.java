@@ -15,7 +15,9 @@ public class MainGame extends Application {
     public static final int WINDOW_HEIGHT = 13;
     public static final int WINDOW_WIDTH = 31;
     public static char[][] map = new char[WINDOW_WIDTH][WINDOW_HEIGHT];
-    private static List<Entity> entities = new ArrayList<>();
+    public static Entity[][] entities_on = new Entity[WINDOW_WIDTH][WINDOW_HEIGHT];
+    public static Entity[][] entities_under = new Entity[WINDOW_WIDTH][WINDOW_HEIGHT];
+    private static Group root = new Group();
 
     @Override
     public void start(Stage stage) {
@@ -23,11 +25,12 @@ public class MainGame extends Application {
         //Creating a Group object
         Balloom balloom = new Balloom(5,5);
         setMap();
-        Group root = new Group(bomber.getAction());
+        root.getChildren().add(bomber.getAction());
         root.getChildren().add(balloom.getAction());
-        for (Entity i : entities) {
-            root.getChildren().add(i.getAction());
-        }
+        bomber.getAction().toFront();
+        Entity bomb = new Bomb(3, 9, 2);
+        entities_on[3][9] = bomb;
+        render();
         bomber.action.toFront();
         balloom.action.toFront();
 
@@ -51,16 +54,16 @@ public class MainGame extends Application {
         String path = "/bomberman/gamebomberman/level/Level1.txt";
         Map nMap = new Map(path);
         nMap.LoadMap();
-        for (int i = 0; i < WINDOW_HEIGHT; i++) {
-            for (int j = 0; j < WINDOW_WIDTH; j++) {
-                Entity grass = new Grass(j, i);
-                entities.add(grass);
+        for (int i = 0; i < WINDOW_WIDTH; i++) {
+            for (int j = 0; j < WINDOW_HEIGHT; j++) {
+                Entity grass = new Grass(i, j);
+                entities_under[i][j] = grass;
                 if (map[i][j] == '#') {
-                    Entity wall = new Wall(j, i);
-                    entities.add(wall);
+                    Entity wall = new Wall(i, j);
+                    entities_on[i][j] = wall;
                 } else if (map[i][j] == '*') {
-                    Entity brick = new Brick(j, i);
-                    entities.add(brick);
+                    Entity brick = new Brick(i, j);
+                    entities_on[i][j] = brick;
                 }
             }
         }
@@ -68,5 +71,28 @@ public class MainGame extends Application {
 
     public static void main(String args[]){
         launch(args);
+    }
+
+    private static void render() {
+        for (int i = 0; i < WINDOW_WIDTH; i++) {
+            for (int j = 0; j < WINDOW_HEIGHT; j++) {
+                root.getChildren().add(entities_under[i][j].getAction());
+            }
+        }
+        for (int i = 0; i < WINDOW_WIDTH; i++) {
+            for (int j = 0; j < WINDOW_HEIGHT; j++) {
+                if (entities_on[i][j] != null) {
+                    root.getChildren().add(entities_on[i][j].getAction());
+                }
+            }
+        }
+    }
+
+    public static void setBrickExplode(int x, int y) {
+        if (entities_on[x][y] instanceof Brick) {
+            ((Brick) entities_on[x][y]).explode();
+            entities_on[x][y] = null;
+            map[x][y] = ' ';
+        }
     }
 }
