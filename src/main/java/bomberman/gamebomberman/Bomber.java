@@ -37,8 +37,8 @@ public class Bomber extends Entity {
                int newX = x;
                int newY = y;
                if(keyEvent.getCode() == KeyCode.SPACE) {
-                    move.setTranslateX(Entity.SIZE_OF_BOX);
-                    move.setTranslateY(Entity.SIZE_OF_BOX);
+                    action.setTranslateX(Entity.SIZE_OF_BOX);
+                    action.setTranslateY(Entity.SIZE_OF_BOX);
                     x = 1; y = 1;
                     newX = x;
                     newY = y;
@@ -193,17 +193,41 @@ public class Bomber extends Entity {
                        move_down.getChildren().setAll(images_down[0]);
                   }
           ));
-
-          //move all
-          move.getChildren().add(move_right);
-          move.getChildren().add(move_left);
-          move.getChildren().add(move_down);
-          move.getChildren().add(move_up);
-          transition.setNode(move);
+          action.getChildren().add(move_right);
+          action.getChildren().add(move_left);
+          action.getChildren().add(move_down);
+          action.getChildren().add(move_up);
+          transition.setNode(action);
           transition.setDuration(Duration.millis(time_move));
           transition.setAutoReverse(false);
      }
      private boolean CanMove() {
+//          return true;
+//          action.getChildren().add(move_right);
+//          action.getChildren().add(move_left);
+//          action.getChildren().add(move_down);
+//          action.getChildren().add(move_up);
+//          //tran_left
+//          tran_left.setNode(move);
+//          tran_left.setDuration(Duration.millis(time_move + 25));
+//          tran_left.setCycleCount(1);
+//          tran_left.setAutoReverse(false);
+//          //tran_right
+//          tran_right.setNode(move);
+//          tran_right.setDuration(Duration.millis(time_move + 25));
+//          tran_right.setCycleCount(1);
+//          tran_right.setAutoReverse(false);
+//          //tran_up
+//          tran_up.setNode(move);
+//          tran_up.setDuration(Duration.millis(time_move + 25));
+//          tran_up.setCycleCount(1);
+//          tran_up.setAutoReverse(false);
+//          //tran_down
+//          tran_down.setNode(move);
+//          tran_down.setDuration(Duration.millis(time_move + 25));
+//          tran_down.setCycleCount(1);
+//          tran_down.setAutoReverse(false)
+//          ;
           return true;
      }
 }

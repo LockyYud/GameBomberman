@@ -10,35 +10,40 @@ public abstract class Entity implements LoadImageWithoutBackground {
     protected int x;
     protected int y;
     public ImageView image;
-    public Group move = new Group();
+    protected Group action = new Group();
+
+    public Group getAction() {
+        return action;
+    }
+
     protected TranslateTransition tran_left = new TranslateTransition();
     protected TranslateTransition tran_right = new TranslateTransition();
     protected TranslateTransition tran_up = new TranslateTransition();
     protected TranslateTransition tran_down = new TranslateTransition();
     Entity() {
         //tran_left
-        tran_left.setNode(move);
+        tran_left.setNode(action);
         tran_left.setDuration(Duration.millis(time_move + 25));
         tran_left.setCycleCount(1);
         tran_left.setAutoReverse(false);
         tran_left.setByY(0);
         tran_left.setByX(-SIZE_OF_BOX);
         //tran_right
-        tran_right.setNode(move);
+        tran_right.setNode(action);
         tran_right.setDuration(Duration.millis(time_move + 25));
         tran_right.setCycleCount(1);
         tran_right.setAutoReverse(false);
         tran_right.setByY(0);
         tran_right.setByX(SIZE_OF_BOX);
         //tran_up
-        tran_up.setNode(move);
+        tran_up.setNode(action);
         tran_up.setDuration(Duration.millis(time_move + 25));
         tran_up.setCycleCount(1);
         tran_up.setAutoReverse(false);
         tran_up.setByY(-SIZE_OF_BOX);
         tran_up.setByX(0);
         //tran_down
-        tran_down.setNode(move);
+        tran_down.setNode(action);
         tran_down.setDuration(Duration.millis(time_move + 25));
         tran_down.setCycleCount(1);
         tran_down.setAutoReverse(false);
@@ -49,6 +54,35 @@ public abstract class Entity implements LoadImageWithoutBackground {
     Entity(int x, int y) {
         this.x = x * SIZE_OF_BOX;
         this.y = y * SIZE_OF_BOX;
+
+        //tran_left
+        tran_left.setNode(action);
+        tran_left.setDuration(Duration.millis(time_move + 25));
+        tran_left.setCycleCount(1);
+        tran_left.setAutoReverse(false);
+        tran_left.setByY(0);
+        tran_left.setByX(-SIZE_OF_BOX);
+        //tran_right
+        tran_right.setNode(action);
+        tran_right.setDuration(Duration.millis(time_move + 25));
+        tran_right.setCycleCount(1);
+        tran_right.setAutoReverse(false);
+        tran_right.setByY(0);
+        tran_right.setByX(SIZE_OF_BOX);
+        //tran_up
+        tran_up.setNode(action);
+        tran_up.setDuration(Duration.millis(time_move + 25));
+        tran_up.setCycleCount(1);
+        tran_up.setAutoReverse(false);
+        tran_up.setByY(-SIZE_OF_BOX);
+        tran_up.setByX(0);
+        //tran_down
+        tran_down.setNode(action);
+        tran_down.setDuration(Duration.millis(time_move + 25));
+        tran_down.setCycleCount(1);
+        tran_down.setAutoReverse(false);
+        tran_down.setByY(SIZE_OF_BOX);
+        tran_down.setByX(0);
     }
 
     public void setX(int x) {

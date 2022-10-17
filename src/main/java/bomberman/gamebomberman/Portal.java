@@ -10,6 +10,6 @@ public class Portal extends Entity {
         image.setY(this.y);
         image.setFitWidth(SIZE_OF_BOX);
         image.setFitHeight(SIZE_OF_BOX);
-        move.getChildren().add(image);
+        action.getChildren().add(image);
     }
 }
