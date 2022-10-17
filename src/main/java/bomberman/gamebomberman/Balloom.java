@@ -26,35 +26,9 @@ public class Balloom extends Enemy {
             right[i].setFitHeight(SIZE_OF_BOX);
             right[i].setFitWidth(SIZE_OF_BOX);
         }
+        move.setTranslateX(x * SIZE_OF_BOX);
+        move.setTranslateY(y * SIZE_OF_BOX);
         this.SetTimeline();
         this.timeline_right.play();
     }
-    public EventHandler<KeyEvent> handler = new EventHandler<KeyEvent>() {
-        @Override
-        public void handle(KeyEvent keyEvent) {
-            if(keyEvent.getCode() == KeyCode.SPACE) {
-                timer.cancel();
-            }
-            if(keyEvent.getCode() == KeyCode.DOWN) {
-                tran_down.setByY(SIZE_OF_BOX);
-                tran_down.setByX(0);
-                tran_down.play();
-            }
-            if(keyEvent.getCode() == KeyCode.UP) {
-                tran_up.setByY(-SIZE_OF_BOX);
-                tran_up.setByX(0);
-                tran_up.play();
-            }
-            if(keyEvent.getCode() == KeyCode.RIGHT) {
-                tran_right.setByY(0);
-                tran_right.setByX(SIZE_OF_BOX);
-                tran_right.play();
-            }
-            if(keyEvent.getCode() == KeyCode.LEFT) {
-                tran_left.setByY(0);
-                tran_left.setByX(-SIZE_OF_BOX);
-                tran_left.play();
-            }
-        }
-    };
 }

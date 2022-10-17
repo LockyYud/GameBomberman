@@ -1,5 +1,6 @@
 package bomberman.gamebomberman;
 
+import com.almasb.fxgl.dev.editor.EntityInspector;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
@@ -27,49 +28,59 @@ public class Bomber extends Entity {
      private Timeline timeline_up = new Timeline();
      private Timeline timeline_left = new Timeline();
      private Timeline timeline_right = new Timeline();
+     private TranslateTransition transition = new TranslateTransition();
 
      private List<Bomb> bombs = new ArrayList<>();
      public EventHandler<KeyEvent> handler = new EventHandler<KeyEvent>() {
           @Override
           public void handle(KeyEvent keyEvent) {
+               int newX = x;
+               int newY = y;
                if(keyEvent.getCode() == KeyCode.SPACE) {
-
+                    move.setTranslateX(Entity.SIZE_OF_BOX);
+                    move.setTranslateY(Entity.SIZE_OF_BOX);
+                    x = 1; y = 1;
+                    newX = x;
+                    newY = y;
+               }
+               if(keyEvent.getCode() == KeyCode.M) {
+                    System.out.println(x + " " + y);
                }
                if(keyEvent.getCode() == KeyCode.DOWN) {
-                    y++;
+                    newY++;
                     timeline_down.play();
                     move_down.toFront();
-                    tran_down.setByY(SIZE_OF_BOX);
-                    tran_down.setByX(0);
-                    tran_down.play();
+                    transition = tran_down;
                }
                if(keyEvent.getCode() == KeyCode.UP) {
-                    y--;
+                    newY--;
                     timeline_up.play();
                     move_up.toFront();
-                    tran_up.setByY(-SIZE_OF_BOX);
-                    tran_up.setByX(0);
-                    tran_up.play();
+                    transition = tran_up;
                }
                if(keyEvent.getCode() == KeyCode.RIGHT) {
-                    x++;
+                    newX++;
                     timeline_right.play();
                     move_right.toFront();
-                    tran_right.setByY(0);
-                    tran_right.setByX(SIZE_OF_BOX);
-                    tran_right.play();
+                    transition = tran_right;
                }
                if(keyEvent.getCode() == KeyCode.LEFT) {
-                    x--;
+                    newX--;
                     timeline_left.play();
                     move_left.toFront();
-                    tran_left.setByY(0);
-                    tran_left.setByX(-SIZE_OF_BOX);
-                    tran_left.play();
+                    transition = tran_left;
+               }
+//               transition.setByX(x * SIZE_OF_BOX - move.getTranslateX());
+//               transition.setByY(y * SIZE_OF_BOX - move.getTranslateY());
+               if(MainGame.map[newX][newY] == ' '){
+                    transition.play();
+                    x = newX;
+                    y = newY;
                }
           }
      };
      public Bomber(){
+
           images_down[0] = new ImageView(player_down);
           images_down[1] = new ImageView(player_down_1);
           images_down[2] = new ImageView(player_down_2);
@@ -97,8 +108,8 @@ public class Bomber extends Entity {
                images_dead[i].setFitHeight(SIZE_OF_BOX);
                images_dead[i].setFitWidth(SIZE_OF_BOX);
           }
-          x = 0;
-          y = 0;
+          x = 1;
+          y = 1;
           //TimeLine for move left
           move_left.getChildren().setAll(images_left[1]);
           timeline_left.setCycleCount(1);
@@ -188,25 +199,11 @@ public class Bomber extends Entity {
           move.getChildren().add(move_left);
           move.getChildren().add(move_down);
           move.getChildren().add(move_up);
-//          //tran_left
-//          tran_left.setNode(move);
-//          tran_left.setDuration(Duration.millis(time_move + 25));
-//          tran_left.setCycleCount(1);
-//          tran_left.setAutoReverse(false);
-//          //tran_right
-//          tran_right.setNode(move);
-//          tran_right.setDuration(Duration.millis(time_move + 25));
-//          tran_right.setCycleCount(1);
-//          tran_right.setAutoReverse(false);
-//          //tran_up
-//          tran_up.setNode(move);
-//          tran_up.setDuration(Duration.millis(time_move + 25));
-//          tran_up.setCycleCount(1);
-//          tran_up.setAutoReverse(false);
-//          //tran_down
-//          tran_down.setNode(move);
-//          tran_down.setDuration(Duration.millis(time_move + 25));
-//          tran_down.setCycleCount(1);
-//          tran_down.setAutoReverse(false);
+          transition.setNode(move);
+          transition.setDuration(Duration.millis(time_move));
+          transition.setAutoReverse(false);
+     }
+     private boolean CanMove() {
+          return true;
      }
 }

@@ -5,8 +5,8 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
 public abstract class Entity implements LoadImageWithoutBackground {
-    public static final int SIZE_OF_BOX = 40;
-    protected final int time_move = 500;
+    public static final int SIZE_OF_BOX = 32;
+    protected final int time_move = 250;
     protected int x;
     protected int y;
     public ImageView image;

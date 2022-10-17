@@ -22,24 +22,7 @@ public abstract class Enemy extends Entity {
     public TimerTask timer = new TimerTask() {
         @Override
         public void run() {
-            switch (randommove()) {
-                case 1:
-                    System.out.println(1);
-                    tran_down.play();
-                    break;
-                case 2:
-                    System.out.println(2);
-                    tran_up.play();
-                    break;
-                case 3:
-                    System.out.println(3);
-                    tran_right.play();
-                    break;
-                case 4:
-                    System.out.println(4);
-                    tran_left.play();
-                    break;
-            }
+
         }
     };
     public Enemy(){}
@@ -89,7 +72,6 @@ public abstract class Enemy extends Entity {
 
     private int randommove() {
         int a = (int) (4 * Math.random());
-//        System.out.println(a);
         return a;
     }
 }
