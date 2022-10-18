@@ -20,10 +20,19 @@ public class MainGame extends Application implements LoadImageWithoutBackground{
     public static final int window_height = 31 * Entity.SIZE_OF_BOX;
     public static final int window_width = 13 * Entity.SIZE_OF_BOX;
 
+<<<<<<< HEAD
     public static char[][] map = new char[window_width][window_height];
     public static Entity[][] entities_on = new Entity[window_width][window_height];
     public static Entity[][] entities_under = new Entity[window_width][window_height];
     private static Group root = new Group();
+=======
+
+public class MainGame extends Application {
+    public static final int WINDOW_HEIGHT = 13;
+    public static final int WINDOW_WIDTH = 31;
+    public static char[][] map = new char[WINDOW_WIDTH][WINDOW_HEIGHT];
+    private static List<Entity> entities = new ArrayList<>();
+>>>>>>> parent of 8da81cb (Recode Bomb)
 
     @Override
     public void start(Stage stage) {
@@ -57,8 +66,21 @@ public class MainGame extends Application implements LoadImageWithoutBackground{
         ImageView imageView = new ImageView(wImage);
         Group root = new Group(imageView);
         //Creating a Group object
+<<<<<<< HEAD
 //        setMap();
 //        render();
+=======
+        Balloom balloom = new Balloom(5,5);
+        setMap();
+        Group root = new Group(bomber.getAction());
+        root.getChildren().add(balloom.getAction());
+        for (Entity i : entities) {
+            root.getChildren().add(i.getAction());
+        }
+        bomber.action.toFront();
+        balloom.action.toFront();
+
+>>>>>>> parent of 8da81cb (Recode Bomb)
         //Creating a scene object
         Scene scene = new Scene(root, window_width * Entity.SIZE_OF_BOX,
                 window_height * Entity.SIZE_OF_BOX);
@@ -70,6 +92,26 @@ public class MainGame extends Application implements LoadImageWithoutBackground{
         //Displaying the contents of the stage
         stage.show();
 
+<<<<<<< HEAD
+=======
+    public static void setMap() {
+        String path = "/bomberman/gamebomberman/level/Level1.txt";
+        Map nMap = new Map(path);
+        nMap.LoadMap();
+        for (int i = 0; i < WINDOW_HEIGHT; i++) {
+            for (int j = 0; j < WINDOW_WIDTH; j++) {
+                Entity grass = new Grass(j, i);
+                entities.add(grass);
+                if (map[i][j] == '#') {
+                    Entity wall = new Wall(j, i);
+                    entities.add(wall);
+                } else if (map[i][j] == '*') {
+                    Entity brick = new Brick(j, i);
+                    entities.add(brick);
+                }
+            }
+        }
+>>>>>>> parent of 8da81cb (Recode Bomb)
     }
 
     public static void main(String args[]){
