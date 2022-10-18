@@ -27,21 +27,27 @@ public class Brick extends Entity {
         brick_stack.getChildren().add(brick_explode[0]);
         timeline_brick.setCycleCount(1);
         timeline_brick.getKeyFrames().add(new KeyFrame(
-                Duration.millis(100),
+                Duration.millis(150),
                 (ActionEvent event) ->{
                     brick_stack.getChildren().setAll(brick_explode[1]);
                 }
         ));
         timeline_brick.getKeyFrames().add(new KeyFrame(
-                Duration.millis(200),
+                Duration.millis(400),
                 (ActionEvent event) ->{
                     brick_stack.getChildren().setAll(brick_explode[2]);
                 }
         ));
         timeline_brick.getKeyFrames().add(new KeyFrame(
-                Duration.millis(300),
+                Duration.millis(650),
                 (ActionEvent event) ->{
                     brick_stack.getChildren().setAll(brick_explode[3]);
+                }
+        ));
+        timeline_brick.getKeyFrames().add(new KeyFrame(
+                Duration.millis(900),
+                (ActionEvent event) ->{
+                    brick_stack.getChildren().setAll();
                 }
         ));
         action.getChildren().add(brick_stack);
@@ -49,8 +55,8 @@ public class Brick extends Entity {
         action.setLayoutY(this.y);
     }
 
-    public void setExploded(boolean exploded) {
-        this.exploded = exploded;
+    public void explode() {
+        this.exploded = true;
         timeline_brick.play();
     }
 }
