@@ -16,7 +16,6 @@ public class Item extends Entity {
     }
 
     public Item(int x, int y, int i) {
-        super(x, y);
         construct();
         item[i].setX(this.x);
         item[i].setY(this.y);

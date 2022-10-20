@@ -73,6 +73,8 @@ public class Bomb extends Entity {
 
     public Bomb(int x, int y, int length) {
         super(x, y);
+        this.x = this.x * Entity.SIZE_OF_BOX;
+        this.y = this.y * Entity.SIZE_OF_BOX;
         length_of_fire = length;
         construct();
         set(length_of_fire);

@@ -10,8 +10,8 @@ public abstract class Entity implements LoadImageWithoutBackground {
     protected int x;
     protected int y;
     public ImageView image;
-    protected Group action = new Group();
-
+    public Group action = new Group();
+    public boolean dead = false;
     public Group getAction() {
         return action;
     }
@@ -21,7 +21,6 @@ public abstract class Entity implements LoadImageWithoutBackground {
     protected TranslateTransition tran_up = new TranslateTransition();
     protected TranslateTransition tran_down = new TranslateTransition();
     Entity() {
-        //tran_left
         tran_left.setNode(action);
         tran_left.setDuration(Duration.millis(time_move + 25));
         tran_left.setCycleCount(1);
@@ -50,11 +49,9 @@ public abstract class Entity implements LoadImageWithoutBackground {
         tran_down.setByY(SIZE_OF_BOX);
         tran_down.setByX(0);
     }
-
-    Entity(int x, int y) {
-        this.x = x * SIZE_OF_BOX;
-        this.y = y * SIZE_OF_BOX;
-
+    Entity (int x, int y) {
+        this.x = x;
+        this.y = y;
         //tran_left
         tran_left.setNode(action);
         tran_left.setDuration(Duration.millis(time_move + 25));
@@ -83,6 +80,10 @@ public abstract class Entity implements LoadImageWithoutBackground {
         tran_down.setAutoReverse(false);
         tran_down.setByY(SIZE_OF_BOX);
         tran_down.setByX(0);
+
+        //set position
+        action.setTranslateX(x * SIZE_OF_BOX);
+        action.setTranslateY(y * SIZE_OF_BOX);
     }
 
     public void setX(int x) {
@@ -105,8 +106,10 @@ public abstract class Entity implements LoadImageWithoutBackground {
         return image;
     }
 
-    boolean Collide_with(Entity obj) {
-        if (this.x == obj.getX() || this.y == obj.getY()) return true;
-        else return false;
+    protected boolean Collide_with(Entity obj) {
+        if(Math.abs(obj.getAction().getTranslateX() - action.getTranslateX()) <= 5
+                && Math.abs(obj.getAction().getTranslateY() - action.getTranslateY()) <= 5)
+            return true;
+        return false;
     }
 }

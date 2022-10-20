@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import javafx.util.Pair;
 
 import java.util.TimerTask;
 
@@ -19,17 +20,18 @@ public abstract class Enemy extends Entity {
     protected Timeline timeline_right = new Timeline();
     protected StackPane move_left = new StackPane();
     protected StackPane move_right = new StackPane();
-    public TimerTask timer = new TimerTask() {
-        @Override
-        public void run() {
+    protected Pair<Integer, Integer> direction = new Pair<>(1,0);
 
-        }
-    };
-    public Enemy(){}
+    public Enemy() {
+    }
+
+    ;
+    public TimerTask task;
 
     public Enemy(int x, int y) {
         super(x, y);
     }
+
     protected void SetTimeline() {
         //TimeLine left;
         timeline_left.setCycleCount(Timeline.INDEFINITE);
@@ -73,9 +75,23 @@ public abstract class Enemy extends Entity {
         ));
     }
 
+    protected abstract void makeDirection();
 
-    private int randommove() {
-        int a = (int) (4 * Math.random());
-        return a;
+    protected void randomDirection() {
+        int ran = (int) (Math.random() * 4);
+        switch (ran) {
+            case 1:
+                direction = new Pair<>(0, -1);
+                break;
+            case 2:
+                direction = new Pair<>(0, 1);
+                break;
+            case 3:
+                direction = new Pair<>(1, 0);
+                break;
+            default:
+                direction = new Pair<>(-1, 0);
+                break;
+        }
     }
 }

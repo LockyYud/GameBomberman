@@ -14,7 +14,8 @@ import javafx.util.Duration;
 import java.util.*;
 
 public class Bomber extends Entity {
-     private final int time_move = 125;
+     public final int time_move = 300;
+     private boolean canMove = false;
      private ImageView[] images_down = new ImageView[3];
      private ImageView[] images_up = new ImageView[3];
      private ImageView[] images_left = new ImageView[3];
@@ -24,10 +25,12 @@ public class Bomber extends Entity {
      public StackPane move_right = new StackPane();
      public StackPane move_up = new StackPane();
      public StackPane move_down = new StackPane();
+     public StackPane dead = new StackPane();
      private Timeline timeline_down = new Timeline();
      private Timeline timeline_up = new Timeline();
      private Timeline timeline_left = new Timeline();
      private Timeline timeline_right = new Timeline();
+     public Timeline timeline_dead = new Timeline();
      private TranslateTransition transition = new TranslateTransition();
 
      private List<Bomb> bombs = new ArrayList<>();
@@ -37,50 +40,61 @@ public class Bomber extends Entity {
                int newX = x;
                int newY = y;
                if(keyEvent.getCode() == KeyCode.SPACE) {
-                    action.setTranslateX(Entity.SIZE_OF_BOX);
-                    action.setTranslateY(Entity.SIZE_OF_BOX);
-                    x = 1; y = 1;
-                    newX = x;
-                    newY = y;
-               }
-               if(keyEvent.getCode() == KeyCode.M) {
-                    System.out.println(x + " " + y);
                }
                if(keyEvent.getCode() == KeyCode.DOWN) {
                     newY++;
                     timeline_down.play();
-                    move_down.toFront();
+//                    move_down.toFront();
+                    action.getChildren().setAll(move_down);
                     transition = tran_down;
+                    canMove = true;
                }
                if(keyEvent.getCode() == KeyCode.UP) {
                     newY--;
                     timeline_up.play();
-                    move_up.toFront();
+                    action.getChildren().setAll(move_up);
                     transition = tran_up;
+                    canMove = true;
                }
                if(keyEvent.getCode() == KeyCode.RIGHT) {
                     newX++;
                     timeline_right.play();
-                    move_right.toFront();
+                    action.getChildren().setAll(move_right);
                     transition = tran_right;
+                    canMove = true;
                }
                if(keyEvent.getCode() == KeyCode.LEFT) {
                     newX--;
                     timeline_left.play();
-                    move_left.toFront();
+                    action.getChildren().setAll(move_left);
                     transition = tran_left;
+                    canMove = true;
                }
-//               transition.setByX(x * SIZE_OF_BOX - move.getTranslateX());
-//               transition.setByY(y * SIZE_OF_BOX - move.getTranslateY());
-               if(MainGame.map[newX][newY] == ' '){
+               if(CanMove(newX, newY) && canMove){
                     transition.play();
                     x = newX;
                     y = newY;
+                    canMove = false;
+               }
+               canMove = false;
+               if(keyEvent.getCode() == KeyCode.SPACE) {
+                    System.out.println(x + " " + y);
+               }
+               if(keyEvent.getCode() == KeyCode.M) {
+                    System.out.println(newX + " " + newY);
                }
           }
      };
      public Bomber(){
-
+          for(int i = 0; i < MainGame.map.length; i++) {
+               for(int j = 0; j < MainGame.map[i].length; j++) {
+                    if(MainGame.map[i][j] == 'p') {
+                         x = i;
+                         y = j;
+                         break;
+                    }
+               }
+          }
           images_down[0] = new ImageView(player_down);
           images_down[1] = new ImageView(player_down_1);
           images_down[2] = new ImageView(player_down_2);
@@ -108,10 +122,7 @@ public class Bomber extends Entity {
                images_dead[i].setFitHeight(SIZE_OF_BOX);
                images_dead[i].setFitWidth(SIZE_OF_BOX);
           }
-          x = 1;
-          y = 1;
           //TimeLine for move left
-          move_left.getChildren().setAll(images_left[1]);
           timeline_left.setCycleCount(1);
           timeline_left.getKeyFrames().add(new KeyFrame(
                   Duration.millis(time_move / 3),
@@ -193,41 +204,44 @@ public class Bomber extends Entity {
                        move_down.getChildren().setAll(images_down[0]);
                   }
           ));
+          //TimeLine for dead
+          timeline_dead.setCycleCount(1);
+          timeline_dead.getKeyFrames().add(new KeyFrame(
+                  Duration.millis(time_move/3),
+                  (ActionEvent event) -> {
+                       dead.getChildren().setAll(images_dead[1]);
+                  }
+          ));
+          timeline_dead.getKeyFrames().add(new KeyFrame(
+                  Duration.millis(time_move / 3 * 2),
+                  (ActionEvent event) -> {
+                       dead.getChildren().setAll(images_dead[2]);
+                  }
+          ));
+          timeline_dead.getKeyFrames().add(new KeyFrame(
+                  Duration.millis(time_move),
+                  (ActionEvent event) -> {
+                       dead.getChildren().setAll(images_dead[0]);
+                  }
+          ));
           action.getChildren().add(move_right);
           action.getChildren().add(move_left);
           action.getChildren().add(move_down);
           action.getChildren().add(move_up);
+          action.getChildren().add(dead);
           transition.setNode(action);
           transition.setDuration(Duration.millis(time_move));
           transition.setAutoReverse(false);
+          action.setTranslateY(SIZE_OF_BOX * y);
+          action.setTranslateX(SIZE_OF_BOX * x);
      }
-     private boolean CanMove() {
-//          return true;
-//          action.getChildren().add(move_right);
-//          action.getChildren().add(move_left);
-//          action.getChildren().add(move_down);
-//          action.getChildren().add(move_up);
-//          //tran_left
-//          tran_left.setNode(move);
-//          tran_left.setDuration(Duration.millis(time_move + 25));
-//          tran_left.setCycleCount(1);
-//          tran_left.setAutoReverse(false);
-//          //tran_right
-//          tran_right.setNode(move);
-//          tran_right.setDuration(Duration.millis(time_move + 25));
-//          tran_right.setCycleCount(1);
-//          tran_right.setAutoReverse(false);
-//          //tran_up
-//          tran_up.setNode(move);
-//          tran_up.setDuration(Duration.millis(time_move + 25));
-//          tran_up.setCycleCount(1);
-//          tran_up.setAutoReverse(false);
-//          //tran_down
-//          tran_down.setNode(move);
-//          tran_down.setDuration(Duration.millis(time_move + 25));
-//          tran_down.setCycleCount(1);
-//          tran_down.setAutoReverse(false)
-//          ;
+     private boolean CanMove(int x, int y) {
+          if(MainGame.map[y][x] == 'p') {
+               return true;
+          }
+          if(MainGame.map[y][x] == '*' || MainGame.map[y][x] == '#' || MainGame.map[y][x] == 'x') {
+               return false;
+          }
           return true;
      }
 }

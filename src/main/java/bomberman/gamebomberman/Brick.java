@@ -15,6 +15,7 @@ public class Brick extends Entity {
 
     public Brick(int x, int y) {
         super(x, y);
+        
         exploded = false;
         brick_explode[0] = new ImageView(brick);
         brick_explode[1] = new ImageView(brick_exploded);
@@ -51,8 +52,6 @@ public class Brick extends Entity {
                 }
         ));
         action.getChildren().add(brick_stack);
-        action.setLayoutX(this.x);
-        action.setLayoutY(this.y);
     }
 
     public void explode() {
