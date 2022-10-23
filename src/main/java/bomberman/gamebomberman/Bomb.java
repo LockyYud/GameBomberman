@@ -357,7 +357,7 @@ public class Bomb extends Entity {
                 for (int i = yb; i >= y1; i--) {
                     if (tmap[x1][i] == '#' || tmap[x1][i] == '*') {
                         if (tmap[x1][i] == '*') {
-                            MainGame.setBrickExplode(x1, i);
+                            Brick.setBrickExplode(x1, i);
                         }
                         return false;
                     }
@@ -366,7 +366,7 @@ public class Bomb extends Entity {
                 for (int i = yb; i <= y1; i++) {
                     if (tmap[x1][i] == '#' || tmap[x1][i] == '*') {
                         if (tmap[x1][i] == '*') {
-                            MainGame.setBrickExplode(x1, i);
+                            Brick.setBrickExplode(x1, i);
                         }
                         return false;
                     }
@@ -377,7 +377,7 @@ public class Bomb extends Entity {
                 for (int i = xb; i >= x1; i--) {
                     if (tmap[i][y1] == '#' || tmap[i][y1] == '*') {
                         if (tmap[i][y1] == '*') {
-                            MainGame.setBrickExplode(i, y1);
+                            Brick.setBrickExplode(i, y1);
                         }
                         return false;
                     }
@@ -386,7 +386,7 @@ public class Bomb extends Entity {
                 for (int i = xb; i <= x1; i++) {
                     if (tmap[i][y1] == '#' || tmap[i][y1] == '*') {
                         if (tmap[i][y1] == '*') {
-                            MainGame.setBrickExplode(i, y1);
+                            Brick.setBrickExplode(i, y1);
                         }
                         return false;
                     }

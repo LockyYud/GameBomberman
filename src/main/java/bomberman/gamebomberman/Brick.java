@@ -48,6 +48,8 @@ public class Brick extends Entity {
                 Duration.millis(900),
                 (ActionEvent event) ->{
                     brick_stack.getChildren().setAll();
+                    reMap(x, y);
+                    System.out.println(MainGame.map[x][y]);
                 }
         ));
         action.getChildren().add(brick_stack);
@@ -58,5 +60,24 @@ public class Brick extends Entity {
     public void explode() {
         this.exploded = true;
         timeline_brick.play();
+    }
+
+    public static void setBrickExplode(int x, int y) {
+        if (MainGame.entities_on[x][y] instanceof Brick) {
+            ((Brick) MainGame.entities_on[x][y]).explode();
+            MainGame.entities_on[x][y] = null;
+        }
+    }
+
+    private static void reMap(int x, int y) {
+        if (MainGame.item_pos[x][y] == 'b') {
+            MainGame.map[x][y] = 'b';
+        } else if (MainGame.item_pos[x][y] == 'f') {
+            MainGame.map[x][y] = 'f';
+        } else if (MainGame.item_pos[x][y] == 's') {
+            MainGame.map[x][y] = 's';
+        } else {
+            MainGame.map[x][y] = ' ';
+        }
     }
 }
