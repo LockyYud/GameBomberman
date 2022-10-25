@@ -27,7 +27,7 @@ public class Wall extends Entity {
         Bomber bomber = new Bomber();
         int width = (int) wall.getWidth();
         int height = (int) wall.getHeight();
-        WritableImage wImage = new WritableImage(MainGame.window_height, MainGame.window_width);
+        WritableImage wImage = new WritableImage(MainGame.window_width, MainGame.window_height);
         PixelReader reader = wall.getPixelReader();
         PixelWriter writer = wImage.getPixelWriter();
         for(int i = 0; i < MainGame.map.length; i++) {
@@ -38,7 +38,8 @@ public class Wall extends Entity {
                             Color color = reader.getColor(m,n);
                             for(int k = 0; k < 2; k++){
                                 for(int a = 0; a < 2; a++) {
-                                    writer.setColor(j * Entity.SIZE_OF_BOX + m * 2 + k,  i * Entity.SIZE_OF_BOX + n * 2 + a,color);
+                                    writer.setColor(i * Entity.SIZE_OF_BOX + m * 2 + k
+                                            ,  j * Entity.SIZE_OF_BOX + n * 2 + a,color);
                                 }
                             }
                         }

@@ -1,21 +1,22 @@
 package bomberman.gamebomberman;
 
 import com.almasb.fxgl.dev.editor.EntityInspector;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import javafx.util.Pair;
+
 import java.util.*;
 
 public class Bomber extends Entity {
-     public final int time_move = 300;
-     private boolean canMove = false;
+     private boolean moved = false;
+     private int lenght = 1;
      private ImageView[] images_down = new ImageView[3];
      private ImageView[] images_up = new ImageView[3];
      private ImageView[] images_left = new ImageView[3];
@@ -25,63 +26,70 @@ public class Bomber extends Entity {
      public StackPane move_right = new StackPane();
      public StackPane move_up = new StackPane();
      public StackPane move_down = new StackPane();
-     public StackPane dead = new StackPane();
+     public StackPane actionDead = new StackPane();
      private Timeline timeline_down = new Timeline();
      private Timeline timeline_up = new Timeline();
      private Timeline timeline_left = new Timeline();
      private Timeline timeline_right = new Timeline();
      public Timeline timeline_dead = new Timeline();
+     public Timeline make_bomb = new Timeline();
      private TranslateTransition transition = new TranslateTransition();
+     private TranslateTransition transitionOffice = new TranslateTransition();
 
      private List<Bomb> bombs = new ArrayList<>();
+     private Pair<Integer, Integer> direction;
+     private Bomb bombom;
+     public Group bombombom = new Group();
+     public AnimationTimer updateBomerPos = new AnimationTimer() {
+         @Override
+         public void handle(long l) {
+             if(moved) {
+                 if(transitionOffice.getStatus() == Animation.Status.STOPPED) {
+                     transitionOffice = transition;
+                     transition.play();
+                     moved = false;
+                     x = x + direction.getKey().intValue();
+                     y = y + direction.getValue().intValue();
+                 }
+             }
+         }
+     };
      public EventHandler<KeyEvent> handler = new EventHandler<KeyEvent>() {
           @Override
           public void handle(KeyEvent keyEvent) {
-               int newX = x;
-               int newY = y;
                if(keyEvent.getCode() == KeyCode.SPACE) {
+                    make_bomb.play();
                }
                if(keyEvent.getCode() == KeyCode.DOWN) {
-                    newY++;
                     timeline_down.play();
-//                    move_down.toFront();
                     action.getChildren().setAll(move_down);
                     transition = tran_down;
-                    canMove = true;
+                    moved = true;
+                    direction = new Pair<>(0, 1);
                }
-               if(keyEvent.getCode() == KeyCode.UP) {
-                    newY--;
+               else if(keyEvent.getCode() == KeyCode.UP) {
                     timeline_up.play();
                     action.getChildren().setAll(move_up);
                     transition = tran_up;
-                    canMove = true;
+                    moved = true;
+                   direction = new Pair<>(0, -1);
                }
-               if(keyEvent.getCode() == KeyCode.RIGHT) {
-                    newX++;
+               else if(keyEvent.getCode() == KeyCode.RIGHT) {
                     timeline_right.play();
                     action.getChildren().setAll(move_right);
                     transition = tran_right;
-                    canMove = true;
+                    moved = true;
+                   direction = new Pair<>(1, 0);
                }
-               if(keyEvent.getCode() == KeyCode.LEFT) {
-                    newX--;
+               else if(keyEvent.getCode() == KeyCode.LEFT) {
                     timeline_left.play();
                     action.getChildren().setAll(move_left);
                     transition = tran_left;
-                    canMove = true;
+                    moved = true;
+                   direction = new Pair<>(-1, 0);
                }
-               if(CanMove(newX, newY) && canMove){
-                    transition.play();
-                    x = newX;
-                    y = newY;
-                    canMove = false;
-               }
-               canMove = false;
-               if(keyEvent.getCode() == KeyCode.SPACE) {
-                    System.out.println(x + " " + y);
-               }
-               if(keyEvent.getCode() == KeyCode.M) {
-                    System.out.println(newX + " " + newY);
+               if(!CanMove()){
+                   moved = false;
                }
           }
      };
@@ -122,6 +130,7 @@ public class Bomber extends Entity {
                images_dead[i].setFitHeight(SIZE_OF_BOX);
                images_dead[i].setFitWidth(SIZE_OF_BOX);
           }
+          action.getChildren().add(images_down[0]);
           //TimeLine for move left
           timeline_left.setCycleCount(1);
           timeline_left.getKeyFrames().add(new KeyFrame(
@@ -209,39 +218,166 @@ public class Bomber extends Entity {
           timeline_dead.getKeyFrames().add(new KeyFrame(
                   Duration.millis(time_move/3),
                   (ActionEvent event) -> {
-                       dead.getChildren().setAll(images_dead[1]);
+                       actionDead.getChildren().setAll(images_dead[0]);
                   }
           ));
           timeline_dead.getKeyFrames().add(new KeyFrame(
                   Duration.millis(time_move / 3 * 2),
                   (ActionEvent event) -> {
-                       dead.getChildren().setAll(images_dead[2]);
+                       actionDead.getChildren().setAll(images_dead[1]);
                   }
           ));
           timeline_dead.getKeyFrames().add(new KeyFrame(
                   Duration.millis(time_move),
                   (ActionEvent event) -> {
-                       dead.getChildren().setAll(images_dead[0]);
+                       actionDead.getChildren().setAll(images_dead[2]);
                   }
           ));
+          timeline_dead.getKeyFrames().add(new KeyFrame(
+                  Duration.millis(time_move + 100),
+                  (ActionEvent event) -> {
+                       action.setTranslateX(SIZE_OF_BOX);
+                       action.setTranslateY(SIZE_OF_BOX);
+                       x = 1;
+                       y = 1;
+                  }
+          ));
+
+          //timeline bomb
+          make_bomb.setCycleCount(1);
+          make_bomb.setAutoReverse(false);
+          make_bomb.getKeyFrames().add(new KeyFrame(
+                  Duration.millis(0),
+                  (ActionEvent event) -> {
+                       bombom = new Bomb(this.x, this.y, 1);
+                       bombombom.getChildren().add(bombom.action);
+//                       System.out.println(bombom.action.getLayoutX() + " " + bombom.action.getLayoutY());
+                  }
+          ));
+          make_bomb.getKeyFrames().add(new KeyFrame(
+                  Duration.millis(3200),
+                  (ActionEvent event) -> {
+                       bombombom.getChildren().remove(bombom.action);
+                       bombom = null;
+                  }
+          ));
+
+
           action.getChildren().add(move_right);
           action.getChildren().add(move_left);
           action.getChildren().add(move_down);
           action.getChildren().add(move_up);
-          action.getChildren().add(dead);
+          action.getChildren().add(actionDead);
           transition.setNode(action);
           transition.setDuration(Duration.millis(time_move));
           transition.setAutoReverse(false);
           action.setTranslateY(SIZE_OF_BOX * y);
           action.setTranslateX(SIZE_OF_BOX * x);
      }
-     private boolean CanMove(int x, int y) {
-          if(MainGame.map[y][x] == 'p') {
+     private boolean CanMove() {
+         int newX = this.x + direction.getKey().intValue();
+         int newY = this.y + direction.getValue().intValue();
+          if(MainGame.map[newX][newY] == 'p' || MainGame.map[newX][newY] == '1' || MainGame.map[newX][newY] == '2') {
                return true;
           }
-          if(MainGame.map[y][x] == '*' || MainGame.map[y][x] == '#' || MainGame.map[y][x] == 'x') {
+          if(MainGame.map[newX][newY] == '*' || MainGame.map[newX][newY] == '#' || MainGame.map[newX][newY] == 'x') {
                return false;
           }
           return true;
+     }
+
+     private void ChangeSpeed () {
+          time_move = time_move * 2;
+          System.out.println(time_move);
+          timeline_down.getKeyFrames().removeAll();
+          timeline_up.getKeyFrames().removeAll();
+          timeline_left.getKeyFrames().removeAll();
+          timeline_right.getKeyFrames().removeAll();
+          //TimeLine for move left
+          timeline_left.setCycleCount(1);
+          timeline_left.getKeyFrames().add(new KeyFrame(
+                  Duration.millis(time_move / 3),
+                  (ActionEvent event) -> {
+                       move_left.getChildren().setAll(images_left[0]);
+                  }
+          ));
+          timeline_left.getKeyFrames().add(new KeyFrame(
+                  Duration.millis(time_move / 3 * 2),
+                  (ActionEvent event) -> {
+                       move_left.getChildren().setAll(images_left[1]);
+                  }
+          ));
+          timeline_left.getKeyFrames().add(new KeyFrame(
+                  Duration.millis(time_move),
+                  (ActionEvent event) -> {
+                       move_left.getChildren().setAll(images_left[2]);
+                  }
+          ));
+          //TimeLine for move right
+          timeline_right.setCycleCount(1);
+          timeline_right.getKeyFrames().add(new KeyFrame(
+                  Duration.millis(time_move/3),
+                  (ActionEvent event) -> {
+                       move_right.getChildren().setAll(images_right[0]);
+                  }
+          ));
+          timeline_right.getKeyFrames().add(new KeyFrame(
+                  Duration.millis(time_move / 3 * 2),
+                  (ActionEvent event) -> {
+                       move_right.getChildren().setAll(images_right[2]);
+                  }
+          ));
+          timeline_right.getKeyFrames().add(new KeyFrame(
+                  Duration.millis(time_move),
+                  (ActionEvent event) -> {
+                       move_right.getChildren().setAll(images_right[0]);
+                  }
+          ));
+
+          //TimeLine for move up
+          timeline_up.setCycleCount(1);
+          timeline_up.getKeyFrames().add(new KeyFrame(
+                  Duration.millis(time_move/3),
+                  (ActionEvent event) -> {
+                       move_up.getChildren().setAll(images_up[1]);
+                  }
+          ));
+          timeline_up.getKeyFrames().add(new KeyFrame(
+                  Duration.millis(time_move / 3 * 2),
+                  (ActionEvent event) -> {
+                       move_up.getChildren().setAll(images_up[2]);
+                  }
+          ));
+          timeline_up.getKeyFrames().add(new KeyFrame(
+                  Duration.millis(time_move),
+                  (ActionEvent event) -> {
+                       move_up.getChildren().setAll(images_up[0]);
+                  }
+          ));
+
+          //TimeLine for move down
+          timeline_down.setCycleCount(1);
+          timeline_down.getKeyFrames().add(new KeyFrame(
+                  Duration.millis(time_move/3),
+                  (ActionEvent event) -> {
+                       move_down.getChildren().setAll(images_down[1]);
+                  }
+          ));
+          timeline_down.getKeyFrames().add(new KeyFrame(
+                  Duration.millis(time_move / 3 * 2),
+                  (ActionEvent event) -> {
+                       move_down.getChildren().setAll(images_down[2]);
+                  }
+          ));
+          timeline_down.getKeyFrames().add(new KeyFrame(
+                  Duration.millis(time_move),
+                  (ActionEvent event) -> {
+                       move_down.getChildren().setAll(images_down[0]);
+                  }
+          ));
+          tran_down.setDuration(Duration.millis(time_move));
+          tran_up.setDuration(Duration.millis(time_move));
+          tran_left.setDuration(Duration.millis(time_move));
+          tran_right.setDuration(Duration.millis(time_move));
      }
 }

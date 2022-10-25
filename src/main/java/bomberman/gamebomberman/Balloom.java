@@ -23,6 +23,9 @@ public class Balloom extends Enemy {
         right[0] = new ImageView(balloom_right1);
         right[1] = new ImageView(balloom_right2);
         right[2] = new ImageView(balloom_right3);
+        image_dead = new ImageView(balloom_dead);
+        image_dead.setFitWidth(SIZE_OF_BOX);
+        image_dead.setFitHeight(SIZE_OF_BOX);
         for(int i = 0; i < 3; i++) {
             left[i].setFitHeight(SIZE_OF_BOX);
             left[i].setFitWidth(SIZE_OF_BOX);
@@ -36,26 +39,27 @@ public class Balloom extends Enemy {
         task = new TimerTask() {
             @Override
             public void run() {
-                if(MainGame.map[y + direction.getValue().intValue()][x + direction.getKey().intValue()] != ' ') {
-                    canMove = false;
-                }
-                if(canMove){
-                    transition.play();
-                    x = x + direction.getKey().intValue();
-                    y = y + direction.getValue().intValue();
-                } else {
-                    canMove = true;
+                if(Math.random() > 0.5){
                     makeDirection();
-                    if(direction.equals(new Pair<>(0,1))) {
-                        transition = tran_down;
-                    } else if (direction.equals(new Pair<>(0,-1))) {
-                        transition = tran_up;
-                    } else if (direction.equals(new Pair<>(1,0))) {
-                        transition = tran_right;
-                    } else if (direction.equals(new Pair<>(-1,0))) {
-                        transition = tran_left;
-                    }
                 }
+                while (!canMove(x + direction.getKey().intValue()
+                        ,y + direction.getValue().intValue())){
+                    makeDirection();
+                }
+                if(direction.equals(new Pair<>(0,1))) {
+                    transition = tran_down;
+                } else if (direction.equals(new Pair<>(0,-1))) {
+                    transition = tran_up;
+                } else if (direction.equals(new Pair<>(1,0))) {
+                    transition = tran_right;
+                } else if (direction.equals(new Pair<>(-1,0))) {
+                    transition = tran_left;
+                    }
+                if(!dead) {
+                    transition.play();
+                }
+                x = x + direction.getKey().intValue();
+                y = y + direction.getValue().intValue();
             }
         };
     }

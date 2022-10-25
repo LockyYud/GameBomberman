@@ -6,7 +6,7 @@ import javafx.util.Duration;
 
 public abstract class Entity implements LoadImageWithoutBackground {
     public static final int SIZE_OF_BOX = 32;
-    protected final int time_move = 250;
+    protected int time_move = 180;
     protected int x;
     protected int y;
     public ImageView image;
@@ -110,6 +110,13 @@ public abstract class Entity implements LoadImageWithoutBackground {
         if(Math.abs(obj.getAction().getTranslateX() - action.getTranslateX()) <= 5
                 && Math.abs(obj.getAction().getTranslateY() - action.getTranslateY()) <= 5)
             return true;
+        return false;
+    }
+    public boolean Collide_with_bomb(double bombX, double bombY) {
+        if(bombX >= action.getTranslateX() && bombX < action.getTranslateX() + SIZE_OF_BOX
+                && bombY >= action.getTranslateY() && bombY < action.getTranslateY() + SIZE_OF_BOX ) {
+            return true;
+        }
         return false;
     }
 }

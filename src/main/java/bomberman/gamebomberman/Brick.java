@@ -8,15 +8,12 @@ import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 public class Brick extends Entity {
-    private boolean exploded;
     private ImageView[] brick_explode = new ImageView[4];
     private Timeline timeline_brick = new Timeline();
     private StackPane brick_stack = new StackPane();
 
     public Brick(int x, int y) {
         super(x, y);
-        
-        exploded = false;
         brick_explode[0] = new ImageView(brick);
         brick_explode[1] = new ImageView(brick_exploded);
         brick_explode[2] = new ImageView(brick_exploded1);
@@ -49,13 +46,13 @@ public class Brick extends Entity {
                 Duration.millis(900),
                 (ActionEvent event) ->{
                     brick_stack.getChildren().setAll();
+                    dead = true;
                 }
         ));
         action.getChildren().add(brick_stack);
     }
 
     public void explode() {
-        this.exploded = exploded;
         timeline_brick.play();
     }
 }

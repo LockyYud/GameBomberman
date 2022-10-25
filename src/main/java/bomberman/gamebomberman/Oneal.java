@@ -2,6 +2,7 @@ package bomberman.gamebomberman;
 
 import javafx.animation.TranslateTransition;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 import javafx.util.Pair;
 
 import java.util.Timer;
@@ -9,7 +10,6 @@ import java.util.TimerTask;
 
 public class Oneal extends Enemy implements LoadImageWithoutBackground{
     public Oneal(){}
-    private Pair<Integer, Integer> direction = new Pair<>(1,0);
     private Boolean canMove = false;
     TranslateTransition transition = new TranslateTransition();
     public Oneal (int posX,int posY) {
@@ -26,6 +26,9 @@ public class Oneal extends Enemy implements LoadImageWithoutBackground{
             right[i].setFitWidth(SIZE_OF_BOX);
             right[i].setFitHeight(SIZE_OF_BOX);
         }
+        image_dead = new ImageView(oneal_dead);
+        image_dead.setFitHeight(SIZE_OF_BOX);
+        image_dead.setFitWidth(SIZE_OF_BOX);
         this.SetTimeline();
         action.getChildren().add(move_left);
         action.getChildren().add(move_right);
@@ -33,32 +36,35 @@ public class Oneal extends Enemy implements LoadImageWithoutBackground{
         task = new TimerTask() {
             @Override
             public void run() {
-                if(MainGame.map[y + direction.getValue().intValue()][x + direction.getKey().intValue()] != ' ') {
-                    canMove = false;
-                }
-                if(canMove){
-                    transition.play();
-                    x = x + direction.getKey().intValue();
-                    y = y + direction.getValue().intValue();
-                } else {
-                    canMove = true;
+                if(Math.random() > 0.5){
                     makeDirection();
-                    if(direction.equals(new Pair<>(0,1))) {
-                        transition = tran_down;
-                    } else if (direction.equals(new Pair<>(0,-1))) {
-                        transition = tran_up;
-                    } else if (direction.equals(new Pair<>(1,0))) {
-                        transition = tran_right;
-                    } else if (direction.equals(new Pair<>(-1,0))) {
-                        transition = tran_left;
-                    }
                 }
+                while (!canMove(x + direction.getKey().intValue()
+                        ,y + direction.getValue().intValue())){
+                    makeDirection();
+                }
+                if(direction.equals(new Pair<>(0,1))) {
+                    transition = tran_down;
+                } else if (direction.equals(new Pair<>(0,-1))) {
+                    transition = tran_up;
+                } else if (direction.equals(new Pair<>(1,0))) {
+                    transition = tran_right;
+                } else if (direction.equals(new Pair<>(-1,0))) {
+                    transition = tran_left;
+                }
+                if(!dead) {
+                    transition.play();
+                }
+                x = x + direction.getKey().intValue();
+                y = y + direction.getValue().intValue();
             }
         };
     }
 
     @Override
     protected void makeDirection() {
-        randomDirection();
+        {
+            randomDirection();
+        }
     }
 }

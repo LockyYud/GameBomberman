@@ -16,11 +16,14 @@ import java.util.TimerTask;
 public abstract class Enemy extends Entity {
     protected ImageView[] left = new ImageView[3];
     protected ImageView[] right = new ImageView[3];
+    protected ImageView image_dead = new ImageView();
     protected Timeline timeline_left = new Timeline();
     protected Timeline timeline_right = new Timeline();
+    protected Timeline timeline_dead = new Timeline();
     protected StackPane move_left = new StackPane();
     protected StackPane move_right = new StackPane();
-    protected Pair<Integer, Integer> direction = new Pair<>(1,0);
+    protected StackPane move_dead = new StackPane();
+    protected Pair<Integer, Integer> direction = new Pair<>(0,0);
 
     public Enemy() {
     }
@@ -73,6 +76,20 @@ public abstract class Enemy extends Entity {
                     move_right.getChildren().setAll(right[2]);
                 }
         ));
+        //timeline_dead
+        timeline_dead.setCycleCount(Timeline.INDEFINITE);
+        timeline_dead.getKeyFrames().add(new KeyFrame(
+                Duration.millis(100),
+                (ActionEvent event) -> {
+                    move_dead.getChildren().setAll(image_dead);
+                }
+        ));
+        timeline_dead.getKeyFrames().add(new KeyFrame(
+                Duration.millis(400),
+                (ActionEvent event) -> {
+                    dead = true;
+                }
+        ));
     }
 
     protected abstract void makeDirection();
@@ -93,5 +110,15 @@ public abstract class Enemy extends Entity {
                 direction = new Pair<>(-1, 0);
                 break;
         }
+    }
+    protected boolean canMove(int posX, int posY) {
+        if(posX == x && posY == y) return false;
+        if(MainGame.map[posX][posY] == '*' || MainGame.map[posX][posY] == 'x' || MainGame.map[posX][posY] == '#') {
+            return false;
+        }
+        return true;
+    }
+    public void ActionDead () {
+        timeline_dead.play();
     }
 }
