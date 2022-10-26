@@ -21,7 +21,9 @@ public class Bomb extends Entity {
     private ImageView[] bombItemEx_vertical = new ImageView[3];
     private ImageView[] bombItemEx_horizontal = new ImageView[3];
     private Timeline timeline_bomb = new Timeline();
+    private Brick[] brick_will_break = new Brick[4];
     private StackPane bomb_stack = new StackPane();
+    private int numbrick = 0;
 
     private void construct() {
         bombItem[0] = new ImageView(bomb);
@@ -332,25 +334,22 @@ public class Bomb extends Entity {
                     action.getChildren().setAll(bomb_stack);
                     action.setLayoutX(0 - length_left * SIZE_OF_BOX);
                     action.setLayoutY(0 - length_up * SIZE_OF_BOX);
+                    System.out.println(1);
                 }
         ));
+        System.out.println(2);
         timeline_bomb.play();
     }
 
     private boolean canMove(double _x1, double _y1) {
+
         int x1 = (int) _x1 / SIZE_OF_BOX;
         int y1 = (int) _y1 / SIZE_OF_BOX;
         if(MainGame.map[x + x1][y + y1] == '#') {
             return false;
         }
-        if(MainGame.map[x + x1][y + y1] == '*') {
-            MainGame.map[x + x1][y + y1] = ' ';
-            timeline_bomb.getKeyFrames().add(new KeyFrame(
-                Duration.millis(2200),
-                (ActionEvent event) ->{
-                    ((Brick) MainGame.obstacle[x + x1][y + y1]).explode();
-                }
-            ));
+        if(MainGame.obstacle[x + x1][y + y1] != null && MainGame.map[x + x1][y + y1] != ' ') {
+            ((Brick) MainGame.obstacle[x + x1][y + y1]).explode();
         }
         for(int i = 0; i < MainGame.monster.length; i++) {
             if(MainGame.monster[i].Collide_with_bomb(this.x * SIZE_OF_BOX + _x1

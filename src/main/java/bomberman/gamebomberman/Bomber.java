@@ -14,9 +14,10 @@ import javafx.util.Pair;
 
 import java.util.*;
 
-public class Bomber extends Entity {
+public class Bomber extends Entity implements typesItem{
+    private int time_move = 300;
      private boolean moved = false;
-     private int lenght = 1;
+     private int lenghtofBomb = 1;
      private ImageView[] images_down = new ImageView[3];
      private ImageView[] images_up = new ImageView[3];
      private ImageView[] images_left = new ImageView[3];
@@ -250,7 +251,7 @@ public class Bomber extends Entity {
           make_bomb.getKeyFrames().add(new KeyFrame(
                   Duration.millis(0),
                   (ActionEvent event) -> {
-                       bombom = new Bomb(this.x, this.y, 1);
+                       bombom = new Bomb(this.x, this.y, lenghtofBomb);
                        bombombom.getChildren().add(bombom.action);
 //                       System.out.println(bombom.action.getLayoutX() + " " + bombom.action.getLayoutY());
                   }
@@ -276,20 +277,19 @@ public class Bomber extends Entity {
           action.setTranslateX(SIZE_OF_BOX * x);
      }
      private boolean CanMove() {
-         int newX = this.x + direction.getKey().intValue();
-         int newY = this.y + direction.getValue().intValue();
-          if(MainGame.map[newX][newY] == 'p' || MainGame.map[newX][newY] == '1' || MainGame.map[newX][newY] == '2') {
+     int newX = this.x + direction.getKey().intValue();
+     int newY = this.y + direction.getValue().intValue();
+            if(MainGame.map[newX][newY] == 'p'
+                    || MainGame.map[newX][newY] == '1'
+                    || MainGame.map[newX][newY] == '2'
+                    || MainGame.map[newX][newY] == ' ') {
                return true;
-          }
-          if(MainGame.map[newX][newY] == '*' || MainGame.map[newX][newY] == '#' || MainGame.map[newX][newY] == 'x') {
-               return false;
-          }
-          return true;
+            }
+            return false;
      }
 
-     private void ChangeSpeed () {
-          time_move = time_move * 2;
-          System.out.println(time_move);
+     public void ChangeSpeed () {
+          time_move = time_move / 2;
           timeline_down.getKeyFrames().removeAll();
           timeline_up.getKeyFrames().removeAll();
           timeline_left.getKeyFrames().removeAll();
@@ -380,5 +380,20 @@ public class Bomber extends Entity {
           tran_up.setDuration(Duration.millis(time_move));
           tran_left.setDuration(Duration.millis(time_move));
           tran_right.setDuration(Duration.millis(time_move));
+
+     }
+     public void ChangeLenghtofBomb (int lenght) {
+         lenghtofBomb = lenght;
+     }
+     public void Takeitem(Item item) {
+         if(item.getName() == nameItem.SPEED) {
+             this.ChangeSpeed();
+         }
+         else if(item.getName() == nameItem.FLAMES) {
+             this.ChangeLenghtofBomb(2);
+         }
+         else if(item.getName() == nameItem.BOMBS) {
+
+         }
      }
 }

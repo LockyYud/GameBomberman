@@ -32,10 +32,11 @@ public class Balloom extends Enemy {
             right[i].setFitHeight(SIZE_OF_BOX);
             right[i].setFitWidth(SIZE_OF_BOX);
         }
-        action.getChildren().add(move_left);
         action.getChildren().add(move_right);
+        action.getChildren().add(move_left);
         this.SetTimeline();
         timeline_left.play();
+        timeline_right.play();
         task = new TimerTask() {
             @Override
             public void run() {
@@ -52,9 +53,20 @@ public class Balloom extends Enemy {
                     transition = tran_up;
                 } else if (direction.equals(new Pair<>(1,0))) {
                     transition = tran_right;
+//                    move_right.toFront();
+//                    if(action.getChildren().indexOf(move_right) != 0){
+//
+//                    }
+//                    action.getChildren().setAll(move_right);
                 } else if (direction.equals(new Pair<>(-1,0))) {
                     transition = tran_left;
-                    }
+//                    if(action.getChildren().indexOf(move_left) == 0){
+//                        move_left.toFront();
+//                        System.out.println("yeyeye");
+////                        action.getChildren().set(0,move_left);
+//                    }
+//                    action.getChildren().setAll(move_left);
+                }
                 if(!dead) {
                     transition.play();
                 }
