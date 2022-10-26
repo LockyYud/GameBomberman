@@ -101,6 +101,7 @@ public class Bomb extends Entity {
         timeline_bomb.getKeyFrames().add(new KeyFrame(
                 Duration.millis(2200),
                 (ActionEvent event) ->{
+                    MainGame.sound.playSingleEp(0);
                     int length_up = 0;
                     int length_left = 0;
                     Group g = new Group();

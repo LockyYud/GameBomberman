@@ -32,6 +32,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground{
     public static Enemy[] monster;
     public static Entity[][] obstacle;
     public static Bomber bomber;
+    public static Sound sound = new Sound();
     private static Group root = new Group();
     public Timer timer = new Timer();
     AnimationTimer checkDead = new AnimationTimer() {
@@ -62,12 +63,12 @@ public class MainGame extends Application implements LoadImageWithoutBackground{
         }
     };
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws Exception {
         ImageView background = new ImageView(grass);
         background.setFitWidth(window_width);
         background.setFitHeight(window_height);
         root.getChildren().add(background);
-        String path = "D:\\Bomberman\\GameBomberman\\src\\main\\resources\\bomberman\\gamebomberman\\Map\\level1.txt";
+        String path = "C:\\Users\\Cevenn\\Documents\\GitHub\\GameBomberman\\src\\main\\resources\\bomberman\\gamebomberman\\Map\\level1.txt";
         try{
             Map.LoadMap(path);
         } catch (Exception e) {
@@ -99,6 +100,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground{
         stage.setScene(scene);
         //Displaying the contents of the stage
         stage.show();
+        sound.playMusic(4);
         root.getChildren().add(bomber.bombombom);
         checkDead.start();
         bomber.updateBomerPos.start();

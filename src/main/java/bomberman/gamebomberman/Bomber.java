@@ -218,6 +218,7 @@ public class Bomber extends Entity {
           timeline_dead.getKeyFrames().add(new KeyFrame(
                   Duration.millis(time_move/3),
                   (ActionEvent event) -> {
+                      MainGame.sound.playSingleEp(2);
                        actionDead.getChildren().setAll(images_dead[0]);
                   }
           ));
