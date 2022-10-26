@@ -24,13 +24,15 @@ import java.util.*;
 
 
 import java.util.Timer;
-public class MainGame extends Application implements LoadImageWithoutBackground{
+public class MainGame extends Application implements LoadImageWithoutBackground, typesItem{
     public static final int window_height = 13 * Entity.SIZE_OF_BOX;
     public static final int window_width = 31 * Entity.SIZE_OF_BOX;
 
     public static char[][] map = new char[31][13];
+    private String[] path_level = new String[5];
     public static Enemy[] monster;
     public static Entity[][] obstacle;
+    public static Item[] itemofGame;
     public static Bomber bomber;
     private static Group root = new Group();
     public Timer timer = new Timer();
@@ -61,6 +63,19 @@ public class MainGame extends Application implements LoadImageWithoutBackground{
             }
         }
     };
+    AnimationTimer checkItem = new AnimationTimer() {
+        @Override
+        public void handle(long l) {
+            for(int i = 0; i < itemofGame.length; i++) {
+                if(bomber.Collide_with(itemofGame[i]) && !itemofGame[i].dead) {
+                    bomber.Takeitem(itemofGame[i]);
+                    map[itemofGame[i].getX()][itemofGame[i].getY()] = ' ';
+                    itemofGame[i].dead = true;
+                    root.getChildren().remove(itemofGame[i].action);
+                }
+            }
+        }
+    };
     @Override
     public void start(Stage stage) {
         ImageView background = new ImageView(grass);
@@ -76,8 +91,11 @@ public class MainGame extends Application implements LoadImageWithoutBackground{
         Wall tuong = new Wall();
         root.getChildren().add(tuong.image);
         bomber = new Bomber();
-        root.getChildren().add(bomber.action);
         LoadEntity();
+        for(int i = 0; i < itemofGame.length; i++) {
+            root.getChildren().add(itemofGame[i].action);
+        }
+        root.getChildren().add(bomber.action);
         for(int i = 0; i < obstacle.length; i++) {
             for (int j = 0; j < obstacle[i].length; j++) {
                 if(obstacle[i][j] != null) {
@@ -102,9 +120,14 @@ public class MainGame extends Application implements LoadImageWithoutBackground{
         root.getChildren().add(bomber.bombombom);
         checkDead.start();
         bomber.updateBomerPos.start();
+        checkItem.start();
+    }
+    private void GameLoop() {
+
     }
     private void LoadEntity () {
         int numofMonter = 0;
+        int numofItem = 0;
         obstacle = new Entity[map.length][map[0].length];
         for(int i = 0; i < map.length; i++) {
             for(int j = 0; j < map[i].length; j++) {
@@ -114,12 +137,16 @@ public class MainGame extends Application implements LoadImageWithoutBackground{
                 if(map[i][j] == '*') {
                     obstacle[i][j] = new Brick(i,j);
                 }
+                if(map[i][j] == 'b' || map[i][j] == 'f' || map[i][j] == 's') {
+                    numofItem++;
+                }
                 if(map[i][j] == 'x') {
                     obstacle[i][j] = new Portal(i,j);
                 }
             }
         }
         monster = new Enemy[numofMonter];
+        itemofGame = new Item[numofItem];
         for(int i = 0; i < map.length; i++) {
             for(int j = 0; j < map[i].length; j++) {
                 if(map[i][j] == '1') {
@@ -129,6 +156,11 @@ public class MainGame extends Application implements LoadImageWithoutBackground{
                 if(map[i][j] == '2') {
                     monster[numofMonter - 1] = new Oneal(i,j);
                     numofMonter--;
+                }
+                if(map[i][j] == 'b' || map[i][j] == 'f' || map[i][j] == 's') {
+                    obstacle[i][j] = new Brick(i,j);
+                    itemofGame[numofItem - 1] = new Item(i,j);
+                    numofItem--;
                 }
             }
         }
