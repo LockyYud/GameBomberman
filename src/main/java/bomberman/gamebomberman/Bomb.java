@@ -52,7 +52,7 @@ public class Bomb extends Entity {
         bombItemEx_horizontal[2] = new ImageView(explosion_horizontal2);
     }
 
-    private void set(int length) {
+    private void set() {
         for (int i = 0; i < 3; i++) {
             bombItem[i].setFitWidth(SIZE_OF_BOX);
             bombItem[i].setFitHeight(SIZE_OF_BOX);
@@ -77,7 +77,7 @@ public class Bomb extends Entity {
         super(x, y);
         length_of_fire = length;
         construct();
-        set(length_of_fire);
+        set();
         timeline_bomb.setCycleCount(1);
         timeline_bomb.getKeyFrames().add(new KeyFrame(
                 Duration.millis(0),
