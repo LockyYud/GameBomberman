@@ -3,6 +3,7 @@ package bomberman.gamebomberman;
 import com.almasb.fxgl.dev.editor.EntityInspector;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -16,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.image.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
@@ -24,10 +26,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
+import javafx.scene.text.*;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -92,6 +91,8 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
                         stage.setScene(MenuStart());
                     } else if (stateGame == StateGame.NEXT_LEVEL) {
                         stage.setScene(GameLoop((path_level[level])));
+                    } else if (stateGame == StateGame.MENU_START) {
+                        stage.setScene(MenuStart());
                     }
                     ChangeState = false;
                 }
@@ -169,8 +170,50 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
         background.setFitHeight(window_height);
         Wall tuong = new Wall();
 
-
-
+        Text Textstagenow = new Text("STAGE " + Integer.toString(level + 1));
+        Textstagenow.setStyle("    -fx-font-size: 30pt;\n" +
+                "    -fx-font-family: \"Courier New\";\n" +
+                "-fx-text-fill: rgb(245,235,220);");
+        Textstagenow.setFill(Color.rgb(245,235,220));
+        TextFlow stagenow = new TextFlow(Textstagenow);
+        stagenow.setMinWidth(window_width);
+        stagenow.setMinHeight(window_height);
+        stagenow.setTextAlignment(TextAlignment.CENTER);
+        stagenow.setStyle("    -fx-background-color: rgba(0,0,0,0.75);");
+        Timeline timeline_nextlevel = new Timeline();
+        timeline_nextlevel.setAutoReverse(false);
+        timeline_nextlevel.setCycleCount(1);
+        timeline_nextlevel.getKeyFrames().add(new KeyFrame(
+                Duration.millis(200),
+                actionEvent -> {
+                    stagenow.setStyle("    -fx-background-color: rgba(0,0,0,0.60);");
+                }
+        ));
+        timeline_nextlevel.getKeyFrames().add(new KeyFrame(
+                Duration.millis(400),
+                actionEvent -> {
+                    stagenow.setStyle("    -fx-background-color: rgba(0,0,0,0.45);");
+                }
+        ));
+        timeline_nextlevel.getKeyFrames().add(new KeyFrame(
+                Duration.millis(600),
+                actionEvent -> {
+                    stagenow.setStyle("    -fx-background-color: rgba(0,0,0,0.30);");
+                }
+        ));
+        timeline_nextlevel.getKeyFrames().add(new KeyFrame(
+                Duration.millis(600),
+                actionEvent -> {
+                    stagenow.setStyle("    -fx-background-color: rgba(0,0,0,0.15);");
+                }
+        ));
+        timeline_nextlevel.getKeyFrames().add(new KeyFrame(
+                Duration.millis(600),
+                actionEvent -> {
+                    stagenow.setStyle("    -fx-background-color: rgba(0,0,0,0);");
+                    Textstagenow.setText(" ");
+                }
+        ));
 
         root.getChildren().add(background);
         root.getChildren().add(tuong.image);
@@ -218,7 +261,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
         endGame.handlerNewGame = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                stateGame = StateGame.DEFAULT;
+                stateGame = StateGame.MENU_START;
                 System.out.println(1);
                 ChangeState = true;
             }
@@ -226,7 +269,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
         endGame.handlerContinue = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                stateGame = StateGame.DEFAULT;
+                stateGame = StateGame.MENU_START;
             }
         };
 
@@ -312,12 +355,14 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
                 }
             }
         };
+        root.getChildren().add(stagenow);
         bomber.updateBomerPos.start();
         checkScoreandLeft.start();
         checkEndGame.start();
         checkCollideBomber.start();
         checkItem.start();
         checkBomberDead.start();
+        timeline_nextlevel.play();
         return scene;
     }
 
