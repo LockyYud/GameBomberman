@@ -3,6 +3,7 @@ package bomberman.gamebomberman;
 import com.almasb.fxgl.dev.editor.EntityInspector;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,9 +19,14 @@ import javafx.scene.control.Label;
 import javafx.scene.image.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -111,7 +117,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
 
     private Scene MenuStart() {
         GridPane gridPane = new GridPane();
-        Button playgame = new Button("play game");
+        Button playgame = new Button("PLAY GAME");
 
         //Setting size for the pane
         gridPane.setMinSize(window_height, window_width);
@@ -124,7 +130,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
         gridPane.setHgap(5);
         //Setting the Grid alignment
         gridPane.setAlignment(Pos.BASELINE_CENTER);
-        gridPane.add(playgame, 0, 0);
+        gridPane.add(playgame, 0, 20);
         EventHandler<MouseEvent> handler = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -134,7 +140,14 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
         };
         playgame.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
         //Setting the background color
-        gridPane.setStyle("-fx-background-color: BEIGE;");
+        gridPane.setStyle("    -fx-border-color: rgb(101,136,52);\n" +
+                "    -fx-border-style: solid inside;\n" +
+                "    -fx-border-width: 3;\n" +
+                "    -fx-border-insets: -1;" +
+                "    -fx-font-size: 30pt;\n" +
+                "    -fx-font-family: \"Courier New\";\n" +
+                "    -fx-base: rgb(132, 145, 47);\n" +
+                "    -fx-background: rgb(45,51,23);");
         return new Scene(gridPane, window_width, window_height);
     }
 
@@ -149,10 +162,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
         bomber = new Bomber();
         LoadEntity();
         Group root = new Group();
-        Text winGame = new Text("Win game");
-        Text loseGame = new Text("Lose Game");
-        loseGame.setX((int) (window_width / 2));
-        loseGame.setY((int) (window_height / 2));
+        menuEndGame endGame = new menuEndGame("oekoek");
 
         ImageView background = new ImageView(grass);
         background.setFitWidth(window_width);
@@ -183,25 +193,43 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
             timer.schedule(monster[i].task, 1100, 1100);
         }
 
-
-
         Scene scene = new Scene(root, window_width, window_height);
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, bomber.handler);
+
 
         Label score = new Label("SCORE");
         Label left = new Label("LEFT");
         Text num_left = new Text(bomber.getNum_life());
         left.setLabelFor(num_left);
         HBox hBox = new HBox();
-        hBox.setSpacing(10);
-        hBox.setMargin(left, new Insets(5, 20, 20, 20));
-        hBox.setMargin(num_left, new Insets(5, 20, 20, 20));
+        hBox.setAlignment(Pos.CENTER);
+        hBox.setMargin(left, new Insets(0, 0, 0, 0));
+        hBox.setMargin(num_left, new Insets(0, 0, 0, 0));
         ObservableList list = hBox.getChildren();
-        list.addAll(left, num_left);
+        list.addAll(left,num_left);
+        hBox.setMaxSize(Entity.SIZE_OF_BOX * 2, window_height);
+        hBox.setStyle("    -fx-font-size: 16pt;\n" +
+                "    -fx-font-family: \"Courier New\";\n");
+        root.getChildren().add(hBox);
         hBox.setLayoutX(0);
         hBox.setLayoutY(13 * Entity.SIZE_OF_BOX);
-        hBox.setFillHeight(true);
-        root.getChildren().add(hBox);
+
+
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, bomber.handler);
+        endGame.handlerNewGame = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                stateGame = StateGame.DEFAULT;
+                System.out.println(1);
+                ChangeState = true;
+            }
+        };
+        endGame.handlerContinue = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                stateGame = StateGame.DEFAULT;
+            }
+        };
+
         AnimationTimer checkScoreandLeft = new AnimationTimer() {
             @Override
             public void handle(long l) {
@@ -211,22 +239,22 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
         AnimationTimer checkEndGame = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                if (bomber.num_life == 0) {
+                if (bomber.num_life == 0 && !root.getChildren().contains(endGame.borderPanel)) {
+                    endGame.addHandle();
+                    root.getChildren().add(endGame.borderPanel);
+                    endGame.transition.play();
                     scene.removeEventHandler(KeyEvent.KEY_PRESSED, bomber.handler);
                     EndGame = true;
-                    if (!root.getChildren().contains(loseGame)) {
-                        root.getChildren().add(loseGame);
-                    }
                 }
                 if(nums_Monster_inGame == 0 && map[bomber.getX()][bomber.getY()] == 'x') {
-                    if(level == 2) {
-
-                    }
-                    else {
+//                    if(level == 2) {
+//
+//                    }
+//                    else {
                         stateGame = StateGame.NEXT_LEVEL;
                         level++;
                         ChangeState = true;
-                    }
+//                    }
                 }
             }
         };
@@ -234,7 +262,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
             @Override
             public void handle(long l) {
                 for (int i = 0; i < monster.length; i++) {
-                    if (bomber.Collide_with(monster[i])) {
+                    if (bomber.Collide_with(monster[i]) && monster[i].dead == false) {
                         bomber.timeline_dead.play();
                     }
                 }
@@ -256,13 +284,13 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
                     }
                 }
                 for (int i = 0; i < monster.length; i++) {
-                    if (monster[i].dead) {
-                        root.getChildren().remove(monster[i].action);
-                    }
+                        if (monster[i].dead) {
+                            root.getChildren().remove(monster[i].action);
+                        }
                 }
                 if (bomber.dead) {
-                    bomber.action.setTranslateX(Entity.SIZE_OF_BOX);
-                    bomber.action.setTranslateY(Entity.SIZE_OF_BOX);
+                    bomber.action.setTranslateX(bomber.startX * Entity.SIZE_OF_BOX);
+                    bomber.action.setTranslateY(bomber.startY * Entity.SIZE_OF_BOX);
                     bomber.dead = false;
                 }
             }
@@ -336,11 +364,6 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
                 }
             }
         }
-    }
-    private void MenuEndGame(String path) {
-        GridPane gridPane = new GridPane();
-        Text textEndGame = new Text(path);
-
     }
     public static void main(String args[]) {
         launch(args);

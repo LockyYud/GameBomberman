@@ -20,7 +20,7 @@ public class Bomber extends Entity implements typesItem{
     public int startY;
      private boolean moved = false;
      private int lenghtofBomb = 1;
-     public int num_life = 3;
+     public int num_life = 1;
      private ImageView[] images_down = new ImageView[3];
      private ImageView[] images_up = new ImageView[3];
      private ImageView[] images_left = new ImageView[3];
@@ -224,7 +224,7 @@ public class Bomber extends Entity implements typesItem{
           timeline_dead.getKeyFrames().add(new KeyFrame(
                   Duration.millis(time_move/3),
                   (ActionEvent event) -> {
-                      MainGame.sound.playSingleEp(2);
+//                      MainGame.sound.playSingleEp(2);
                        actionDead.getChildren().setAll(images_dead[0]);
                   }
           ));

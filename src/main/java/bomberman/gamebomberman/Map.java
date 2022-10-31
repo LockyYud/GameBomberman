@@ -1,6 +1,7 @@
 package bomberman.gamebomberman;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public abstract class Map {

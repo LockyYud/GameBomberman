@@ -99,6 +99,9 @@ public abstract class Enemy extends Entity {
         timeline_dead.getKeyFrames().add(new KeyFrame(
                 Duration.millis(400),
                 (ActionEvent event) -> {
+                    if(!dead){
+                        MainGame.nums_Monster_inGame--;
+                    }
                     dead = true;
                     MainGame.Scoreingame += 100;
                 }
@@ -132,7 +135,7 @@ public abstract class Enemy extends Entity {
         return false;
     }
     public void ActionDead () {
-        MainGame.sound.playSingleEp(3);
+//        MainGame.sound.playSingleEp(3);
         timeline_dead.play();
     }
 }

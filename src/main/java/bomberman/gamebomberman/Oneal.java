@@ -67,11 +67,10 @@ public class Oneal extends Enemy implements LoadImageWithoutBackground{
     protected void makeDirection() {
         int bomberX = MainGame.bomber.getX();
         int bomberY = MainGame.bomber.getY();
-        if(bomberX > this.x + 3 || bomberX < this.x - 3 || bomberY > this.y + 3 || bomberY < this.y - 3
+        if(bomberX > this.x + 5 || bomberX < this.x - 5 || bomberY > this.y + 5 || bomberY < this.y - 5
                 || (bomberX == x && bomberY == y)){
             randomDirection();
         } else {
-//            System.out.println(bomberX + " " + bomberY);
             if(bomberX == x) {
                 if(bomberY < y) {
                     direction = new Pair<>(0,-1);
@@ -81,9 +80,9 @@ public class Oneal extends Enemy implements LoadImageWithoutBackground{
             }
             if(bomberY == y) {
                 if(bomberX < x) {
-                    direction = new Pair<>(1,0);
-                } else {
                     direction = new Pair<>(-1,0);
+                } else {
+                    direction = new Pair<>(1,0);
                 }
             }
             if(bomberX > x && bomberY > y) {

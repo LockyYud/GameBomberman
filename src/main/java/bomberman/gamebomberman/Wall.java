@@ -18,13 +18,6 @@ public class Wall extends Entity {
         action.getChildren().add(image);
     }
     public Wall() {
-        String path = "C:\\Users\\Cevenn\\Documents\\GitHub\\GameBomberman\\src\\main\\resources\\bomberman\\gamebomberman\\Map\\level1.txt";
-        try{
-            Map.LoadMap(path);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Bomber bomber = new Bomber();
         int width = (int) wall.getWidth();
         int height = (int) wall.getHeight();
         WritableImage wImage = new WritableImage(MainGame.window_width, MainGame.window_height);
