@@ -75,6 +75,7 @@ public class Bomb extends Entity {
 
     public Bomb(int x, int y, int length) {
         super(x, y);
+        MainGame.map[x][y] = 'b';
         length_of_fire = length;
         construct();
         set(length_of_fire);
@@ -333,10 +334,9 @@ public class Bomb extends Entity {
                     action.getChildren().setAll(bomb_stack);
                     action.setLayoutX(0 - length_left * SIZE_OF_BOX);
                     action.setLayoutY(0 - length_up * SIZE_OF_BOX);
-                    System.out.println(1);
+                    MainGame.map[this.x][this.y] = ' ';
                 }
         ));
-        System.out.println(2);
         timeline_bomb.play();
     }
 

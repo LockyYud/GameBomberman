@@ -33,6 +33,7 @@ public class Oneal extends Enemy implements LoadImageWithoutBackground{
         action.getChildren().add(move_left);
         action.getChildren().add(move_right);
         timeline_left.play();
+        timeline_right.play();
         task = new TimerTask() {
             @Override
             public void run() {
@@ -52,7 +53,7 @@ public class Oneal extends Enemy implements LoadImageWithoutBackground{
                 } else if (direction.equals(new Pair<>(-1,0))) {
                     transition = tran_left;
                 }
-                if(!dead) {
+                if(!dead && !MainGame.EndGame) {
                     transition.play();
                 }
                 x = x + direction.getKey().intValue();

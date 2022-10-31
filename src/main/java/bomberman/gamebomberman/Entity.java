@@ -1,4 +1,5 @@
 package bomberman.gamebomberman;
+import javafx.animation.AnimationTimer;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
@@ -6,7 +7,7 @@ import javafx.util.Duration;
 
 public abstract class Entity implements LoadImageWithoutBackground {
     public static final int SIZE_OF_BOX = 32;
-    protected int time_move = 180;
+    protected int time_move = 500;
     protected int x;
     protected int y;
     public ImageView image;
@@ -119,4 +120,5 @@ public abstract class Entity implements LoadImageWithoutBackground {
         }
         return false;
     }
+    protected AnimationTimer checkEndGame;
 }

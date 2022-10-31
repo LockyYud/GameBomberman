@@ -16,8 +16,11 @@ import java.util.*;
 
 public class Bomber extends Entity implements typesItem{
     private int time_move = 300;
+    public int startX;
+    public int startY;
      private boolean moved = false;
      private int lenghtofBomb = 1;
+     public int num_life = 3;
      private ImageView[] images_down = new ImageView[3];
      private ImageView[] images_up = new ImageView[3];
      private ImageView[] images_left = new ImageView[3];
@@ -100,6 +103,8 @@ public class Bomber extends Entity implements typesItem{
                     if(MainGame.map[i][j] == 'p') {
                          x = i;
                          y = j;
+                         startX = x;
+                         startY = y;
                          break;
                     }
                }
@@ -237,10 +242,11 @@ public class Bomber extends Entity implements typesItem{
           timeline_dead.getKeyFrames().add(new KeyFrame(
                   Duration.millis(time_move + 100),
                   (ActionEvent event) -> {
-                       action.setTranslateX(SIZE_OF_BOX);
-                       action.setTranslateY(SIZE_OF_BOX);
-                       x = 1;
-                       y = 1;
+                       action.setTranslateX(startX * SIZE_OF_BOX);
+                       action.setTranslateY(startY * SIZE_OF_BOX);
+                       x = this.startX;
+                       y = this.startY;
+                       num_life--;
                   }
           ));
 
@@ -252,7 +258,6 @@ public class Bomber extends Entity implements typesItem{
                   (ActionEvent event) -> {
                        bombom = new Bomb(this.x, this.y, lenghtofBomb);
                        bombombom.getChildren().add(bombom.action);
-//                       System.out.println(bombom.action.getLayoutX() + " " + bombom.action.getLayoutY());
                   }
           ));
           make_bomb.getKeyFrames().add(new KeyFrame(
@@ -276,13 +281,16 @@ public class Bomber extends Entity implements typesItem{
           action.setTranslateX(SIZE_OF_BOX * x);
      }
      private boolean CanMove() {
-     int newX = this.x + direction.getKey().intValue();
-     int newY = this.y + direction.getValue().intValue();
+             int newX = this.x + direction.getKey().intValue();
+             int newY = this.y + direction.getValue().intValue();
             if(MainGame.map[newX][newY] == 'p'
                     || MainGame.map[newX][newY] == '1'
                     || MainGame.map[newX][newY] == '2'
                     || MainGame.map[newX][newY] == ' ') {
                return true;
+            }
+            if(MainGame.nums_Monster_inGame == 0 && MainGame.map[newX][newY] == 'x') {
+                return true;
             }
             return false;
      }
@@ -395,4 +403,8 @@ public class Bomber extends Entity implements typesItem{
 
          }
      }
+
+    public String getNum_life() {
+        return Integer.toString(num_life);
+    }
 }

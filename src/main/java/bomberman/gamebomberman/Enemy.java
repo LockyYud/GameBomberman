@@ -33,25 +33,37 @@ public abstract class Enemy extends Entity {
 
     public Enemy(int x, int y) {
         super(x, y);
+        time_move = 1000;
+        checkEndGame = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if(MainGame.EndGame) {
+                    timeline_left.stop();
+                    timeline_right.stop();
+                }
+            }
+        };
+        checkEndGame.start();
     }
+
 
     protected void SetTimeline() {
         //TimeLine left;
         timeline_left.setCycleCount(Timeline.INDEFINITE);
         timeline_left.getKeyFrames().add(new KeyFrame(
-                Duration.millis(100),
+                Duration.millis(time_move/3),
                 (ActionEvent event) -> {
                     move_left.getChildren().setAll(left[0]);
                 }
         ));
         timeline_left.getKeyFrames().add(new KeyFrame(
-                Duration.millis(200),
+                Duration.millis(time_move/3 * 2),
                 (ActionEvent event) -> {
                     move_left.getChildren().setAll(left[1]);
                 }
         ));
         timeline_left.getKeyFrames().add(new KeyFrame(
-                Duration.millis(300),
+                Duration.millis(time_move),
                 (ActionEvent event) -> {
                     move_left.getChildren().setAll(left[2]);
                 }
@@ -59,19 +71,19 @@ public abstract class Enemy extends Entity {
         //TimeLine right
         timeline_right.setCycleCount(Timeline.INDEFINITE);
         timeline_right.getKeyFrames().add(new KeyFrame(
-                Duration.millis(100),
+                Duration.millis(time_move/3),
                 (ActionEvent event) -> {
                     move_right.getChildren().setAll(right[0]);
                 }
         ));
         timeline_right.getKeyFrames().add(new KeyFrame(
-                Duration.millis(200),
+                Duration.millis(time_move/3 * 2),
                 (ActionEvent event) -> {
                     move_right.getChildren().setAll(right[1]);
                 }
         ));
         timeline_right.getKeyFrames().add(new KeyFrame(
-                Duration.millis(300),
+                Duration.millis(time_move),
                 (ActionEvent event) -> {
                     move_right.getChildren().setAll(right[2]);
                 }
@@ -79,7 +91,7 @@ public abstract class Enemy extends Entity {
         //timeline_dead
         timeline_dead.setCycleCount(Timeline.INDEFINITE);
         timeline_dead.getKeyFrames().add(new KeyFrame(
-                Duration.millis(100),
+                Duration.millis(time_move/3),
                 (ActionEvent event) -> {
                     move_dead.getChildren().setAll(image_dead);
                 }
@@ -88,6 +100,7 @@ public abstract class Enemy extends Entity {
                 Duration.millis(400),
                 (ActionEvent event) -> {
                     dead = true;
+                    MainGame.Scoreingame += 100;
                 }
         ));
     }
@@ -113,10 +126,10 @@ public abstract class Enemy extends Entity {
     }
     protected boolean canMove(int posX, int posY) {
         if(posX == x && posY == y) return false;
-        if(MainGame.map[posX][posY] == '*' || MainGame.map[posX][posY] == 'x' || MainGame.map[posX][posY] == '#') {
-            return false;
+        if(MainGame.map[posX][posY] == ' ') {
+            return true;
         }
-        return true;
+        return false;
     }
     public void ActionDead () {
         timeline_dead.play();

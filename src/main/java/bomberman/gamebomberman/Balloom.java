@@ -7,6 +7,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Pair;
 
+import javax.xml.stream.events.EndDocument;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -53,21 +54,10 @@ public class Balloom extends Enemy {
                     transition = tran_up;
                 } else if (direction.equals(new Pair<>(1,0))) {
                     transition = tran_right;
-//                    move_right.toFront();
-//                    if(action.getChildren().indexOf(move_right) != 0){
-//
-//                    }
-//                    action.getChildren().setAll(move_right);
                 } else if (direction.equals(new Pair<>(-1,0))) {
                     transition = tran_left;
-//                    if(action.getChildren().indexOf(move_left) == 0){
-//                        move_left.toFront();
-//                        System.out.println("yeyeye");
-////                        action.getChildren().set(0,move_left);
-//                    }
-//                    action.getChildren().setAll(move_left);
                 }
-                if(!dead) {
+                if(!dead && !MainGame.EndGame) {
                     transition.play();
                 }
                 x = x + direction.getKey().intValue();

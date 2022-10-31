@@ -47,6 +47,7 @@ public class Brick extends Entity {
                 (ActionEvent event) ->{
                     brick_stack.getChildren().setAll();
                     dead = true;
+                    MainGame.Scoreingame += 50;
                 }
         ));
         action.getChildren().add(brick_stack);
