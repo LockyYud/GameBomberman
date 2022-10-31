@@ -18,7 +18,7 @@ public class Wall extends Entity {
         action.getChildren().add(image);
     }
     public Wall() {
-        String path = "D:\\Bomberman\\GameBomberman\\src\\main\\resources\\bomberman\\gamebomberman\\Map\\level1.txt";
+        String path = "C:\\Users\\Cevenn\\Documents\\GitHub\\GameBomberman\\src\\main\\resources\\bomberman\\gamebomberman\\Map\\level1.txt";
         try{
             Map.LoadMap(path);
         } catch (Exception e) {

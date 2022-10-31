@@ -132,6 +132,7 @@ public abstract class Enemy extends Entity {
         return false;
     }
     public void ActionDead () {
+        MainGame.sound.playSingleEp(3);
         timeline_dead.play();
     }
 }
