@@ -1,6 +1,8 @@
 package bomberman.gamebomberman;
 
+import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import javafx.util.Pair;
@@ -30,8 +32,8 @@ public class Oneal extends Enemy implements LoadImageWithoutBackground{
         image_dead.setFitHeight(SIZE_OF_BOX);
         image_dead.setFitWidth(SIZE_OF_BOX);
         this.SetTimeline();
-        action.getChildren().add(move_left);
-        action.getChildren().add(move_right);
+        action.getChildren().setAll(move_left);
+        direction = new Pair<>(-1,0);
         timeline_left.play();
         timeline_right.play();
         task = new TimerTask() {
@@ -53,12 +55,11 @@ public class Oneal extends Enemy implements LoadImageWithoutBackground{
                 } else if (direction.equals(new Pair<>(-1,0))) {
                     transition = tran_left;
                 }
-                if(!dead && !MainGame.EndGame) {
+                if(!dead && !MainGame.EndGame && transition.getStatus() != Animation.Status.RUNNING) {
                     transition.play();
+                    x = x + direction.getKey().intValue();
+                    y = y + direction.getValue().intValue();
                 }
-                x = x + direction.getKey().intValue();
-                y = y + direction.getValue().intValue();
-//                System.out.println(x + " " + y);
             }
         };
     }

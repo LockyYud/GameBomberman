@@ -1,10 +1,7 @@
 package bomberman.gamebomberman;
 
 import com.almasb.fxgl.dev.editor.EntityInspector;
-import javafx.animation.AnimationTimer;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -48,6 +45,7 @@ import java.util.*;
 
 
 import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 enum StateGame {
@@ -66,7 +64,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
     private boolean ChangeState = true;
     private int level = 0;
     public static int Scoreingame;
-    public static int nums_Monster_inGame;
+    public static int nums_Monster_inGame = 0;
 
     public static char[][] map = new char[31][13];
     private String[] path_level = new String[3];
@@ -76,8 +74,8 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
     public static Bomber bomber;
     public static boolean EndGame = false;
 
-
-
+    private double timeStartGame;
+    private double TimeinGame = 300;
     @Override
     public void start(Stage stage) {
         AnimationTimer checkStateGame = new AnimationTimer() {
@@ -85,6 +83,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
             public void handle(long l) {
                 if (ChangeState) {
                     if (stateGame == StateGame.START_GAME) {
+                        level = 0;
                         stage.setScene(GameLoop(path_level[level]));
                         Scoreingame = 0;
                     } else if (stateGame == StateGame.DEFAULT) {
@@ -153,6 +152,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
     }
 
     private Scene GameLoop(String path) {
+
         try {
             map = Map.LoadMap(path);
         } catch (Exception e) {
@@ -163,7 +163,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
         bomber = new Bomber();
         LoadEntity();
         Group root = new Group();
-        menuEndGame endGame = new menuEndGame("oekoek");
+        menuEndGame endGame = new menuEndGame("Pause");
 
         ImageView background = new ImageView(grass);
         background.setFitWidth(window_width);
@@ -184,31 +184,31 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
         timeline_nextlevel.setAutoReverse(false);
         timeline_nextlevel.setCycleCount(1);
         timeline_nextlevel.getKeyFrames().add(new KeyFrame(
-                Duration.millis(200),
+                Duration.millis(800),
                 actionEvent -> {
                     stagenow.setStyle("    -fx-background-color: rgba(0,0,0,0.60);");
                 }
         ));
         timeline_nextlevel.getKeyFrames().add(new KeyFrame(
-                Duration.millis(400),
+                Duration.millis(850),
                 actionEvent -> {
                     stagenow.setStyle("    -fx-background-color: rgba(0,0,0,0.45);");
                 }
         ));
         timeline_nextlevel.getKeyFrames().add(new KeyFrame(
-                Duration.millis(600),
+                Duration.millis(900),
                 actionEvent -> {
                     stagenow.setStyle("    -fx-background-color: rgba(0,0,0,0.30);");
                 }
         ));
         timeline_nextlevel.getKeyFrames().add(new KeyFrame(
-                Duration.millis(600),
+                Duration.millis(950),
                 actionEvent -> {
                     stagenow.setStyle("    -fx-background-color: rgba(0,0,0,0.15);");
                 }
         ));
         timeline_nextlevel.getKeyFrames().add(new KeyFrame(
-                Duration.millis(600),
+                Duration.millis(1000),
                 actionEvent -> {
                     stagenow.setStyle("    -fx-background-color: rgba(0,0,0,0);");
                     Textstagenow.setText(" ");
@@ -239,30 +239,56 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
         Scene scene = new Scene(root, window_width, window_height);
 
 
-        Label score = new Label("SCORE");
-        Label left = new Label("LEFT");
-        Text num_left = new Text(bomber.getNum_life());
-        left.setLabelFor(num_left);
-        HBox hBox = new HBox();
-        hBox.setAlignment(Pos.CENTER);
-        hBox.setMargin(left, new Insets(0, 0, 0, 0));
-        hBox.setMargin(num_left, new Insets(0, 0, 0, 0));
-        ObservableList list = hBox.getChildren();
-        list.addAll(left,num_left);
-        hBox.setMaxSize(Entity.SIZE_OF_BOX * 2, window_height);
-        hBox.setStyle("    -fx-font-size: 16pt;\n" +
-                "    -fx-font-family: \"Courier New\";\n");
-        root.getChildren().add(hBox);
-        hBox.setLayoutX(0);
-        hBox.setLayoutY(13 * Entity.SIZE_OF_BOX);
+
+        Label GameTimeleft = new Label("TIME LEFT: ");
+        GameTimeleft.setStyle("-fx-font-weight: Bold; -fx-text-fill: rgb(148,134,22)");
+        Text timeLeft = new Text();
+        timeLeft.setStyle("-fx-font-weight: Bold; -fx-text-fill: rgb(148,134,22); -fx-font-family: \"Courier New\";");
+        AnimationTimer checkTimeGame = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                timeLeft.setText(Integer.toString((int) (TimeinGame - (System.currentTimeMillis() - timeStartGame)/1000)));
+            }
+        };
+        timeStartGame = System.currentTimeMillis();
+        checkTimeGame.start();
+        HBox GamePoint = new HBox();
+        Label bomber_left = new Label("LEFT:");
+        bomber_left.setStyle("-fx-font-weight: Bold; -fx-text-fill: rgb(148,134,22)");
+        Text num_BomberLeft = new Text(bomber.getNum_life());
+        num_BomberLeft.setStyle("-fx-font-weight: Bold; -fx-text-fill: rgb(148,134,22); -fx-font-family: \"Courier New\";");
+        Label score = new Label("SCORE:");
+        score.setStyle("-fx-font-weight: Bold; -fx-text-fill: rgb(148,134,22)");
+        Text numScore = new Text(Integer.toString(Scoreingame));
+        numScore.setStyle("-fx-font-weight: Bold; -fx-text-fill: rgb(148,134,22); -fx-font-family: \"Courier New\";");
+        GamePoint.setMargin(bomber_left,new Insets(0,10,0,20));
+        GamePoint.setMargin(num_BomberLeft,new Insets(0,20,0,0));
+        GamePoint.setMargin(score,new Insets(0,0,0,100));
+        GamePoint.setMargin(numScore,new Insets(0,20,0,10));
+        GamePoint.setMargin(GameTimeleft,new Insets(0,0,0,100));
+        GamePoint.setMargin(timeLeft,new Insets(0,20,0,10));
+        GamePoint.getChildren().addAll(bomber_left,num_BomberLeft,score,numScore,GameTimeleft,timeLeft);
+        GamePoint.setMinSize(32 * 31,32);
+        GamePoint.setAlignment(Pos.BASELINE_LEFT);
+        GamePoint.setStyle("    -fx-border-color: rgb(101,136,52);\n" +
+                "    -fx-border-style: solid inside;\n" +
+                "    -fx-border-width: 3;\n" +
+                "    -fx-border-insets: -1;" +
+                "    -fx-font-size: 16pt;\n" +
+                "    -fx-font-family: \"Courier New\";\n" +
+                "    -fx-base: rgb(132, 145, 47);\n" +
+                "    -fx-background: rgb(172,215,149);");
+        GamePoint.setBackground(Background.fill(Color.rgb(225, 228, 203)));
+        root.getChildren().add(GamePoint);
+        GamePoint.setTranslateY(13 * Entity.SIZE_OF_BOX);
+
 
 
         scene.addEventHandler(KeyEvent.KEY_PRESSED, bomber.handler);
         endGame.handlerNewGame = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                stateGame = StateGame.MENU_START;
-                System.out.println(1);
+                stateGame = StateGame.START_GAME ;
                 ChangeState = true;
             }
         };
@@ -270,34 +296,44 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
             @Override
             public void handle(MouseEvent mouseEvent) {
                 stateGame = StateGame.MENU_START;
+                ChangeState = true;
             }
         };
 
         AnimationTimer checkScoreandLeft = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                num_left.setText(bomber.getNum_life());
+                num_BomberLeft.setText(bomber.getNum_life());
+                numScore.setText(Integer.toString(Scoreingame));
             }
         };
         AnimationTimer checkEndGame = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                if (bomber.num_life == 0 && !root.getChildren().contains(endGame.borderPanel)) {
+                if ((bomber.num_life == 0 || Integer.parseInt(timeLeft.getText()) == 0) && !root.getChildren().contains(endGame.borderPanel)) {
+                    endGame.setEndGame("YOU LOSE");
                     endGame.addHandle();
                     root.getChildren().add(endGame.borderPanel);
                     endGame.transition.play();
                     scene.removeEventHandler(KeyEvent.KEY_PRESSED, bomber.handler);
                     EndGame = true;
+                    checkTimeGame.stop();
                 }
                 if(nums_Monster_inGame == 0 && map[bomber.getX()][bomber.getY()] == 'x') {
-//                    if(level == 2) {
-//
-//                    }
-//                    else {
+                    if(level == 2 && !root.getChildren().contains(endGame.borderPanel)) {
+                        endGame.setEndGame("YOU WIN");
+                        endGame.addHandle();
+                        root.getChildren().add(endGame.borderPanel);
+                        endGame.transition.play();
+                        scene.removeEventHandler(KeyEvent.KEY_PRESSED, bomber.handler);
+                        EndGame = true;
+                        checkTimeGame.stop();
+                    }
+                    else {
                         stateGame = StateGame.NEXT_LEVEL;
                         level++;
                         ChangeState = true;
-//                    }
+                    }
                 }
             }
         };
@@ -305,8 +341,10 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
             @Override
             public void handle(long l) {
                 for (int i = 0; i < monster.length; i++) {
-                    if (bomber.Collide_with(monster[i]) && monster[i].dead == false) {
-                        bomber.timeline_dead.play();
+                    if (bomber.Collide_with(monster[i])
+                            && monster[i].dead == false
+                            && bomber.timeline_dead.getStatus() == Animation.Status.STOPPED) {
+                        bomber.playActionDead();
                     }
                 }
             }
@@ -332,9 +370,11 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
                         }
                 }
                 if (bomber.dead) {
-                    bomber.action.setTranslateX(bomber.startX * Entity.SIZE_OF_BOX);
-                    bomber.action.setTranslateY(bomber.startY * Entity.SIZE_OF_BOX);
-                    bomber.dead = false;
+                    if(bomber.timeline_dead.getStatus() == Animation.Status.STOPPED){
+                        System.out.println(1);
+                        bomber.playActionDead();
+                        bomber.dead = false;
+                    }
                 }
             }
         };
@@ -362,6 +402,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
         checkCollideBomber.start();
         checkItem.start();
         checkBomberDead.start();
+        nums_Monster_inGame = 0;
         timeline_nextlevel.play();
         return scene;
     }

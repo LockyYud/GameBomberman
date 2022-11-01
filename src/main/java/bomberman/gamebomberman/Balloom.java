@@ -1,5 +1,6 @@
 package bomberman.gamebomberman;
 
+import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
@@ -57,11 +58,12 @@ public class Balloom extends Enemy {
                 } else if (direction.equals(new Pair<>(-1,0))) {
                     transition = tran_left;
                 }
-                if(!dead && !MainGame.EndGame) {
+                if(!dead && !MainGame.EndGame && transition.getStatus() != Animation.Status.RUNNING) {
                     transition.play();
+                    x = x + direction.getKey().intValue();
+                    y = y + direction.getValue().intValue();
                 }
-                x = x + direction.getKey().intValue();
-                y = y + direction.getValue().intValue();
+//                System.out.println(x + " " + y);
             }
         };
     }

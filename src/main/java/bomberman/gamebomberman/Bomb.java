@@ -1,5 +1,6 @@
 package bomberman.gamebomberman;
 
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -11,6 +12,7 @@ import javafx.util.Duration;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Bomb extends Entity {
+    public static int TimeBomb_Explore = 2600;
     private int length_of_fire;
     private ImageView[] bombItem = new ImageView[3];
     private ImageView[] bombItemEx = new ImageView[3];
@@ -88,14 +90,42 @@ public class Bomb extends Entity {
                 }
         ));
         timeline_bomb.getKeyFrames().add(new KeyFrame(
-                Duration.millis(500),
+                Duration.millis(300),
                 (ActionEvent event) ->{
                     bomb_stack.getChildren().setAll(bombItem[1]);
                     action.getChildren().setAll(bomb_stack);
                 }
         ));
         timeline_bomb.getKeyFrames().add(new KeyFrame(
-                Duration.millis(1600),
+                Duration.millis(600),
+                (ActionEvent event) ->{
+                    bomb_stack.getChildren().setAll(bombItem[2]);
+                    action.getChildren().setAll(bomb_stack);
+                }
+        ));
+        timeline_bomb.getKeyFrames().add(new KeyFrame(
+                Duration.millis(900),
+                (ActionEvent event) ->{
+                    bomb_stack.getChildren().setAll(bombItem[1]);
+                    action.getChildren().setAll(bomb_stack);
+                }
+        ));
+        timeline_bomb.getKeyFrames().add(new KeyFrame(
+                Duration.millis(1200),
+                (ActionEvent event) ->{
+                    bomb_stack.getChildren().setAll(bombItem[0]);
+                    action.getChildren().setAll(bomb_stack);
+                }
+        ));
+        timeline_bomb.getKeyFrames().add(new KeyFrame(
+                Duration.millis(1500),
+                (ActionEvent event) ->{
+                    bomb_stack.getChildren().setAll(bombItem[1]);
+                    action.getChildren().setAll(bomb_stack);
+                }
+        ));
+        timeline_bomb.getKeyFrames().add(new KeyFrame(
+                Duration.millis(1800),
                 (ActionEvent event) ->{
                     bomb_stack.getChildren().setAll(bombItem[2]);
                     action.getChildren().setAll(bomb_stack);
@@ -180,7 +210,7 @@ public class Bomb extends Entity {
                 }
         ));
         timeline_bomb.getKeyFrames().add(new KeyFrame(
-                Duration.millis(2500),
+                Duration.millis(2400),
                 (ActionEvent event) ->{
                     int length_up = 0;
                     int length_left = 0;
@@ -256,10 +286,13 @@ public class Bomb extends Entity {
                     action.getChildren().setAll(bomb_stack);
                     action.setLayoutX(0 - length_left * SIZE_OF_BOX);
                     action.setLayoutY(0 - length_up * SIZE_OF_BOX);
+                    if(MainGame.bomber.getX() == this.x && MainGame.bomber.getY() == this.y) {
+                        MainGame.bomber.dead = true;
+                    }
                 }
         ));
         timeline_bomb.getKeyFrames().add(new KeyFrame(
-                Duration.millis(2800),
+                Duration.millis(TimeBomb_Explore),
                 (ActionEvent event) ->{
                     int length_up = 0;
                     int length_left = 0;
@@ -345,7 +378,7 @@ public class Bomb extends Entity {
 
         int x1 = (int) _x1 / SIZE_OF_BOX;
         int y1 = (int) _y1 / SIZE_OF_BOX;
-        if(MainGame.map[x + x1][y + y1] == '#') {
+        if(MainGame.map[x + x1][y + y1] == '#' || MainGame.map[x + x1][y + y1] == 'x') {
             return false;
         }
         if(MainGame.obstacle[x + x1][y + y1] != null && MainGame.map[x + x1][y + y1] != ' ') {
@@ -358,8 +391,9 @@ public class Bomb extends Entity {
             }
         }
         if(MainGame.bomber.Collide_with_bomb(this.x * SIZE_OF_BOX + _x1
-                ,this.y * SIZE_OF_BOX + _y1)) {
-            MainGame.bomber.timeline_dead.play();
+                ,this.y * SIZE_OF_BOX + _y1) && MainGame.bomber.dead == false
+                && MainGame.bomber.timeline_dead.getStatus() == Animation.Status.STOPPED) {
+            MainGame.bomber.dead = true;
         }
         return true;
     }

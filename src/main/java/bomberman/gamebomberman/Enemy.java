@@ -51,19 +51,19 @@ public abstract class Enemy extends Entity {
         //TimeLine left;
         timeline_left.setCycleCount(Timeline.INDEFINITE);
         timeline_left.getKeyFrames().add(new KeyFrame(
-                Duration.millis(time_move/3),
+                Duration.millis(100),
                 (ActionEvent event) -> {
                     move_left.getChildren().setAll(left[0]);
                 }
         ));
         timeline_left.getKeyFrames().add(new KeyFrame(
-                Duration.millis(time_move/3 * 2),
+                Duration.millis(200),
                 (ActionEvent event) -> {
                     move_left.getChildren().setAll(left[1]);
                 }
         ));
         timeline_left.getKeyFrames().add(new KeyFrame(
-                Duration.millis(time_move),
+                Duration.millis(300),
                 (ActionEvent event) -> {
                     move_left.getChildren().setAll(left[2]);
                 }
@@ -71,19 +71,19 @@ public abstract class Enemy extends Entity {
         //TimeLine right
         timeline_right.setCycleCount(Timeline.INDEFINITE);
         timeline_right.getKeyFrames().add(new KeyFrame(
-                Duration.millis(time_move/3),
+                Duration.millis(100),
                 (ActionEvent event) -> {
                     move_right.getChildren().setAll(right[0]);
                 }
         ));
         timeline_right.getKeyFrames().add(new KeyFrame(
-                Duration.millis(time_move/3 * 2),
+                Duration.millis(200),
                 (ActionEvent event) -> {
                     move_right.getChildren().setAll(right[1]);
                 }
         ));
         timeline_right.getKeyFrames().add(new KeyFrame(
-                Duration.millis(time_move),
+                Duration.millis(300),
                 (ActionEvent event) -> {
                     move_right.getChildren().setAll(right[2]);
                 }
@@ -101,9 +101,9 @@ public abstract class Enemy extends Entity {
                 (ActionEvent event) -> {
                     if(!dead){
                         MainGame.nums_Monster_inGame--;
+                        MainGame.Scoreingame += 100;
                     }
                     dead = true;
-                    MainGame.Scoreingame += 100;
                 }
         ));
     }
@@ -128,6 +128,7 @@ public abstract class Enemy extends Entity {
         }
     }
     protected boolean canMove(int posX, int posY) {
+//        System.out.println(x + " " + y);
         if(posX == x && posY == y) return false;
         if(MainGame.map[posX][posY] == ' ') {
             return true;

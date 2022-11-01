@@ -15,12 +15,12 @@ import javafx.util.Pair;
 import java.util.*;
 
 public class Bomber extends Entity implements typesItem{
-    private int time_move = 300;
+    private int time_move = 400;
     public int startX;
     public int startY;
      private boolean moved = false;
      private int lenghtofBomb = 1;
-     public int num_life = 1;
+     public int num_life = 3;
      private ImageView[] images_down = new ImageView[3];
      private ImageView[] images_up = new ImageView[3];
      private ImageView[] images_left = new ImageView[3];
@@ -37,18 +37,21 @@ public class Bomber extends Entity implements typesItem{
      private Timeline timeline_right = new Timeline();
      public Timeline timeline_dead = new Timeline();
      public Timeline make_bomb = new Timeline();
+     public Timeline make_bombs = new Timeline();
      private TranslateTransition transition = new TranslateTransition();
      private TranslateTransition transitionOffice = new TranslateTransition();
 
      private List<Bomb> bombs = new ArrayList<>();
      private Pair<Integer, Integer> direction;
      private Bomb bombom;
+     private Bomb bomboms;
+     private boolean moreBomb = false;
      public Group bombombom = new Group();
      public AnimationTimer updateBomerPos = new AnimationTimer() {
          @Override
          public void handle(long l) {
              if(moved) {
-                 if(transitionOffice.getStatus() == Animation.Status.STOPPED) {
+                 if(transitionOffice.getStatus() == Animation.Status.STOPPED ) {
                      transitionOffice = transition;
                      transition.play();
                      moved = false;
@@ -61,40 +64,43 @@ public class Bomber extends Entity implements typesItem{
      public EventHandler<KeyEvent> handler = new EventHandler<KeyEvent>() {
           @Override
           public void handle(KeyEvent keyEvent) {
-               if(keyEvent.getCode() == KeyCode.SPACE) {
-                    make_bomb.play();
-               }
-               if(keyEvent.getCode() == KeyCode.DOWN) {
-                    timeline_down.play();
-                    action.getChildren().setAll(move_down);
-                    transition = tran_down;
-                    moved = true;
-                    direction = new Pair<>(0, 1);
-               }
-               else if(keyEvent.getCode() == KeyCode.UP) {
-                    timeline_up.play();
-                    action.getChildren().setAll(move_up);
-                    transition = tran_up;
-                    moved = true;
-                   direction = new Pair<>(0, -1);
-               }
-               else if(keyEvent.getCode() == KeyCode.RIGHT) {
-                    timeline_right.play();
-                    action.getChildren().setAll(move_right);
-                    transition = tran_right;
-                    moved = true;
-                   direction = new Pair<>(1, 0);
-               }
-               else if(keyEvent.getCode() == KeyCode.LEFT) {
-                    timeline_left.play();
-                    action.getChildren().setAll(move_left);
-                    transition = tran_left;
-                    moved = true;
-                   direction = new Pair<>(-1, 0);
-               }
-               if(!CanMove()){
-                   moved = false;
-               }
+              if(timeline_dead.getStatus() != Animation.Status.RUNNING){
+                  if (keyEvent.getCode() == KeyCode.SPACE) {
+                      if(make_bomb.getStatus() == Animation.Status.RUNNING && moreBomb) {
+                          System.out.println(1);
+                          make_bombs.play();
+                      }
+                      make_bomb.play();
+                  }
+                  if (keyEvent.getCode() == KeyCode.DOWN) {
+                      timeline_down.play();
+                      action.getChildren().setAll(move_down);
+                      transition = tran_down;
+                      moved = true;
+                      direction = new Pair<>(0, 1);
+                  } else if (keyEvent.getCode() == KeyCode.UP) {
+                      timeline_up.play();
+                      action.getChildren().setAll(move_up);
+                      transition = tran_up;
+                      moved = true;
+                      direction = new Pair<>(0, -1);
+                  } else if (keyEvent.getCode() == KeyCode.RIGHT) {
+                      timeline_right.play();
+                      action.getChildren().setAll(move_right);
+                      transition = tran_right;
+                      moved = true;
+                      direction = new Pair<>(1, 0);
+                  } else if (keyEvent.getCode() == KeyCode.LEFT) {
+                      timeline_left.play();
+                      action.getChildren().setAll(move_left);
+                      transition = tran_left;
+                      moved = true;
+                      direction = new Pair<>(-1, 0);
+                  }
+                  if (!CanMove()) {
+                      moved = false;
+                  }
+              }
           }
      };
      public Bomber(){
@@ -222,29 +228,33 @@ public class Bomber extends Entity implements typesItem{
           //TimeLine for dead
           timeline_dead.setCycleCount(1);
           timeline_dead.getKeyFrames().add(new KeyFrame(
-                  Duration.millis(time_move/3),
+                  Duration.millis(300),
                   (ActionEvent event) -> {
 //                      MainGame.sound.playSingleEp(2);
                        actionDead.getChildren().setAll(images_dead[0]);
                   }
           ));
           timeline_dead.getKeyFrames().add(new KeyFrame(
-                  Duration.millis(time_move / 3 * 2),
+                  Duration.millis(450),
                   (ActionEvent event) -> {
                        actionDead.getChildren().setAll(images_dead[1]);
                   }
           ));
           timeline_dead.getKeyFrames().add(new KeyFrame(
-                  Duration.millis(time_move),
+                  Duration.millis(600),
                   (ActionEvent event) -> {
                        actionDead.getChildren().setAll(images_dead[2]);
                   }
           ));
           timeline_dead.getKeyFrames().add(new KeyFrame(
-                  Duration.millis(time_move + 100),
+                  Duration.millis(1100),
                   (ActionEvent event) -> {
-                       action.setTranslateX(startX * SIZE_OF_BOX);
-                       action.setTranslateY(startY * SIZE_OF_BOX);
+                      action.getChildren().setAll(images_down[0]);
+                      System.out.println(2);
+                      if(num_life > 1){
+                          action.setTranslateX(startX * SIZE_OF_BOX);
+                          action.setTranslateY(startY * SIZE_OF_BOX);
+                      }
                        x = this.startX;
                        y = this.startY;
                        num_life--;
@@ -262,14 +272,33 @@ public class Bomber extends Entity implements typesItem{
                   }
           ));
           make_bomb.getKeyFrames().add(new KeyFrame(
-                  Duration.millis(3200),
+                  Duration.millis(Bomb.TimeBomb_Explore + 100),
                   (ActionEvent event) -> {
                        bombombom.getChildren().remove(bombom.action);
                        bombom = null;
                   }
           ));
-
-
+          //timeline bombs
+          make_bombs.setCycleCount(1);
+          make_bombs.setAutoReverse(false);
+          make_bombs.getKeyFrames().add(new KeyFrame(
+                  Duration.millis(0),
+                  (ActionEvent event) -> {
+                       bomboms = new Bomb(this.x, this.y, lenghtofBomb);
+                       bombombom.getChildren().add(bomboms.action);
+                  }
+          ));
+          make_bombs.getKeyFrames().add(new KeyFrame(
+                  Duration.millis(Bomb.TimeBomb_Explore + 100),
+                  (ActionEvent event) -> {
+                       bombombom.getChildren().remove(bomboms.action);
+                       bomboms = null;
+                  }
+          ));
+          tran_right.setDuration(Duration.millis(time_move));
+          tran_up.setDuration(Duration.millis(time_move));
+          tran_left.setDuration(Duration.millis(time_move));
+          tran_down.setDuration(Duration.millis(time_move));
           action.getChildren().add(move_right);
           action.getChildren().add(move_left);
           action.getChildren().add(move_down);
@@ -297,7 +326,7 @@ public class Bomber extends Entity implements typesItem{
      }
 
      public void ChangeSpeed () {
-          time_move = time_move / 2;
+          time_move = 300;
           timeline_down.getKeyFrames().removeAll();
           timeline_up.getKeyFrames().removeAll();
           timeline_left.getKeyFrames().removeAll();
@@ -390,6 +419,10 @@ public class Bomber extends Entity implements typesItem{
           tran_right.setDuration(Duration.millis(time_move));
 
      }
+     public void playActionDead() {
+         action.getChildren().setAll(actionDead);
+         timeline_dead.play();
+     }
      public void ChangeLenghtofBomb (int lenght) {
          lenghtofBomb = lenght;
      }
@@ -401,7 +434,7 @@ public class Bomber extends Entity implements typesItem{
              this.ChangeLenghtofBomb(2);
          }
          else if(item.getName() == nameItem.BOMBS) {
-
+             moreBomb = true;
          }
      }
 

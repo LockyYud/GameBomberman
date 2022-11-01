@@ -22,15 +22,33 @@ public class menuEndGame {
     public EventHandler<MouseEvent> handlerNewGame;
     public EventHandler<MouseEvent> handlerContinue;
     Text EndGame;
+    Text Score;
     Button NewGame;
     Button Continue;
     HBox hBox = new HBox();
+
+    public void setEndGame(String paht) {
+        EndGame.setText(paht);
+        EndGame.setTranslateX((borderPanel.getMinWidth() - EndGame.getLayoutBounds().getWidth())/2);
+        EndGame.setTranslateY(20);
+        Score.setText("Score: " + Integer.toString(MainGame.Scoreingame));
+//        Score.setTranslateX((borderPanel.getMinWidth() - Score.getLayoutBounds().getWidth())/2);
+//        Score.setTranslateY(100);
+    }
+
     public TranslateTransition transition = new TranslateTransition();
     public menuEndGame(String path) {
         EndGame = new Text(path);
         EndGame.setStyle("-fx-font-family: \"Courier New\";");
+        Score = new Text("Score:");
+        Score.setStyle("-fx-font-family: \"Courier New\";" +
+                "-fx-font-size: 14pt;" +
+                "    -fx-text-fill: rgb(49, 89, 23);\n" +
+                "    -fx-border-color: rgb(49, 89, 23);\n" +
+                "    -fx-border-radius: 5;\n" +
+                "    -fx-padding: 3 6 6 6;");
         NewGame = new Button("New Game");
-        Continue = new Button("Continue");
+        Continue = new Button("Menu Game");
 
         NewGame.setStyle("    -fx-text-fill: rgb(49, 89, 23);\n" +
                 "    -fx-border-color: rgb(49, 89, 23);\n" +
@@ -58,11 +76,12 @@ public class menuEndGame {
                 "    -fx-background: rgb(45,51,23);");
         borderPanel.setBackground(Background.fill(Color.rgb(225, 228, 203)));
         borderPanel.setTop(EndGame);
+        borderPanel.setCenter(Score);
         borderPanel.setBottom(hBox);
         transition.setDuration(Duration.millis(2000));
         transition.setNode(borderPanel);
         EndGame.setTranslateX((borderPanel.getMaxWidth() - EndGame.getLayoutBounds().getWidth())/2);
-        EndGame.setTranslateY(30);
+        EndGame.setTranslateY(20);
         borderPanel.setTranslateX((MainGame.window_width - borderPanel.getMaxWidth())/2);
         borderPanel.setTranslateY(MainGame.window_height);
         transition.setToX((MainGame.window_width - borderPanel.getMaxWidth())/2);

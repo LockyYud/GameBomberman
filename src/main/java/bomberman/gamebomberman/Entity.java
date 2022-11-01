@@ -7,7 +7,7 @@ import javafx.util.Duration;
 
 public abstract class Entity implements LoadImageWithoutBackground {
     public static final int SIZE_OF_BOX = 32;
-    protected int time_move = 500;
+    protected int time_move = 1000;
     protected int x;
     protected int y;
     public ImageView image;
@@ -23,28 +23,28 @@ public abstract class Entity implements LoadImageWithoutBackground {
     protected TranslateTransition tran_down = new TranslateTransition();
     Entity() {
         tran_left.setNode(action);
-        tran_left.setDuration(Duration.millis(time_move + 25));
+        tran_left.setDuration(Duration.millis(time_move));
         tran_left.setCycleCount(1);
         tran_left.setAutoReverse(false);
         tran_left.setByY(0);
         tran_left.setByX(-SIZE_OF_BOX);
         //tran_right
         tran_right.setNode(action);
-        tran_right.setDuration(Duration.millis(time_move + 25));
+        tran_right.setDuration(Duration.millis(time_move));
         tran_right.setCycleCount(1);
         tran_right.setAutoReverse(false);
         tran_right.setByY(0);
         tran_right.setByX(SIZE_OF_BOX);
         //tran_up
         tran_up.setNode(action);
-        tran_up.setDuration(Duration.millis(time_move + 25));
+        tran_up.setDuration(Duration.millis(time_move));
         tran_up.setCycleCount(1);
         tran_up.setAutoReverse(false);
         tran_up.setByY(-SIZE_OF_BOX);
         tran_up.setByX(0);
         //tran_down
         tran_down.setNode(action);
-        tran_down.setDuration(Duration.millis(time_move + 25));
+        tran_down.setDuration(Duration.millis(time_move));
         tran_down.setCycleCount(1);
         tran_down.setAutoReverse(false);
         tran_down.setByY(SIZE_OF_BOX);
@@ -55,28 +55,28 @@ public abstract class Entity implements LoadImageWithoutBackground {
         this.y = y;
         //tran_left
         tran_left.setNode(action);
-        tran_left.setDuration(Duration.millis(time_move + 25));
+        tran_left.setDuration(Duration.millis(time_move));
         tran_left.setCycleCount(1);
         tran_left.setAutoReverse(false);
         tran_left.setByY(0);
         tran_left.setByX(-SIZE_OF_BOX);
         //tran_right
         tran_right.setNode(action);
-        tran_right.setDuration(Duration.millis(time_move + 25));
+        tran_right.setDuration(Duration.millis(time_move));
         tran_right.setCycleCount(1);
         tran_right.setAutoReverse(false);
         tran_right.setByY(0);
         tran_right.setByX(SIZE_OF_BOX);
         //tran_up
         tran_up.setNode(action);
-        tran_up.setDuration(Duration.millis(time_move + 25));
+        tran_up.setDuration(Duration.millis(time_move));
         tran_up.setCycleCount(1);
         tran_up.setAutoReverse(false);
         tran_up.setByY(-SIZE_OF_BOX);
         tran_up.setByX(0);
         //tran_down
         tran_down.setNode(action);
-        tran_down.setDuration(Duration.millis(time_move + 25));
+        tran_down.setDuration(Duration.millis(time_move));
         tran_down.setCycleCount(1);
         tran_down.setAutoReverse(false);
         tran_down.setByY(SIZE_OF_BOX);
