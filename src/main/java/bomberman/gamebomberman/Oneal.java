@@ -1,6 +1,7 @@
 package bomberman.gamebomberman;
 
 import javafx.animation.Animation;
+import javafx.animation.AnimationTimer;
 import javafx.animation.TranslateTransition;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.ImageView;
@@ -32,10 +33,24 @@ public class Oneal extends Enemy implements LoadImageWithoutBackground{
         image_dead.setFitHeight(SIZE_OF_BOX);
         image_dead.setFitWidth(SIZE_OF_BOX);
         this.SetTimeline();
-        action.getChildren().setAll(move_left);
+        action.getChildren().add(move_left);
         direction = new Pair<>(-1,0);
         timeline_left.play();
         timeline_right.play();
+        AnimationTimer checkhuong = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if(direction.equals(new Pair<>(0,1))) {
+
+                } else if (direction.equals(new Pair<>(0,-1))) {
+
+                } else if (direction.equals(new Pair<>(1,0))) {
+                    action.getChildren().setAll(move_right);
+                } else if (direction.equals(new Pair<>(-1,0))) {
+                    action.getChildren().setAll(move_left);
+                }
+            }
+        };
         task = new TimerTask() {
             @Override
             public void run() {
@@ -62,6 +77,7 @@ public class Oneal extends Enemy implements LoadImageWithoutBackground{
                 }
             }
         };
+        checkEndGame.start();
     }
 
     @Override

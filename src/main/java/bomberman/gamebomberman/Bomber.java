@@ -111,10 +111,12 @@ public class Bomber extends Entity implements typesItem{
                          y = j;
                          startX = x;
                          startY = y;
+                         MainGame.map[i][j] = ' ';
                          break;
                     }
                }
           }
+          direction = new Pair<>(0,0);
           images_down[0] = new ImageView(player_down);
           images_down[1] = new ImageView(player_down_1);
           images_down[2] = new ImageView(player_down_2);

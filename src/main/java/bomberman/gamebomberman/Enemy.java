@@ -41,9 +41,17 @@ public abstract class Enemy extends Entity {
                     timeline_left.stop();
                     timeline_right.stop();
                 }
+                if(direction.equals(new Pair<>(0,1))) {
+
+                } else if (direction.equals(new Pair<>(0,-1))) {
+
+                } else if (direction.equals(new Pair<>(1,0))) {
+                    action.getChildren().setAll(move_right);
+                } else if (direction.equals(new Pair<>(-1,0))) {
+                    action.getChildren().setAll(move_left);
+                }
             }
         };
-        checkEndGame.start();
     }
 
 

@@ -32,8 +32,6 @@ public class menuEndGame {
         EndGame.setTranslateX((borderPanel.getMinWidth() - EndGame.getLayoutBounds().getWidth())/2);
         EndGame.setTranslateY(20);
         Score.setText("Score: " + Integer.toString(MainGame.Scoreingame));
-//        Score.setTranslateX((borderPanel.getMinWidth() - Score.getLayoutBounds().getWidth())/2);
-//        Score.setTranslateY(100);
     }
 
     public TranslateTransition transition = new TranslateTransition();
@@ -80,7 +78,7 @@ public class menuEndGame {
         borderPanel.setBottom(hBox);
         transition.setDuration(Duration.millis(2000));
         transition.setNode(borderPanel);
-        EndGame.setTranslateX((borderPanel.getMaxWidth() - EndGame.getLayoutBounds().getWidth())/2);
+//        EndGame.setTranslateX((borderPanel.getMaxWidth() - EndGame.getLayoutBounds().getWidth())/2);
         EndGame.setTranslateY(20);
         borderPanel.setTranslateX((MainGame.window_width - borderPanel.getMaxWidth())/2);
         borderPanel.setTranslateY(MainGame.window_height);

@@ -20,12 +20,15 @@ public class Bomb extends Entity {
     private ImageView[] bombItemEx_left = new ImageView[3];
     private ImageView[] bombItemEx_up = new ImageView[3];
     private ImageView[] bombItemEx_down = new ImageView[3];
-    private ImageView[] bombItemEx_vertical = new ImageView[3];
-    private ImageView[] bombItemEx_horizontal = new ImageView[3];
+    private ImageView[] bombItemEx_vertical_up = new ImageView[3];
+    private ImageView[] bombItemEx_vertical_down = new ImageView[3];
+    private ImageView[] bombItemEx_horizontal_left = new ImageView[3];
+    private ImageView[] bombItemEx_horizontal_right = new ImageView[3];
     private Timeline timeline_bomb = new Timeline();
     private Brick[] brick_will_break = new Brick[4];
     private StackPane bomb_stack = new StackPane();
-    private int numbrick = 0;
+    int horizon;
+    int vertical;
 
     private void construct() {
         bombItem[0] = new ImageView(bomb);
@@ -46,12 +49,18 @@ public class Bomb extends Entity {
         bombItemEx_down[0] = new ImageView(explosion_vertical_down_last);
         bombItemEx_down[1] = new ImageView(explosion_vertical_down_last1);
         bombItemEx_down[2] = new ImageView(explosion_vertical_down_last2);
-        bombItemEx_vertical[0] = new ImageView(explosion_vertical);
-        bombItemEx_vertical[1] = new ImageView(explosion_vertical1);
-        bombItemEx_vertical[2] = new ImageView(explosion_vertical2);
-        bombItemEx_horizontal[0] = new ImageView(explosion_horizontal);
-        bombItemEx_horizontal[1] = new ImageView(explosion_horizontal1);
-        bombItemEx_horizontal[2] = new ImageView(explosion_horizontal2);
+        bombItemEx_vertical_down[0] = new ImageView(explosion_vertical);
+        bombItemEx_vertical_down[1] = new ImageView(explosion_vertical1);
+        bombItemEx_vertical_down[2] = new ImageView(explosion_vertical2);
+        bombItemEx_horizontal_left[0] = new ImageView(explosion_horizontal);
+        bombItemEx_horizontal_left[1] = new ImageView(explosion_horizontal1);
+        bombItemEx_horizontal_left[2] = new ImageView(explosion_horizontal2);
+        bombItemEx_vertical_up[0] = new ImageView(explosion_vertical);
+        bombItemEx_vertical_up[1] = new ImageView(explosion_vertical1);
+        bombItemEx_vertical_up[2] = new ImageView(explosion_vertical2);
+        bombItemEx_horizontal_right[0] = new ImageView(explosion_horizontal);
+        bombItemEx_horizontal_right[1] = new ImageView(explosion_horizontal1);
+        bombItemEx_horizontal_right[2] = new ImageView(explosion_horizontal2);
     }
 
     private void set() {
@@ -68,10 +77,14 @@ public class Bomb extends Entity {
             bombItemEx_up[i].setFitHeight(SIZE_OF_BOX);
             bombItemEx_down[i].setFitWidth(SIZE_OF_BOX);
             bombItemEx_down[i].setFitHeight(SIZE_OF_BOX);
-            bombItemEx_vertical[i].setFitWidth(SIZE_OF_BOX);
-            bombItemEx_vertical[i].setFitHeight(SIZE_OF_BOX);
-            bombItemEx_horizontal[i].setFitWidth(SIZE_OF_BOX);
-            bombItemEx_horizontal[i].setFitHeight(SIZE_OF_BOX);
+            bombItemEx_vertical_up[i].setFitWidth(SIZE_OF_BOX);
+            bombItemEx_vertical_up[i].setFitHeight(SIZE_OF_BOX);
+            bombItemEx_horizontal_right[i].setFitWidth(SIZE_OF_BOX);
+            bombItemEx_horizontal_right[i].setFitHeight(SIZE_OF_BOX);
+            bombItemEx_vertical_down[i].setFitWidth(SIZE_OF_BOX);
+            bombItemEx_vertical_down[i].setFitHeight(SIZE_OF_BOX);
+            bombItemEx_horizontal_left[i].setFitWidth(SIZE_OF_BOX);
+            bombItemEx_horizontal_left[i].setFitHeight(SIZE_OF_BOX);
         }
     }
 
@@ -81,6 +94,8 @@ public class Bomb extends Entity {
         length_of_fire = length;
         construct();
         set();
+        horizon = 0;
+        vertical = 0;
         timeline_bomb.setCycleCount(1);
         timeline_bomb.getKeyFrames().add(new KeyFrame(
                 Duration.millis(0),
@@ -135,239 +150,211 @@ public class Bomb extends Entity {
                 Duration.millis(2200),
                 (ActionEvent event) ->{
                     MainGame.sound.playSingleEp(0);
-                    int length_up = 0;
-                    int length_left = 0;
                     Group g = new Group();
-                    for (int i = 0; i < 1; i++) {
-                        g.getChildren().add(bombItemEx[i]);
-                        bombItemEx_up[i].setX(0);
-                        bombItemEx_up[i].setY( - length_of_fire * SIZE_OF_BOX);
-                        if (canMove(bombItemEx_up[i].getX(), bombItemEx_up[i].getY())) {
-                            length_up++;
-                            g.getChildren().add(bombItemEx_up[i]);
+                    if(MainGame.bomber.getX() == this.x && MainGame.bomber.getY() == this.y) {
+                        MainGame.bomber.dead = true;
+                    }
+                    g.getChildren().add(bombItemEx[0]);
+                    if(canMove(0,-SIZE_OF_BOX)) {
+                        if(canMove(0,- length_of_fire * SIZE_OF_BOX) && length_of_fire == 2) {
+                            bombItemEx_up[0].setX(0);
+                            bombItemEx_up[0].setY(- length_of_fire * SIZE_OF_BOX);
+                            g.getChildren().add(bombItemEx_up[0]);
+                            bombItemEx_vertical_up[0].setX(0);
+                            bombItemEx_vertical_up[0].setY(-SIZE_OF_BOX);
+                            g.getChildren().add(bombItemEx_vertical_up[0]);
+                            vertical = 2;
+                        } else {
+                            bombItemEx_up[0].setX(0);
+                            bombItemEx_up[0].setY(-SIZE_OF_BOX);
+                            g.getChildren().add(bombItemEx_up[0]);
+                            vertical = 1;
                         }
-                        bombItemEx_down[i].setX(0);
-                        bombItemEx_down[i].setY( + length_of_fire * SIZE_OF_BOX);
-                        if (canMove(bombItemEx_down[i].getX(), bombItemEx_down[i].getY())) {
-                            g.getChildren().add(bombItemEx_down[i]);
+                    }
+                    if(canMove(0,SIZE_OF_BOX)) {
+                        if(canMove(0,length_of_fire * SIZE_OF_BOX) && length_of_fire == 2) {
+                            bombItemEx_down[0].setX(0);
+                            bombItemEx_down[0].setY(length_of_fire * SIZE_OF_BOX);
+                            g.getChildren().add(bombItemEx_down[0]);
+                            bombItemEx_vertical_down[0].setX(0);
+                            bombItemEx_vertical_down[0].setY(SIZE_OF_BOX);
+                            g.getChildren().add(bombItemEx_vertical_down[0]);
+                        } else {
+                            bombItemEx_down[0].setX(0);
+                            bombItemEx_down[0].setY(SIZE_OF_BOX);
+                            g.getChildren().add(bombItemEx_down[0]);
                         }
-                        bombItemEx_right[i].setX(length_of_fire * SIZE_OF_BOX);
-                        bombItemEx_right[i].setY(0);
-                        if (canMove(bombItemEx_right[i].getX(), bombItemEx_right[i].getY())) {
-                            g.getChildren().add(bombItemEx_right[i]);
+                    }
+                    if(canMove(SIZE_OF_BOX,0)) {
+                        if(canMove(SIZE_OF_BOX * length_of_fire,0) && length_of_fire == 2) {
+                            bombItemEx_right[0].setX(SIZE_OF_BOX * length_of_fire);
+                            bombItemEx_right[0].setY(0);
+                            g.getChildren().add(bombItemEx_right[0]);
+                            bombItemEx_horizontal_right[0].setX(SIZE_OF_BOX);
+                            bombItemEx_horizontal_right[0].setY(0);
+                            g.getChildren().add(bombItemEx_horizontal_right[0]);
+                        } else {
+                            bombItemEx_right[0].setX(SIZE_OF_BOX);
+                            bombItemEx_right[0].setY(0);
+                            g.getChildren().add(bombItemEx_right[0]);
                         }
-                        bombItemEx_left[i].setX( - length_of_fire * SIZE_OF_BOX);
-                        bombItemEx_left[i].setY(0);
-                        if (canMove(bombItemEx_left[i].getX(), bombItemEx_left[i].getY())) {
-                            length_left++;
-                            g.getChildren().add(bombItemEx_left[i]);
-                        }
-                        if (length_of_fire > 1) {
-                            int n = length_of_fire - 1;
-                            while (n > 0) {
-                                ImageView temp_up = new ImageView(bombItemEx_vertical[i].getImage());
-                                temp_up.setFitWidth(SIZE_OF_BOX);
-                                temp_up.setFitHeight(SIZE_OF_BOX);
-                                temp_up.setX(0);
-                                temp_up.setY(- n * SIZE_OF_BOX);
-                                if (canMove(temp_up.getX(), temp_up.getY())) {
-                                    length_up++;
-                                    g.getChildren().add(temp_up);
-                                }
-                                ImageView temp_down = new ImageView(bombItemEx_vertical[i].getImage());
-                                temp_down.setFitWidth(SIZE_OF_BOX);
-                                temp_down.setFitHeight(SIZE_OF_BOX);
-                                temp_down.setX(0);
-                                temp_down.setY(+ n * SIZE_OF_BOX);
-                                if (canMove(temp_down.getX(), temp_down.getY())) {
-                                    g.getChildren().add(temp_down);
-                                }
-                                ImageView temp_right = new ImageView(bombItemEx_horizontal[i].getImage());
-                                temp_right.setFitWidth(SIZE_OF_BOX);
-                                temp_right.setFitHeight(SIZE_OF_BOX);
-                                temp_right.setX(+ n * SIZE_OF_BOX);
-                                temp_right.setY(0);
-                                if (canMove(temp_right.getX(), temp_right.getY())) {
-                                    g.getChildren().add(temp_right);
-                                }
-                                ImageView temp_left = new ImageView(bombItemEx_horizontal[i].getImage());
-                                temp_left.setFitWidth(SIZE_OF_BOX);
-                                temp_left.setFitHeight(SIZE_OF_BOX);
-                                temp_left.setX(0 - n * SIZE_OF_BOX);
-                                temp_left.setY(0);
-                                if (canMove(temp_left.getX(), temp_left.getY())) {
-                                    length_left++;
-                                    g.getChildren().add(temp_left);
-                                }
-                                n--;
-                            }
+                    }
+                    if(canMove(- SIZE_OF_BOX,0)) {
+                        if(canMove(- SIZE_OF_BOX * length_of_fire,0) && length_of_fire == 2) {
+                            bombItemEx_left[0].setX(- SIZE_OF_BOX * length_of_fire);
+                            bombItemEx_left[0].setY(0);
+                            g.getChildren().add(bombItemEx_left[0]);
+                            bombItemEx_horizontal_left[0].setX(- SIZE_OF_BOX);
+                            bombItemEx_horizontal_left[0].setY(0);
+                            g.getChildren().add(bombItemEx_horizontal_left[0]);
+                            horizon = 2;
+                        } else {
+                            bombItemEx_left[0].setX(- SIZE_OF_BOX);
+                            bombItemEx_left[0].setY(0);
+                            g.getChildren().add(bombItemEx_left[0]);
+                            horizon = 1;
                         }
                     }
                     bomb_stack.getChildren().setAll(g);
                     action.getChildren().setAll(bomb_stack);
-                    action.setLayoutX(0 - length_left * SIZE_OF_BOX);
-                    action.setLayoutY(0 - length_up * SIZE_OF_BOX);
+                    action.setLayoutX(0 - horizon * SIZE_OF_BOX);
+                    action.setLayoutY(0 - vertical * SIZE_OF_BOX);
                 }
         ));
         timeline_bomb.getKeyFrames().add(new KeyFrame(
                 Duration.millis(2400),
                 (ActionEvent event) ->{
-                    int length_up = 0;
-                    int length_left = 0;
                     Group g = new Group();
-                    for (int i = 1; i < 2; i++) {
-                        bombItemEx[i].setX(0);
-                        bombItemEx[i].setY(0);
-                        g.getChildren().add(bombItemEx[i]);
-                        bombItemEx_up[i].setX(0);
-                        bombItemEx_up[i].setY(0 - length_of_fire * SIZE_OF_BOX);
-                        if (canMove(bombItemEx_up[i].getX(), bombItemEx_up[i].getY())) {
-                            length_up++;
-                            g.getChildren().add(bombItemEx_up[i]);
+
+                    g.getChildren().add(bombItemEx[1]);
+                    if(canMove(0,-SIZE_OF_BOX)) {
+                        if(canMove(0,- length_of_fire * SIZE_OF_BOX) && length_of_fire == 2) {
+                            bombItemEx_up[1].setX(0);
+                            bombItemEx_up[1].setY(- length_of_fire * SIZE_OF_BOX);
+                            g.getChildren().add(bombItemEx_up[1]);
+                            bombItemEx_vertical_up[1].setX(0);
+                            bombItemEx_vertical_up[1].setY(-SIZE_OF_BOX);
+                            g.getChildren().add(bombItemEx_vertical_up[1]);
+                        } else {
+                            bombItemEx_up[1].setX(0);
+                            bombItemEx_up[1].setY(-SIZE_OF_BOX);
+                            g.getChildren().add(bombItemEx_up[1]);
                         }
-                        bombItemEx_down[i].setX(0);
-                        bombItemEx_down[i].setY(0 + length_of_fire * SIZE_OF_BOX);
-                        if (canMove(bombItemEx_down[i].getX(), bombItemEx_down[i].getY())) {
-                            g.getChildren().add(bombItemEx_down[i]);
+                    }
+                    if(canMove(0,SIZE_OF_BOX)) {
+                        if(canMove(0,length_of_fire * SIZE_OF_BOX) && length_of_fire == 2) {
+                            bombItemEx_down[1].setX(0);
+                            bombItemEx_down[1].setY(length_of_fire * SIZE_OF_BOX);
+                            g.getChildren().add(bombItemEx_down[1]);
+                            bombItemEx_vertical_down[1].setX(0);
+                            bombItemEx_vertical_down[1].setY(SIZE_OF_BOX);
+                            g.getChildren().add(bombItemEx_vertical_down[1]);
+                        } else {
+                            bombItemEx_down[1].setX(0);
+                            bombItemEx_down[1].setY(SIZE_OF_BOX);
+                            g.getChildren().add(bombItemEx_down[1]);
                         }
-                        bombItemEx_right[i].setX(0 + length_of_fire * SIZE_OF_BOX);
-                        bombItemEx_right[i].setY(0);
-                        if (canMove(bombItemEx_right[i].getX(), bombItemEx_right[i].getY())) {
-                            g.getChildren().add(bombItemEx_right[i]);
+                    }
+                    if(canMove(SIZE_OF_BOX,0)) {
+                        if(canMove(SIZE_OF_BOX * length_of_fire,0) && length_of_fire == 2) {
+                            bombItemEx_right[1].setX(SIZE_OF_BOX * length_of_fire);
+                            bombItemEx_right[1].setY(0);
+                            g.getChildren().add(bombItemEx_right[1]);
+                            bombItemEx_horizontal_right[1].setX(SIZE_OF_BOX);
+                            bombItemEx_horizontal_right[1].setY(0);
+                            g.getChildren().add(bombItemEx_horizontal_right[1]);
+                        } else {
+                            bombItemEx_right[1].setX(SIZE_OF_BOX);
+                            bombItemEx_right[1].setY(0);
+                            g.getChildren().add(bombItemEx_right[1]);
                         }
-                        bombItemEx_left[i].setX(0 - length_of_fire * SIZE_OF_BOX);
-                        bombItemEx_left[i].setY(0);
-                        if (canMove(bombItemEx_left[i].getX(), bombItemEx_left[i].getY())) {
-                            length_left++;
-                            g.getChildren().add(bombItemEx_left[i]);
-                        }
-                        if (length_of_fire > 1) {
-                            int n = length_of_fire - 1;
-                            while (n > 0) {
-                                ImageView temp_up = new ImageView(bombItemEx_vertical[i].getImage());
-                                temp_up.setFitWidth(SIZE_OF_BOX);
-                                temp_up.setFitHeight(SIZE_OF_BOX);
-                                temp_up.setX(0);
-                                temp_up.setY(0 - n * SIZE_OF_BOX);
-                                if (canMove(temp_up.getX(), temp_up.getY())) {
-                                    length_up++;
-                                    g.getChildren().add(temp_up);
-                                }
-                                ImageView temp_down = new ImageView(bombItemEx_vertical[i].getImage());
-                                temp_down.setFitWidth(SIZE_OF_BOX);
-                                temp_down.setFitHeight(SIZE_OF_BOX);
-                                temp_down.setX(0);
-                                temp_down.setY(0 + n * SIZE_OF_BOX);
-                                if (canMove(temp_down.getX(), temp_down.getY())) {
-                                    g.getChildren().add(temp_down);
-                                }
-                                ImageView temp_right = new ImageView(bombItemEx_horizontal[i].getImage());
-                                temp_right.setFitWidth(SIZE_OF_BOX);
-                                temp_right.setFitHeight(SIZE_OF_BOX);
-                                temp_right.setX(0 + n * SIZE_OF_BOX);
-                                temp_right.setY(0);
-                                if (canMove(temp_right.getX(), temp_right.getY())) {
-                                    g.getChildren().add(temp_right);
-                                }
-                                ImageView temp_left = new ImageView(bombItemEx_horizontal[i].getImage());
-                                temp_left.setFitWidth(SIZE_OF_BOX);
-                                temp_left.setFitHeight(SIZE_OF_BOX);
-                                temp_left.setX(0 - n * SIZE_OF_BOX);
-                                temp_left.setY(0);
-                                if (canMove(temp_left.getX(), temp_left.getY())) {
-                                    length_left++;
-                                    g.getChildren().add(temp_left);
-                                }
-                                n--;
-                            }
+                    }
+                    if(canMove(- SIZE_OF_BOX,0)) {
+                        if(canMove(- SIZE_OF_BOX * length_of_fire,0) && length_of_fire == 2) {
+                            bombItemEx_left[1].setX(- SIZE_OF_BOX * length_of_fire);
+                            bombItemEx_left[1].setY(0);
+                            g.getChildren().add(bombItemEx_left[1]);
+                            bombItemEx_horizontal_left[1].setX(- SIZE_OF_BOX);
+                            bombItemEx_horizontal_left[1].setY(0);
+                            g.getChildren().add(bombItemEx_horizontal_left[1]);
+                        } else {
+                            bombItemEx_left[1].setX(- SIZE_OF_BOX);
+                            bombItemEx_left[1].setY(0);
+                            g.getChildren().add(bombItemEx_left[1]);
                         }
                     }
                     bomb_stack.getChildren().setAll(g);
                     action.getChildren().setAll(bomb_stack);
-                    action.setLayoutX(0 - length_left * SIZE_OF_BOX);
-                    action.setLayoutY(0 - length_up * SIZE_OF_BOX);
-                    if(MainGame.bomber.getX() == this.x && MainGame.bomber.getY() == this.y) {
-                        MainGame.bomber.dead = true;
-                    }
+                    action.setLayoutX(0 - horizon * SIZE_OF_BOX);
+                    action.setLayoutY(0 - vertical * SIZE_OF_BOX);
                 }
         ));
         timeline_bomb.getKeyFrames().add(new KeyFrame(
                 Duration.millis(TimeBomb_Explore),
                 (ActionEvent event) ->{
-                    int length_up = 0;
-                    int length_left = 0;
                     Group g = new Group();
-                    for (int i = 2; i < 3; i++) {
-                        bombItemEx[i].setX(0);
-                        bombItemEx[i].setY(0);
-                        g.getChildren().add(bombItemEx[i]);
-                        bombItemEx_up[i].setX(0);
-                        bombItemEx_up[i].setY(0 - length_of_fire * SIZE_OF_BOX);
-                        if (canMove(bombItemEx_up[i].getX(), bombItemEx_up[i].getY())) {
-                            length_up++;
-                            g.getChildren().add(bombItemEx_up[i]);
+
+                    g.getChildren().add(bombItemEx[2]);
+                    if(canMove(0,-SIZE_OF_BOX)) {
+                        if(canMove(0,- length_of_fire * SIZE_OF_BOX) && length_of_fire == 2) {
+                            bombItemEx_up[2].setX(0);
+                            bombItemEx_up[2].setY(- length_of_fire * SIZE_OF_BOX);
+                            g.getChildren().add(bombItemEx_up[2]);
+                            bombItemEx_vertical_up[2].setX(0);
+                            bombItemEx_vertical_up[2].setY(-SIZE_OF_BOX);
+                            g.getChildren().add(bombItemEx_vertical_up[2]);
+                        } else {
+                            bombItemEx_up[2].setX(0);
+                            bombItemEx_up[2].setY(-SIZE_OF_BOX);
+                            g.getChildren().add(bombItemEx_up[2]);
                         }
-                        bombItemEx_down[i].setX(0);
-                        bombItemEx_down[i].setY(0 + length_of_fire * SIZE_OF_BOX);
-                        if (canMove(bombItemEx_down[i].getX(), bombItemEx_down[i].getY())) {
-                            g.getChildren().add(bombItemEx_down[i]);
+                    }
+                    if(canMove(0,SIZE_OF_BOX)) {
+                        if(canMove(0,length_of_fire * SIZE_OF_BOX) && length_of_fire == 2) {
+                            bombItemEx_down[2].setX(0);
+                            bombItemEx_down[2].setY(length_of_fire * SIZE_OF_BOX);
+                            g.getChildren().add(bombItemEx_down[2]);
+                            bombItemEx_vertical_down[2].setX(0);
+                            bombItemEx_vertical_down[2].setY(SIZE_OF_BOX);
+                            g.getChildren().add(bombItemEx_vertical_down[2]);
+                        } else {
+                            bombItemEx_down[2].setX(0);
+                            bombItemEx_down[2].setY(SIZE_OF_BOX);
+                            g.getChildren().add(bombItemEx_down[2]);
                         }
-                        bombItemEx_right[i].setX(0 + length_of_fire * SIZE_OF_BOX);
-                        bombItemEx_right[i].setY(0);
-                        if (canMove(bombItemEx_right[i].getX(), bombItemEx_right[i].getY())) {
-                            g.getChildren().add(bombItemEx_right[i]);
+                    }
+                    if(canMove(SIZE_OF_BOX,0)) {
+                        if(canMove(SIZE_OF_BOX * length_of_fire,0) && length_of_fire == 2) {
+                            bombItemEx_right[2].setX(SIZE_OF_BOX * length_of_fire);
+                            bombItemEx_right[2].setY(0);
+                            g.getChildren().add(bombItemEx_right[2]);
+                            bombItemEx_horizontal_right[2].setX(SIZE_OF_BOX);
+                            bombItemEx_horizontal_right[2].setY(0);
+                            g.getChildren().add(bombItemEx_horizontal_right[2]);
+                        } else {
+                            bombItemEx_right[2].setX(SIZE_OF_BOX);
+                            bombItemEx_right[2].setY(0);
+                            g.getChildren().add(bombItemEx_right[2]);
                         }
-                        bombItemEx_left[i].setX(0 - length_of_fire * SIZE_OF_BOX);
-                        bombItemEx_left[i].setY(0);
-                        if (canMove(bombItemEx_left[i].getX(), bombItemEx_left[i].getY())) {
-                            length_left++;
-                            g.getChildren().add(bombItemEx_left[i]);
-                        }
-                        if (length_of_fire > 1) {
-                            int n = length_of_fire - 1;
-                            while (n > 0) {
-                                ImageView temp_up = new ImageView(bombItemEx_vertical[i].getImage());
-                                temp_up.setFitWidth(SIZE_OF_BOX);
-                                temp_up.setFitHeight(SIZE_OF_BOX);
-                                temp_up.setX(0);
-                                temp_up.setY(0 - n * SIZE_OF_BOX);
-                                if (canMove(temp_up.getX(), temp_up.getY())) {
-                                    length_up++;
-                                    g.getChildren().add(temp_up);
-                                }
-                                ImageView temp_down = new ImageView(bombItemEx_vertical[i].getImage());
-                                temp_down.setFitWidth(SIZE_OF_BOX);
-                                temp_down.setFitHeight(SIZE_OF_BOX);
-                                temp_down.setX(0);
-                                temp_down.setY(0 + n * SIZE_OF_BOX);
-                                if (canMove(temp_down.getX(), temp_down.getY())) {
-                                    g.getChildren().add(temp_down);
-                                }
-                                ImageView temp_right = new ImageView(bombItemEx_horizontal[i].getImage());
-                                temp_right.setFitWidth(SIZE_OF_BOX);
-                                temp_right.setFitHeight(SIZE_OF_BOX);
-                                temp_right.setX(0 + n * SIZE_OF_BOX);
-                                temp_right.setY(0);
-                                if (canMove(temp_right.getX(), temp_right.getY())) {
-                                    g.getChildren().add(temp_right);
-                                }
-                                ImageView temp_left = new ImageView(bombItemEx_horizontal[i].getImage());
-                                temp_left.setFitWidth(SIZE_OF_BOX);
-                                temp_left.setFitHeight(SIZE_OF_BOX);
-                                temp_left.setX(0 - n * SIZE_OF_BOX);
-                                temp_left.setY(0);
-                                if (canMove(temp_left.getX(), temp_left.getY())) {
-                                    length_left++;
-                                    g.getChildren().add(temp_left);
-                                }
-                                n--;
-                            }
+                    }
+                    if(canMove(- SIZE_OF_BOX,0)) {
+                        if(canMove(- SIZE_OF_BOX * length_of_fire,0) && length_of_fire == 2) {
+                            bombItemEx_left[2].setX(- SIZE_OF_BOX * length_of_fire);
+                            bombItemEx_left[2].setY(0);
+                            g.getChildren().add(bombItemEx_left[2]);
+                            bombItemEx_horizontal_left[2].setX(- SIZE_OF_BOX);
+                            bombItemEx_horizontal_left[2].setY(0);
+                            g.getChildren().add(bombItemEx_horizontal_left[2]);
+                        } else {
+                            bombItemEx_left[2].setX(- SIZE_OF_BOX);
+                            bombItemEx_left[2].setY(0);
+                            g.getChildren().add(bombItemEx_left[2]);
                         }
                     }
                     bomb_stack.getChildren().setAll(g);
                     action.getChildren().setAll(bomb_stack);
-                    action.setLayoutX(0 - length_left * SIZE_OF_BOX);
-                    action.setLayoutY(0 - length_up * SIZE_OF_BOX);
+                    action.setLayoutX(0 - horizon * SIZE_OF_BOX);
+                    action.setLayoutY(0 - vertical * SIZE_OF_BOX);
                     MainGame.map[this.x][this.y] = ' ';
                 }
         ));

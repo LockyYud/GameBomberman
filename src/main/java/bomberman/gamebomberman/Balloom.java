@@ -63,9 +63,10 @@ public class Balloom extends Enemy {
                     x = x + direction.getKey().intValue();
                     y = y + direction.getValue().intValue();
                 }
-//                System.out.println(x + " " + y);
+
             }
         };
+        checkEndGame.start();
     }
 
     @Override
