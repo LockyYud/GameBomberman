@@ -17,3 +17,6 @@ Khi các Flame xuất hiện, nếu có một đối tượng thuộc loại Bri
 Member:
     Do Minh Duy - 21020292
     Nguyen Dinh Cuong - 21020118
+
+
+Link cây kế thừa : https://drive.google.com/file/d/1RXjhYbkY768WpH1vHeOMgUMP_5hJkcUK/view?usp=sharing
