@@ -176,6 +176,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
                 "-fx-text-fill: rgb(245,235,220);");
         Textstagenow.setFill(Color.rgb(245,235,220));
         TextFlow stagenow = new TextFlow(Textstagenow);
+        Textstagenow.setTranslateY((window_height - Textstagenow.getLayoutBounds().getHeight())/2);
         stagenow.setMinWidth(window_width);
         stagenow.setMinHeight(window_height);
         stagenow.setTextAlignment(TextAlignment.CENTER);
@@ -402,7 +403,6 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
         checkCollideBomber.start();
         checkItem.start();
         checkBomberDead.start();
-        nums_Monster_inGame = 0;
         timeline_nextlevel.play();
         return scene;
     }
