@@ -1,6 +1,7 @@
 package bomberman.gamebomberman;
 
 //import java.util.*;
+
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -23,7 +24,7 @@ public abstract class Enemy extends Entity {
     protected StackPane move_left = new StackPane();
     protected StackPane move_right = new StackPane();
     protected StackPane move_dead = new StackPane();
-    protected Pair<Integer, Integer> direction = new Pair<>(0,0);
+    protected Pair<Integer, Integer> direction = new Pair<>(0, 0);
 
     public Enemy() {
     }
@@ -37,17 +38,17 @@ public abstract class Enemy extends Entity {
         checkEndGame = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                if(MainGame.EndGame) {
+                if (MainGame.EndGame) {
                     timeline_left.stop();
                     timeline_right.stop();
                 }
-                if(direction.equals(new Pair<>(0,1))) {
+                if (direction.equals(new Pair<>(0, 1))) {
 
-                } else if (direction.equals(new Pair<>(0,-1))) {
+                } else if (direction.equals(new Pair<>(0, -1))) {
 
-                } else if (direction.equals(new Pair<>(1,0))) {
+                } else if (direction.equals(new Pair<>(1, 0))) {
                     action.getChildren().setAll(move_right);
-                } else if (direction.equals(new Pair<>(-1,0))) {
+                } else if (direction.equals(new Pair<>(-1, 0))) {
                     action.getChildren().setAll(move_left);
                 }
             }
@@ -99,7 +100,7 @@ public abstract class Enemy extends Entity {
         //timeline_dead
         timeline_dead.setCycleCount(Timeline.INDEFINITE);
         timeline_dead.getKeyFrames().add(new KeyFrame(
-                Duration.millis(time_move/3),
+                Duration.millis(time_move / 3),
                 (ActionEvent event) -> {
                     move_dead.getChildren().setAll(image_dead);
                 }
@@ -107,7 +108,7 @@ public abstract class Enemy extends Entity {
         timeline_dead.getKeyFrames().add(new KeyFrame(
                 Duration.millis(400),
                 (ActionEvent event) -> {
-                    if(!dead){
+                    if (!dead) {
                         MainGame.nums_Monster_inGame--;
                         MainGame.Scoreingame += 100;
                     }
@@ -135,15 +136,17 @@ public abstract class Enemy extends Entity {
                 break;
         }
     }
+
     protected boolean canMove(int posX, int posY) {
 //        System.out.println(x + " " + y);
-        if(posX == x && posY == y) return false;
-        if(MainGame.map[posX][posY] == ' ') {
+        if (posX == x && posY == y) return false;
+        if (MainGame.map[posX][posY] == ' ') {
             return true;
         }
         return false;
     }
-    public void ActionDead () {
+
+    public void ActionDead() {
         MainGame.sound.playSingleEp(3);
         timeline_dead.play();
     }

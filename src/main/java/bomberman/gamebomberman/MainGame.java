@@ -53,8 +53,6 @@ enum StateGame {
     MENU_START,
     START_GAME,
     NEXT_LEVEL,
-    END_GAME,
-    MENU_END,
 }
 
 public class MainGame extends Application implements LoadImageWithoutBackground, typesItem {
@@ -70,6 +68,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
     private String[] path_level = new String[3];
     public static Enemy[] monster;
     public static Entity[][] obstacle;
+    public static Entity[][] destination;
     public static Item[] itemofGame;
     public static Bomber bomber;
     public static boolean EndGame = false;
@@ -77,6 +76,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
 
     private double timeStartGame;
     private double TimeinGame = 300;
+
     @Override
     public void start(Stage stage) {
         AnimationTimer checkStateGame = new AnimationTimer() {
@@ -104,7 +104,8 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
                     .filter(Files::isRegularFile)
                     .map(Path::toFile)
                     .collect(Collectors.toList());
-            for (int i = 0; i < 3; i++) {
+            path_level = new String[filesMap.size()];
+            for (int i = 0; i < filesMap.size(); i++) {
                 path_level[i] = filesMap.get(i).getPath();
             }
         } catch (IOException e) {
@@ -176,9 +177,9 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
         Textstagenow.setStyle("    -fx-font-size: 30pt;\n" +
                 "    -fx-font-family: \"Courier New\";\n" +
                 "-fx-text-fill: rgb(245,235,220);");
-        Textstagenow.setFill(Color.rgb(245,235,220));
+        Textstagenow.setFill(Color.rgb(245, 235, 220));
         TextFlow stagenow = new TextFlow(Textstagenow);
-        Textstagenow.setTranslateY((window_height - Textstagenow.getLayoutBounds().getHeight())/2);
+        Textstagenow.setTranslateY((window_height - Textstagenow.getLayoutBounds().getHeight()) / 2);
         stagenow.setMinWidth(window_width);
         stagenow.setMinHeight(window_height);
         stagenow.setTextAlignment(TextAlignment.CENTER);
@@ -221,7 +222,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
         root.getChildren().add(background);
         root.getChildren().add(tuong.image);
         for (int i = 0; i < itemofGame.length; i++) {
-            if(!itemofGame[i].dead){
+            if (!itemofGame[i].dead) {
                 root.getChildren().add(itemofGame[i].action);
             }
         }
@@ -229,6 +230,9 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
         root.getChildren().add(bomber.bombombom);
         for (int i = 0; i < obstacle.length; i++) {
             for (int j = 0; j < obstacle[i].length; j++) {
+                if(destination[i][j] != null) {
+                    root.getChildren().add(destination[i][j].action);
+                }
                 if (obstacle[i][j] != null) {
                     root.getChildren().add(obstacle[i][j].action);
                 }
@@ -242,7 +246,6 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
         Scene scene = new Scene(root, window_width, window_height);
 
 
-
         Label GameTimeleft = new Label("TIME LEFT: ");
         GameTimeleft.setStyle("-fx-font-weight: Bold; -fx-text-fill: rgb(148,134,22)");
         Text timeLeft = new Text();
@@ -250,7 +253,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
         AnimationTimer checkTimeGame = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                timeLeft.setText(Integer.toString((int) (TimeinGame - (System.currentTimeMillis() - timeStartGame)/1000)));
+                timeLeft.setText(Integer.toString((int) (TimeinGame - (System.currentTimeMillis() - timeStartGame) / 1000)));
             }
         };
         timeStartGame = System.currentTimeMillis();
@@ -264,14 +267,15 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
         score.setStyle("-fx-font-weight: Bold; -fx-text-fill: rgb(148,134,22)");
         Text numScore = new Text(Integer.toString(Scoreingame));
         numScore.setStyle("-fx-font-weight: Bold; -fx-text-fill: rgb(148,134,22); -fx-font-family: \"Courier New\";");
-        GamePoint.setMargin(bomber_left,new Insets(0,10,0,20));
-        GamePoint.setMargin(num_BomberLeft,new Insets(0,20,0,0));
-        GamePoint.setMargin(score,new Insets(0,0,0,100));
-        GamePoint.setMargin(numScore,new Insets(0,20,0,10));
-        GamePoint.setMargin(GameTimeleft,new Insets(0,0,0,100));
-        GamePoint.setMargin(timeLeft,new Insets(0,20,0,10));
-        GamePoint.getChildren().addAll(bomber_left,num_BomberLeft,score,numScore,GameTimeleft,timeLeft);
-        GamePoint.setMinSize(32 * 31,32);
+        GamePoint.setMargin(bomber_left, new Insets(0, 10, 0, 20));
+        GamePoint.setMargin(num_BomberLeft, new Insets(0, 20, 0, 0));
+        GamePoint.setMargin(score, new Insets(0, 0, 0, 100));
+        GamePoint.setMargin(numScore, new Insets(0, 20, 0, 10));
+        GamePoint.setMargin(GameTimeleft, new Insets(0, 0, 0, 100));
+        GameTimeleft.setTranslateX(0);
+        GamePoint.setMargin(timeLeft, new Insets(0, 20, 0, 10));
+        GamePoint.getChildren().addAll(bomber_left, num_BomberLeft, score, numScore, GameTimeleft, timeLeft);
+        GamePoint.setMinSize(32 * 31, 32);
         GamePoint.setAlignment(Pos.BASELINE_LEFT);
         GamePoint.setStyle("    -fx-border-color: rgb(101,136,52);\n" +
                 "    -fx-border-style: solid inside;\n" +
@@ -286,12 +290,11 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
         GamePoint.setTranslateY(13 * Entity.SIZE_OF_BOX);
 
 
-
         scene.addEventHandler(KeyEvent.KEY_PRESSED, bomber.handler);
         endGame.handlerNewGame = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                stateGame = StateGame.START_GAME ;
+                stateGame = StateGame.START_GAME;
                 ChangeState = true;
             }
         };
@@ -323,8 +326,8 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
                     EndGame = true;
                     checkTimeGame.stop();
                 }
-                if(nums_Monster_inGame == 0 && map[bomber.getX()][bomber.getY()] == 'x') {
-                    if(level == 2 && !root.getChildren().contains(endGame.borderPanel)) {
+                if (nums_Monster_inGame == 0 && destination[bomber.getX()][bomber.getY()] != null) {
+                    if (level == 2 && !root.getChildren().contains(endGame.borderPanel)) {
                         sound.playSingleEp(1);
                         endGame.setEndGame("YOU WIN");
                         endGame.addHandle();
@@ -333,8 +336,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
                         scene.removeEventHandler(KeyEvent.KEY_PRESSED, bomber.handler);
                         EndGame = true;
                         checkTimeGame.stop();
-                    }
-                    else {
+                    } else {
                         stateGame = StateGame.NEXT_LEVEL;
                         level++;
                         ChangeState = true;
@@ -370,13 +372,12 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
                     }
                 }
                 for (int i = 0; i < monster.length; i++) {
-                        if (monster[i].dead) {
-                            root.getChildren().remove(monster[i].action);
-                        }
+                    if (monster[i].dead) {
+                        root.getChildren().remove(monster[i].action);
+                    }
                 }
                 if (bomber.dead) {
-                    if(bomber.timeline_dead.getStatus() == Animation.Status.STOPPED){
-                        System.out.println(1);
+                    if (bomber.timeline_dead.getStatus() == Animation.Status.STOPPED) {
                         bomber.playActionDead();
                         bomber.dead = false;
                     }
@@ -393,8 +394,8 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
                         itemofGame[i].dead = true;
                     }
                 }
-                for(int i = 0 ; i < itemofGame.length; i ++) {
-                    if(root.getChildren().contains(itemofGame[i].action) && itemofGame[i].dead) {
+                for (int i = 0; i < itemofGame.length; i++) {
+                    if (root.getChildren().contains(itemofGame[i].action) && itemofGame[i].dead) {
                         root.getChildren().remove(itemofGame[i].action);
                     }
                 }
@@ -415,6 +416,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
         int numofMonter = 0;
         int numofItem = 0;
         obstacle = new Entity[map.length][map[0].length];
+        destination = new Entity[map.length][map[0].length];
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 if (map[i][j] == '1' || map[i][j] == '2') {
@@ -427,7 +429,9 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
                     numofItem++;
                 }
                 if (map[i][j] == 'x') {
-                    obstacle[i][j] = new Portal(i, j);
+                    obstacle[i][j] = new Brick(i, j);
+                    destination[i][j] = new Portal(i,j);
+                    map[i][j] = '*';
                 }
             }
         }
@@ -455,6 +459,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
             }
         }
     }
+
     public static void main(String args[]) {
         launch(args);
     }

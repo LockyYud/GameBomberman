@@ -29,12 +29,13 @@ public class menuEndGame {
 
     public void setEndGame(String paht) {
         EndGame.setText(paht);
-        EndGame.setTranslateX((borderPanel.getMinWidth() - EndGame.getLayoutBounds().getWidth())/2);
+        EndGame.setTranslateX((borderPanel.getMinWidth() - EndGame.getLayoutBounds().getWidth()) / 2);
         EndGame.setTranslateY(20);
         Score.setText("Score: " + Integer.toString(MainGame.Scoreingame));
     }
 
     public TranslateTransition transition = new TranslateTransition();
+
     public menuEndGame(String path) {
         EndGame = new Text(path);
         EndGame.setStyle("-fx-font-family: \"Courier New\";");
@@ -57,13 +58,13 @@ public class menuEndGame {
                 "    -fx-border-radius: 5;\n" +
                 "    -fx-padding: 3 6 6 6;");
         hBox.getChildren().addAll(NewGame, Continue);
-        hBox.setMargin(NewGame, new Insets(0,20,50,20));
-        hBox.setMargin(Continue, new Insets(0,20,50,20));
+        hBox.setMargin(NewGame, new Insets(0, 20, 50, 20));
+        hBox.setMargin(Continue, new Insets(0, 20, 50, 20));
         hBox.setAlignment(Pos.BOTTOM_CENTER);
         EndGame.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
         EndGame.setFill(Color.GREEN);
-        borderPanel.setMinSize(450,250);
-        borderPanel.setMaxSize(450,250);
+        borderPanel.setMinSize(450, 250);
+        borderPanel.setMaxSize(450, 250);
         borderPanel.setStyle("    -fx-border-color: rgb(101,136,52);\n" +
                 "    -fx-border-style: solid inside;\n" +
                 "    -fx-border-width: 3;\n" +
@@ -80,13 +81,14 @@ public class menuEndGame {
         transition.setNode(borderPanel);
 //        EndGame.setTranslateX((borderPanel.getMaxWidth() - EndGame.getLayoutBounds().getWidth())/2);
         EndGame.setTranslateY(20);
-        borderPanel.setTranslateX((MainGame.window_width - borderPanel.getMaxWidth())/2);
+        borderPanel.setTranslateX((MainGame.window_width - borderPanel.getMaxWidth()) / 2);
         borderPanel.setTranslateY(MainGame.window_height);
-        transition.setToX((MainGame.window_width - borderPanel.getMaxWidth())/2);
-        transition.setToY((MainGame.window_height - borderPanel.getMaxHeight())/2);
+        transition.setToX((MainGame.window_width - borderPanel.getMaxWidth()) / 2);
+        transition.setToY((MainGame.window_height - borderPanel.getMaxHeight()) / 2);
     }
+
     public void addHandle() {
-        NewGame.addEventHandler(MouseEvent.MOUSE_CLICKED,handlerNewGame);
-        Continue.addEventHandler(MouseEvent.MOUSE_CLICKED,handlerContinue);
+        NewGame.addEventHandler(MouseEvent.MOUSE_CLICKED, handlerNewGame);
+        Continue.addEventHandler(MouseEvent.MOUSE_CLICKED, handlerContinue);
     }
 }

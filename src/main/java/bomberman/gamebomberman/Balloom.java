@@ -14,9 +14,13 @@ import java.util.TimerTask;
 
 
 public class Balloom extends Enemy {
-    public Balloom(){};
+    public Balloom() {
+    }
+
+    ;
     private Boolean canMove = false;
     TranslateTransition transition = new TranslateTransition();
+
     public Balloom(int posX, int posY) {
         super(posX, posY);
         left[0] = new ImageView(balloom_left1);
@@ -28,7 +32,7 @@ public class Balloom extends Enemy {
         image_dead = new ImageView(balloom_dead);
         image_dead.setFitWidth(SIZE_OF_BOX);
         image_dead.setFitHeight(SIZE_OF_BOX);
-        for(int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             left[i].setFitHeight(SIZE_OF_BOX);
             left[i].setFitWidth(SIZE_OF_BOX);
             right[i].setFitHeight(SIZE_OF_BOX);
@@ -42,23 +46,23 @@ public class Balloom extends Enemy {
         task = new TimerTask() {
             @Override
             public void run() {
-                if(Math.random() > 0.5){
+                if (Math.random() > 0.5) {
                     makeDirection();
                 }
                 while (!canMove(x + direction.getKey().intValue()
-                        ,y + direction.getValue().intValue())){
+                        , y + direction.getValue().intValue())) {
                     makeDirection();
                 }
-                if(direction.equals(new Pair<>(0,1))) {
+                if (direction.equals(new Pair<>(0, 1))) {
                     transition = tran_down;
-                } else if (direction.equals(new Pair<>(0,-1))) {
+                } else if (direction.equals(new Pair<>(0, -1))) {
                     transition = tran_up;
-                } else if (direction.equals(new Pair<>(1,0))) {
+                } else if (direction.equals(new Pair<>(1, 0))) {
                     transition = tran_right;
-                } else if (direction.equals(new Pair<>(-1,0))) {
+                } else if (direction.equals(new Pair<>(-1, 0))) {
                     transition = tran_left;
                 }
-                if(!dead && !MainGame.EndGame && transition.getStatus() != Animation.Status.RUNNING) {
+                if (!dead && !MainGame.EndGame && transition.getStatus() != Animation.Status.RUNNING) {
                     transition.play();
                     x = x + direction.getKey().intValue();
                     y = y + direction.getValue().intValue();

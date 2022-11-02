@@ -99,66 +99,66 @@ public class Bomb extends Entity {
         timeline_bomb.setCycleCount(1);
         timeline_bomb.getKeyFrames().add(new KeyFrame(
                 Duration.millis(0),
-                (ActionEvent event) ->{
+                (ActionEvent event) -> {
                     bomb_stack.getChildren().setAll(bombItem[0]);
                     action.getChildren().setAll(bomb_stack);
                 }
         ));
         timeline_bomb.getKeyFrames().add(new KeyFrame(
                 Duration.millis(300),
-                (ActionEvent event) ->{
+                (ActionEvent event) -> {
                     bomb_stack.getChildren().setAll(bombItem[1]);
                     action.getChildren().setAll(bomb_stack);
                 }
         ));
         timeline_bomb.getKeyFrames().add(new KeyFrame(
                 Duration.millis(600),
-                (ActionEvent event) ->{
+                (ActionEvent event) -> {
                     bomb_stack.getChildren().setAll(bombItem[2]);
                     action.getChildren().setAll(bomb_stack);
                 }
         ));
         timeline_bomb.getKeyFrames().add(new KeyFrame(
                 Duration.millis(900),
-                (ActionEvent event) ->{
+                (ActionEvent event) -> {
                     bomb_stack.getChildren().setAll(bombItem[1]);
                     action.getChildren().setAll(bomb_stack);
                 }
         ));
         timeline_bomb.getKeyFrames().add(new KeyFrame(
                 Duration.millis(1200),
-                (ActionEvent event) ->{
+                (ActionEvent event) -> {
                     bomb_stack.getChildren().setAll(bombItem[0]);
                     action.getChildren().setAll(bomb_stack);
                 }
         ));
         timeline_bomb.getKeyFrames().add(new KeyFrame(
                 Duration.millis(1500),
-                (ActionEvent event) ->{
+                (ActionEvent event) -> {
                     bomb_stack.getChildren().setAll(bombItem[1]);
                     action.getChildren().setAll(bomb_stack);
                 }
         ));
         timeline_bomb.getKeyFrames().add(new KeyFrame(
                 Duration.millis(1800),
-                (ActionEvent event) ->{
+                (ActionEvent event) -> {
                     bomb_stack.getChildren().setAll(bombItem[2]);
                     action.getChildren().setAll(bomb_stack);
                 }
         ));
         timeline_bomb.getKeyFrames().add(new KeyFrame(
                 Duration.millis(2200),
-                (ActionEvent event) ->{
+                (ActionEvent event) -> {
                     MainGame.sound.playSingleEp(0);
                     Group g = new Group();
-                    if(MainGame.bomber.getX() == this.x && MainGame.bomber.getY() == this.y) {
+                    if (MainGame.bomber.getX() == this.x && MainGame.bomber.getY() == this.y) {
                         MainGame.bomber.dead = true;
                     }
                     g.getChildren().add(bombItemEx[0]);
-                    if(canMove(0,-SIZE_OF_BOX)) {
-                        if(canMove(0,- length_of_fire * SIZE_OF_BOX) && length_of_fire == 2) {
+                    if (canMove(0, -SIZE_OF_BOX)) {
+                        if (canMove(0, -length_of_fire * SIZE_OF_BOX) && length_of_fire == 2) {
                             bombItemEx_up[0].setX(0);
-                            bombItemEx_up[0].setY(- length_of_fire * SIZE_OF_BOX);
+                            bombItemEx_up[0].setY(-length_of_fire * SIZE_OF_BOX);
                             g.getChildren().add(bombItemEx_up[0]);
                             bombItemEx_vertical_up[0].setX(0);
                             bombItemEx_vertical_up[0].setY(-SIZE_OF_BOX);
@@ -171,8 +171,8 @@ public class Bomb extends Entity {
                             vertical = 1;
                         }
                     }
-                    if(canMove(0,SIZE_OF_BOX)) {
-                        if(canMove(0,length_of_fire * SIZE_OF_BOX) && length_of_fire == 2) {
+                    if (canMove(0, SIZE_OF_BOX)) {
+                        if (canMove(0, length_of_fire * SIZE_OF_BOX) && length_of_fire == 2) {
                             bombItemEx_down[0].setX(0);
                             bombItemEx_down[0].setY(length_of_fire * SIZE_OF_BOX);
                             g.getChildren().add(bombItemEx_down[0]);
@@ -185,8 +185,8 @@ public class Bomb extends Entity {
                             g.getChildren().add(bombItemEx_down[0]);
                         }
                     }
-                    if(canMove(SIZE_OF_BOX,0)) {
-                        if(canMove(SIZE_OF_BOX * length_of_fire,0) && length_of_fire == 2) {
+                    if (canMove(SIZE_OF_BOX, 0)) {
+                        if (canMove(SIZE_OF_BOX * length_of_fire, 0) && length_of_fire == 2) {
                             bombItemEx_right[0].setX(SIZE_OF_BOX * length_of_fire);
                             bombItemEx_right[0].setY(0);
                             g.getChildren().add(bombItemEx_right[0]);
@@ -199,17 +199,17 @@ public class Bomb extends Entity {
                             g.getChildren().add(bombItemEx_right[0]);
                         }
                     }
-                    if(canMove(- SIZE_OF_BOX,0)) {
-                        if(canMove(- SIZE_OF_BOX * length_of_fire,0) && length_of_fire == 2) {
-                            bombItemEx_left[0].setX(- SIZE_OF_BOX * length_of_fire);
+                    if (canMove(-SIZE_OF_BOX, 0)) {
+                        if (canMove(-SIZE_OF_BOX * length_of_fire, 0) && length_of_fire == 2) {
+                            bombItemEx_left[0].setX(-SIZE_OF_BOX * length_of_fire);
                             bombItemEx_left[0].setY(0);
                             g.getChildren().add(bombItemEx_left[0]);
-                            bombItemEx_horizontal_left[0].setX(- SIZE_OF_BOX);
+                            bombItemEx_horizontal_left[0].setX(-SIZE_OF_BOX);
                             bombItemEx_horizontal_left[0].setY(0);
                             g.getChildren().add(bombItemEx_horizontal_left[0]);
                             horizon = 2;
                         } else {
-                            bombItemEx_left[0].setX(- SIZE_OF_BOX);
+                            bombItemEx_left[0].setX(-SIZE_OF_BOX);
                             bombItemEx_left[0].setY(0);
                             g.getChildren().add(bombItemEx_left[0]);
                             horizon = 1;
@@ -223,14 +223,14 @@ public class Bomb extends Entity {
         ));
         timeline_bomb.getKeyFrames().add(new KeyFrame(
                 Duration.millis(2400),
-                (ActionEvent event) ->{
+                (ActionEvent event) -> {
                     Group g = new Group();
 
                     g.getChildren().add(bombItemEx[1]);
-                    if(canMove(0,-SIZE_OF_BOX)) {
-                        if(canMove(0,- length_of_fire * SIZE_OF_BOX) && length_of_fire == 2) {
+                    if (canMove(0, -SIZE_OF_BOX)) {
+                        if (canMove(0, -length_of_fire * SIZE_OF_BOX) && length_of_fire == 2) {
                             bombItemEx_up[1].setX(0);
-                            bombItemEx_up[1].setY(- length_of_fire * SIZE_OF_BOX);
+                            bombItemEx_up[1].setY(-length_of_fire * SIZE_OF_BOX);
                             g.getChildren().add(bombItemEx_up[1]);
                             bombItemEx_vertical_up[1].setX(0);
                             bombItemEx_vertical_up[1].setY(-SIZE_OF_BOX);
@@ -241,8 +241,8 @@ public class Bomb extends Entity {
                             g.getChildren().add(bombItemEx_up[1]);
                         }
                     }
-                    if(canMove(0,SIZE_OF_BOX)) {
-                        if(canMove(0,length_of_fire * SIZE_OF_BOX) && length_of_fire == 2) {
+                    if (canMove(0, SIZE_OF_BOX)) {
+                        if (canMove(0, length_of_fire * SIZE_OF_BOX) && length_of_fire == 2) {
                             bombItemEx_down[1].setX(0);
                             bombItemEx_down[1].setY(length_of_fire * SIZE_OF_BOX);
                             g.getChildren().add(bombItemEx_down[1]);
@@ -255,8 +255,8 @@ public class Bomb extends Entity {
                             g.getChildren().add(bombItemEx_down[1]);
                         }
                     }
-                    if(canMove(SIZE_OF_BOX,0)) {
-                        if(canMove(SIZE_OF_BOX * length_of_fire,0) && length_of_fire == 2) {
+                    if (canMove(SIZE_OF_BOX, 0)) {
+                        if (canMove(SIZE_OF_BOX * length_of_fire, 0) && length_of_fire == 2) {
                             bombItemEx_right[1].setX(SIZE_OF_BOX * length_of_fire);
                             bombItemEx_right[1].setY(0);
                             g.getChildren().add(bombItemEx_right[1]);
@@ -269,16 +269,16 @@ public class Bomb extends Entity {
                             g.getChildren().add(bombItemEx_right[1]);
                         }
                     }
-                    if(canMove(- SIZE_OF_BOX,0)) {
-                        if(canMove(- SIZE_OF_BOX * length_of_fire,0) && length_of_fire == 2) {
-                            bombItemEx_left[1].setX(- SIZE_OF_BOX * length_of_fire);
+                    if (canMove(-SIZE_OF_BOX, 0)) {
+                        if (canMove(-SIZE_OF_BOX * length_of_fire, 0) && length_of_fire == 2) {
+                            bombItemEx_left[1].setX(-SIZE_OF_BOX * length_of_fire);
                             bombItemEx_left[1].setY(0);
                             g.getChildren().add(bombItemEx_left[1]);
-                            bombItemEx_horizontal_left[1].setX(- SIZE_OF_BOX);
+                            bombItemEx_horizontal_left[1].setX(-SIZE_OF_BOX);
                             bombItemEx_horizontal_left[1].setY(0);
                             g.getChildren().add(bombItemEx_horizontal_left[1]);
                         } else {
-                            bombItemEx_left[1].setX(- SIZE_OF_BOX);
+                            bombItemEx_left[1].setX(-SIZE_OF_BOX);
                             bombItemEx_left[1].setY(0);
                             g.getChildren().add(bombItemEx_left[1]);
                         }
@@ -291,14 +291,14 @@ public class Bomb extends Entity {
         ));
         timeline_bomb.getKeyFrames().add(new KeyFrame(
                 Duration.millis(TimeBomb_Explore),
-                (ActionEvent event) ->{
+                (ActionEvent event) -> {
                     Group g = new Group();
 
                     g.getChildren().add(bombItemEx[2]);
-                    if(canMove(0,-SIZE_OF_BOX)) {
-                        if(canMove(0,- length_of_fire * SIZE_OF_BOX) && length_of_fire == 2) {
+                    if (canMove(0, -SIZE_OF_BOX)) {
+                        if (canMove(0, -length_of_fire * SIZE_OF_BOX) && length_of_fire == 2) {
                             bombItemEx_up[2].setX(0);
-                            bombItemEx_up[2].setY(- length_of_fire * SIZE_OF_BOX);
+                            bombItemEx_up[2].setY(-length_of_fire * SIZE_OF_BOX);
                             g.getChildren().add(bombItemEx_up[2]);
                             bombItemEx_vertical_up[2].setX(0);
                             bombItemEx_vertical_up[2].setY(-SIZE_OF_BOX);
@@ -309,8 +309,8 @@ public class Bomb extends Entity {
                             g.getChildren().add(bombItemEx_up[2]);
                         }
                     }
-                    if(canMove(0,SIZE_OF_BOX)) {
-                        if(canMove(0,length_of_fire * SIZE_OF_BOX) && length_of_fire == 2) {
+                    if (canMove(0, SIZE_OF_BOX)) {
+                        if (canMove(0, length_of_fire * SIZE_OF_BOX) && length_of_fire == 2) {
                             bombItemEx_down[2].setX(0);
                             bombItemEx_down[2].setY(length_of_fire * SIZE_OF_BOX);
                             g.getChildren().add(bombItemEx_down[2]);
@@ -323,8 +323,8 @@ public class Bomb extends Entity {
                             g.getChildren().add(bombItemEx_down[2]);
                         }
                     }
-                    if(canMove(SIZE_OF_BOX,0)) {
-                        if(canMove(SIZE_OF_BOX * length_of_fire,0) && length_of_fire == 2) {
+                    if (canMove(SIZE_OF_BOX, 0)) {
+                        if (canMove(SIZE_OF_BOX * length_of_fire, 0) && length_of_fire == 2) {
                             bombItemEx_right[2].setX(SIZE_OF_BOX * length_of_fire);
                             bombItemEx_right[2].setY(0);
                             g.getChildren().add(bombItemEx_right[2]);
@@ -337,16 +337,16 @@ public class Bomb extends Entity {
                             g.getChildren().add(bombItemEx_right[2]);
                         }
                     }
-                    if(canMove(- SIZE_OF_BOX,0)) {
-                        if(canMove(- SIZE_OF_BOX * length_of_fire,0) && length_of_fire == 2) {
-                            bombItemEx_left[2].setX(- SIZE_OF_BOX * length_of_fire);
+                    if (canMove(-SIZE_OF_BOX, 0)) {
+                        if (canMove(-SIZE_OF_BOX * length_of_fire, 0) && length_of_fire == 2) {
+                            bombItemEx_left[2].setX(-SIZE_OF_BOX * length_of_fire);
                             bombItemEx_left[2].setY(0);
                             g.getChildren().add(bombItemEx_left[2]);
-                            bombItemEx_horizontal_left[2].setX(- SIZE_OF_BOX);
+                            bombItemEx_horizontal_left[2].setX(-SIZE_OF_BOX);
                             bombItemEx_horizontal_left[2].setY(0);
                             g.getChildren().add(bombItemEx_horizontal_left[2]);
                         } else {
-                            bombItemEx_left[2].setX(- SIZE_OF_BOX);
+                            bombItemEx_left[2].setX(-SIZE_OF_BOX);
                             bombItemEx_left[2].setY(0);
                             g.getChildren().add(bombItemEx_left[2]);
                         }
@@ -365,20 +365,21 @@ public class Bomb extends Entity {
 
         int x1 = (int) _x1 / SIZE_OF_BOX;
         int y1 = (int) _y1 / SIZE_OF_BOX;
-        if(MainGame.map[x + x1][y + y1] == '#' || MainGame.map[x + x1][y + y1] == 'x') {
+        if (MainGame.map[x + x1][y + y1] == '#' || (MainGame.destination[x + x1][y + y1] != null
+                && MainGame.map[x + x1][y + y1] == ' ')) {
             return false;
         }
-        if(MainGame.obstacle[x + x1][y + y1] != null && MainGame.map[x + x1][y + y1] != ' ') {
+        if (MainGame.obstacle[x + x1][y + y1] != null && MainGame.map[x + x1][y + y1] != ' ') {
             ((Brick) MainGame.obstacle[x + x1][y + y1]).explode();
         }
-        for(int i = 0; i < MainGame.monster.length; i++) {
-            if(MainGame.monster[i].Collide_with_bomb(this.x * SIZE_OF_BOX + _x1
-                    ,this.y * SIZE_OF_BOX + _y1)) {
+        for (int i = 0; i < MainGame.monster.length; i++) {
+            if (MainGame.monster[i].Collide_with_bomb(this.x * SIZE_OF_BOX + _x1
+                    , this.y * SIZE_OF_BOX + _y1)) {
                 ((Enemy) MainGame.monster[i]).ActionDead();
             }
         }
-        if(MainGame.bomber.Collide_with_bomb(this.x * SIZE_OF_BOX + _x1
-                ,this.y * SIZE_OF_BOX + _y1) && MainGame.bomber.dead == false
+        if (MainGame.bomber.Collide_with_bomb(this.x * SIZE_OF_BOX + _x1
+                , this.y * SIZE_OF_BOX + _y1) && MainGame.bomber.dead == false
                 && MainGame.bomber.timeline_dead.getStatus() == Animation.Status.STOPPED) {
             MainGame.bomber.dead = true;
         }
