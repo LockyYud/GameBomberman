@@ -230,7 +230,6 @@ public class Bomber extends Entity implements typesItem{
           timeline_dead.getKeyFrames().add(new KeyFrame(
                   Duration.millis(300),
                   (ActionEvent event) -> {
-//                      MainGame.sound.playSingleEp(2);
                        actionDead.getChildren().setAll(images_dead[0]);
                   }
           ));
@@ -420,6 +419,7 @@ public class Bomber extends Entity implements typesItem{
 
      }
      public void playActionDead() {
+         MainGame.sound.playSingleEp(2);
          action.getChildren().setAll(actionDead);
          timeline_dead.play();
      }
@@ -428,12 +428,15 @@ public class Bomber extends Entity implements typesItem{
      }
      public void Takeitem(Item item) {
          if(item.getName() == nameItem.SPEED) {
+             MainGame.sound.playSingleEp(6);
              this.ChangeSpeed();
          }
          else if(item.getName() == nameItem.FLAMES) {
+             MainGame.sound.playSingleEp(6);
              this.ChangeLenghtofBomb(2);
          }
          else if(item.getName() == nameItem.BOMBS) {
+             MainGame.sound.playSingleEp(6);
              moreBomb = true;
          }
      }

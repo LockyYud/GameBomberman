@@ -73,6 +73,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
     public static Item[] itemofGame;
     public static Bomber bomber;
     public static boolean EndGame = false;
+    public static Sound sound = new Sound();
 
     private double timeStartGame;
     private double TimeinGame = 300;
@@ -113,6 +114,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
         stage.setTitle("Bomberman");
         //Adding scene to the stage
         stage.show();
+        sound.playMusic(4);
     }
 
     private Scene MenuStart() {
@@ -312,6 +314,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
             @Override
             public void handle(long l) {
                 if ((bomber.num_life == 0 || Integer.parseInt(timeLeft.getText()) == 0) && !root.getChildren().contains(endGame.borderPanel)) {
+                    sound.playSingleEp(7);
                     endGame.setEndGame("YOU LOSE");
                     endGame.addHandle();
                     root.getChildren().add(endGame.borderPanel);
@@ -322,6 +325,7 @@ public class MainGame extends Application implements LoadImageWithoutBackground,
                 }
                 if(nums_Monster_inGame == 0 && map[bomber.getX()][bomber.getY()] == 'x') {
                     if(level == 2 && !root.getChildren().contains(endGame.borderPanel)) {
+                        sound.playSingleEp(1);
                         endGame.setEndGame("YOU WIN");
                         endGame.addHandle();
                         root.getChildren().add(endGame.borderPanel);
